@@ -1,0 +1,168 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "pdf-viewer": {
+      "projectType": "library",
+      "root": "projects/pdf-viewer",
+      "sourceRoot": "projects/pdf-viewer/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/pdf-viewer/tsconfig.lib.json",
+            "project": "projects/pdf-viewer/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/pdf-viewer/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/pdf-viewer/src/test.ts",
+            "tsConfig": "projects/pdf-viewer/tsconfig.spec.json",
+            "karmaConfig": "projects/pdf-viewer/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/pdf-viewer/tsconfig.lib.json",
+              "projects/pdf-viewer/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "pdf-viewer-showcase": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/pdf-viewer-showcase",
+      "sourceRoot": "projects/pdf-viewer-showcase/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/pdf-viewer-showcase",
+            "index": "projects/pdf-viewer-showcase/src/index.html",
+            "main": "projects/pdf-viewer-showcase/src/main.ts",
+            "polyfills": "projects/pdf-viewer-showcase/src/polyfills.ts",
+            "tsConfig": "projects/pdf-viewer-showcase/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/pdf-viewer-showcase/src/favicon.ico",
+              "projects/pdf-viewer-showcase/src/assets"
+            ],
+            "styles": [
+              "projects/pdf-viewer-showcase/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/pdf-viewer-showcase/src/environments/environment.ts",
+                  "with": "projects/pdf-viewer-showcase/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "pdf-viewer-showcase:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "pdf-viewer-showcase:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "pdf-viewer-showcase:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/pdf-viewer-showcase/src/test.ts",
+            "polyfills": "projects/pdf-viewer-showcase/src/polyfills.ts",
+            "tsConfig": "projects/pdf-viewer-showcase/tsconfig.spec.json",
+            "karmaConfig": "projects/pdf-viewer-showcase/karma.conf.js",
+            "assets": [
+              "projects/pdf-viewer-showcase/src/favicon.ico",
+              "projects/pdf-viewer-showcase/src/assets"
+            ],
+            "styles": [
+              "projects/pdf-viewer-showcase/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/pdf-viewer-showcase/tsconfig.app.json",
+              "projects/pdf-viewer-showcase/tsconfig.spec.json",
+              "projects/pdf-viewer-showcase/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/pdf-viewer-showcase/e2e/protractor.conf.js",
+            "devServerTarget": "pdf-viewer-showcase:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "pdf-viewer-showcase:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "pdf-viewer"
+}
