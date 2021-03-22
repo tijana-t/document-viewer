@@ -10,11 +10,19 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@linnenschmidt/build-ng-packagr:build",
           "options": {
             "tsConfig": "projects/pdf-viewer/tsconfig.lib.json",
             "project": "projects/pdf-viewer/ng-package.json"
           },
+          "assets": [
+            "src/assets",
+            {
+              "glob": "**/*",
+              "input": "projects/pdf-viewer/src/assets",
+              "output": "src/assets"
+            }
+          ],
           "configurations": {
             "production": {
               "tsConfig": "projects/pdf-viewer/tsconfig.lib.prod.json"
@@ -36,9 +44,7 @@
               "projects/pdf-viewer/tsconfig.lib.json",
               "projects/pdf-viewer/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -67,9 +73,7 @@
               "projects/pdf-viewer-showcase/src/favicon.ico",
               "projects/pdf-viewer-showcase/src/assets"
             ],
-            "styles": [
-              "projects/pdf-viewer-showcase/src/styles.scss"
-            ],
+            "styles": ["projects/pdf-viewer-showcase/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -130,9 +134,7 @@
               "projects/pdf-viewer-showcase/src/favicon.ico",
               "projects/pdf-viewer-showcase/src/assets"
             ],
-            "styles": [
-              "projects/pdf-viewer-showcase/src/styles.scss"
-            ],
+            "styles": ["projects/pdf-viewer-showcase/src/styles.scss"],
             "scripts": []
           }
         },
@@ -144,9 +146,7 @@
               "projects/pdf-viewer-showcase/tsconfig.spec.json",
               "projects/pdf-viewer-showcase/e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {

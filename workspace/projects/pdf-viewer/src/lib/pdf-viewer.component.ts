@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { thumbnails } from './test-data/thumbnails';
+import { thumbnails } from './thumbnails';
 
 @Component({
   selector: 'lib-pdf-viewer',
