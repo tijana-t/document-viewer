@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { PdfViewerComponent } from './pdf-viewer.component';
 import { DocumentComponent } from './document/document.component';
@@ -14,7 +15,7 @@ import { SharedComponentsModule } from '../shared/shared-components.module';
     PageChangeComponent,
     PageThumbnailComponent,
   ],
-  imports: [SharedComponentsModule],
+  imports: [SharedComponentsModule, CommonModule],
   exports: [
     PdfViewerComponent,
     DocumentComponent,

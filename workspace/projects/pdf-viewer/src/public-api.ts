@@ -3,6 +3,7 @@
  */
 
 export * from './lib/pdf-viewer.service';
+export * from './lib/test-data/thumbnails';
 export * from './lib/pdf-viewer.component';
 export * from './lib/pdf-viewer.module';
 export * from './lib/document/document.component';

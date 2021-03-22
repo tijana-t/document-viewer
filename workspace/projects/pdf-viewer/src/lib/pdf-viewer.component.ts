@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { thumbnails } from './test-data/thumbnails';
 
 @Component({
   selector: 'lib-pdf-viewer',
-  template: ` <p>Pdf viewer test!</p> `,
+  templateUrl: './pdf-viewer.component.html',
   styles: [],
 })
 export class PdfViewerComponent implements OnInit {
+  thumbnails: { id: string; src: string }[] = [{ id: '', src: '' }];
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.thumbnails = thumbnails;
+  }
 }
