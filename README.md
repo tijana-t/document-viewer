@@ -1,5 +1,13 @@
-# PDF VIEWER 
+## PDF VIEWER 
 
-# Run app - `ng serve pdf-viewer-showcase`
-# Build library - `ng build pdf-viewer`
-# Build library and track live changes in app - `ng build pdf-viewer --watch=true`
+### Run app - `ng serve pdf-viewer-showcase`
+### Build library - `ng build pdf-viewer`
+### Build library and track live changes in app - `ng build pdf-viewer --watch=true`
+
+
+### Architecture v1
+* Main component - pdf-viewer
+* Child components - document, document-actions, page-change, page-thumbnail
+* Shared components - modals ( search )
+
+![viewer-archv1](https://user-images.githubusercontent.com/18723426/111987901-10a63e00-8b10-11eb-93af-eb511f1624a9.png)

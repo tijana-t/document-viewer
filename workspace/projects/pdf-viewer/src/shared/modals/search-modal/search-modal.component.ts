@@ -3,13 +3,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'lib-search-modal',
   templateUrl: './search-modal.component.html',
-  styleUrls: ['./search-modal.component.css']
+  styleUrls: ['./search-modal.component.scss'],
 })
 export class SearchModalComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
