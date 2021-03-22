@@ -164,5 +164,8 @@
       }
     }
   },
-  "defaultProject": "pdf-viewer"
+  "defaultProject": "pdf-viewer",
+  "cli": {
+    "analytics": false
+  }
 }
