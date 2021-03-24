@@ -15,14 +15,11 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "lib": ["es2018", "dom"],
     "paths": {
-      "pdf-viewer": [
-        "dist/pdf-viewer/pdf-viewer",
-        "dist/pdf-viewer"
+      "pdf-viewer": ["dist/pdf-viewer/pdf-viewer", "dist/pdf-viewer"],
+      "@ng-bootstrap/ng-bootstrap": [
+        "./node_modules/@ng-bootstrap/ng-bootstrap"
       ]
     }
   },
