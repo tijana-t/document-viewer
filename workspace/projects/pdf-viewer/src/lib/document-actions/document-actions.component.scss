@@ -1,0 +1,21 @@
+@use '../styles/color-variables' as colors;
+
+.container {
+  background-color: transparent;
+}
+
+.circle {
+  background: colors.$main-white;
+  width: 50px;
+  height: 50px;
+  font-size: 15px;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: flex; /* or inline-flex */
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 10px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 0px 0px 16px 1px rgba(214, 214, 214, 1);
+}
