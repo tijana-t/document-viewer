@@ -1,0 +1,48 @@
+<div class="navigation-container">
+  <div
+    #thumbnailContainer
+    [ngStyle]="{ height: navigationConfig.containerHeight + 'px' }"
+    class="thumbnail-container d-inline-flex flex-column align-items-center"
+  >
+    <div
+      #thumbnailImage
+      style="position: relative"
+      *ngFor="let image of thumbnails; index as i"
+    >
+      <img
+        class="thumbnail"
+        [style]="{ marginBottom: navigationConfig.imageMargin }"
+        src="{{ image.src }}"
+        alt=""
+      />
+      <span
+        class="page-number"
+        [ngStyle]="{ bottom: navigationConfig.imageMargin + 'px' }"
+      >
+        {{ i + 1 }}
+      </span>
+      <span class="important-page"></span>
+    </div>
+  </div>
+
+  <div
+    class="range-wrap"
+    [ngStyle]="{ width: thumbnailContainer.style.height }"
+  >
+    <div class="bubble-wrap" #bubbleWrap>
+      <span #bubbleValue id="bubble"></span>
+    </div>
+    <span class="value-field min"> 1 </span>
+    <span class="value-field max"> {{ thumbnails.length }} </span>
+    <input
+      #inputRange
+      (input)="calculateThumbPosition($event)"
+      id="range"
+      type="range"
+      min="1"
+      value="1"
+      [max]="thumbnails.length - 1"
+      step="1"
+    />
+  </div>
+</div>
