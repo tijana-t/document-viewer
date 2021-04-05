@@ -1,4 +1,4 @@
-@use '../styles/color-variables' as colors;
+@use '../_styles/color-variables' as colors;
 
 .container {
   background-color: transparent;
@@ -9,6 +9,7 @@
   width: 50px;
   height: 50px;
   font-size: 15px;
+  cursor: pointer;
   margin: 0 auto;
   border-radius: 50%;
   display: flex; /* or inline-flex */
@@ -17,5 +18,5 @@
   box-sizing: border-box;
   border: 10px solid transparent;
   background-clip: padding-box;
-  box-shadow: 0px 0px 16px 1px rgba(214, 214, 214, 1);
+  box-shadow: 0px 0px 16px 1px colors.$light-box-shadow;
 }
