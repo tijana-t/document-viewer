@@ -1,0 +1,149 @@
+@use '../_styles/color-variables' as cv;
+
+// thumbnail style
+
+.navigation-container {
+  position: relative;
+  display: inline-flex;
+  margin-top: 150px;
+  margin-left: 30px;
+
+  .thumbnail-container {
+    overflow: hidden;
+    position: relative;
+    margin: 0 25px 0 25px;
+    padding: 0 25px 0 25px;
+    position: relative;
+
+    // img style
+    .thumbnail {
+      margin-bottom: 20px;
+      width: 130px;
+
+      -webkit-box-shadow: 0px 0px 16px 1px cv.$box-shadow;
+      -moz-box-shadow: 0px 0px 16px 1px cv.$box-shadow;
+      box-shadow: 0px 0px 16px 1px cv.$box-shadow;
+    }
+    .thumbnail:active {
+      border: 2px solid cv.$main-yellow;
+    }
+
+    // absolute elements style (pageNum, circle)
+    .page-number {
+      color: cv.$light-gray;
+      bottom: 0;
+      left: -20px;
+      position: absolute;
+    }
+    .important-page {
+      border-radius: 50%;
+      position: absolute;
+      top: -9px;
+      left: -9px;
+      background-color: cv.$main-green;
+      width: 18px;
+      height: 18px;
+      border: 2px solid cv.$main-white;
+    }
+  }
+}
+
+// range style
+
+.range-wrap {
+  height: 0px;
+  transform: rotateZ(90deg);
+  transform-origin: left;
+
+  // bubble style
+  .bubble-wrap {
+    transform: rotate(180deg) translate(70%) !important;
+    top: 100%;
+    position: relative;
+    width: 35px;
+    border-radius: 50%;
+    height: 35px;
+    z-index: 1000;
+    line-height: 24px;
+    text-align: center;
+    background: cv.$main-white !important;
+    font-size: 12px;
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 22px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 16px 1px cv.$box-shadow;
+
+    span#bubble {
+      color: cv.$main-yellow;
+      font-weight: 700;
+      position: absolute;
+      transform: rotate(90deg) translate(30%, 30%) !important;
+    }
+  }
+  .bubble-wrap:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 10px solid cv.$main-white;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    top: 92%;
+    left: 35%;
+    margin-left: -5px;
+
+    margin-top: -1px;
+  }
+
+  // max and min style
+  .value-field {
+    font-weight: bold;
+    display: inline-table;
+    font-size: 12px;
+    bottom: 12px;
+    border-radius: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: cv.$main-yellow;
+    color: cv.$main-white;
+    transform: rotate(-90deg);
+    position: absolute;
+  }
+
+  .value-field.min {
+    left: -16px;
+    top: 6px;
+  }
+  .value-field.max {
+    right: -20px;
+    bottom: -25px;
+  }
+
+  // range input
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+  }
+  input[type="range"]:focus {
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: cv.$main-yellow;
+    border-radius: 25px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: cv.$main-yellow;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -4px;
+    color: cv.$main-yellow !important;
+  }
+}
