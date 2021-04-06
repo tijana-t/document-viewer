@@ -1,4 +1,12 @@
-<div class="viewer-container">
+<div class="document-container">
   <lib-search-modal></lib-search-modal>
-  <p>Doc component works</p>
+  <img
+    #documentImage
+    [ngStyle]="{
+      width: canvasConfig.canvasWidth + 'px',
+      height: 'auto'
+    }"
+    src="{{ pages[0].src }}"
+    alt=""
+  />
 </div>

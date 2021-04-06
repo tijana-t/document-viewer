@@ -12,11 +12,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-Za nas -- `ng build pdf-viewer --watch=true` ( kako bi pratili promjene iz biblioteke u aplikaciji ) 
-
-
+Za nas -- `ng build pdf-viewer --watch=true` ( kako bi pratili promjene iz biblioteke u aplikaciji )
 
 ## Running unit tests
 

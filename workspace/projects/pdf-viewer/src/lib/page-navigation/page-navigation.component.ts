@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { PdfViewerService } from '../pdf-viewer.service';
 import { thumbnails } from '../thumbnails';
 import { NavigationConfig } from '../_config/page-navigation.model';
 
@@ -14,20 +15,20 @@ import { NavigationConfig } from '../_config/page-navigation.model';
   styleUrls: ['./page-navigation.component.scss'],
 })
 export class PageNavigationComponent implements OnInit, AfterViewInit {
-  @ViewChild('thumbnailContainer') thumbnailContainer: any;
-  @ViewChild('thumbnailImage') thumbnail: any;
-  @ViewChild('bubbleWrap') bubbleWrap: any;
-  @ViewChild('inputRange') inputRange: any;
-  @ViewChild('bubbleValue') bubbleValue: any;
+  @ViewChild('thumbnailContainer') thumbnailContainer: ElementRef | undefined;
+  @ViewChild('thumbnailImage') thumbnail: ElementRef | undefined;
+  @ViewChild('bubbleWrap') bubbleWrap: ElementRef | undefined;
+  @ViewChild('inputRange') inputRange: ElementRef | undefined;
+  @ViewChild('bubbleValue') bubbleValue: ElementRef | undefined;
   thumbnails: { id: string; src: string }[] = [{ id: '', src: '' }];
   navigationConfig: NavigationConfig = {
     containerHeight: 600,
     imageMargin: 20,
   };
   oldPageNumber: number = 1;
-  pageNumber: number = 0;
+  pageNumber: number = 1;
 
-  constructor() {}
+  constructor(private pdfViewerService: PdfViewerService) {}
 
   ngOnInit(): void {
     this.thumbnails = thumbnails;
@@ -37,25 +38,37 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
     this.calculateThumbPosition();
   }
 
-  calculateThumbPosition = (inputEvent?: any) => {
-    const newValue = Number(
-        ((this.inputRange.nativeElement.value -
-          this.inputRange.nativeElement.min) *
-          100) /
-          (this.inputRange.nativeElement.max -
-            this.inputRange.nativeElement.min)
-      ),
-      newPosition = 10 - newValue * 0.2;
-    this.bubbleValue.nativeElement.innerText = this.inputRange.nativeElement.value;
-    this.bubbleWrap.nativeElement.style.left = `calc(${newValue}% + (${newPosition}px))`;
+  changePage(pageNumber: number) {
+    this.pdfViewerService.pageNumberSubject.next(pageNumber);
+  }
 
-    // call only on input change
-    if (inputEvent) {
-      this.scrollThumbnailContainer(
-        this.thumbnailContainer.nativeElement,
-        this.thumbnail.nativeElement,
-        inputEvent.target.value
-      );
+  calculateThumbPosition = (inputEvent?: any) => {
+    if (
+      this.inputRange &&
+      this.bubbleValue &&
+      this.thumbnailContainer &&
+      this.thumbnail &&
+      this.bubbleWrap
+    ) {
+      const newValue = Number(
+          ((this.inputRange.nativeElement.value -
+            this.inputRange.nativeElement.min) *
+            100) /
+            (this.inputRange.nativeElement.max -
+              this.inputRange.nativeElement.min)
+        ),
+        newPosition = 10 - newValue * 0.2;
+      this.bubbleValue.nativeElement.innerText = this.inputRange.nativeElement.value;
+      this.bubbleWrap.nativeElement.style.left = `calc(${newValue}% + (${newPosition}px))`;
+
+      // call only on input change
+      if (inputEvent) {
+        this.scrollThumbnailContainer(
+          this.thumbnailContainer.nativeElement,
+          this.thumbnail.nativeElement,
+          inputEvent.target.value
+        );
+      }
     }
   };
 
