@@ -1,9 +1,10 @@
 <div>
   <div class="viewer-container">
     <lib-document-actions
+      [document]="document"
       class="document-actions-container"
     ></lib-document-actions>
-    <lib-document class="document-viewer-container"></lib-document>
+    <lib-document #document class="document-viewer-container"></lib-document>
     <lib-page-navigation
       class="document-page-navigation-container"
     ></lib-page-navigation>
