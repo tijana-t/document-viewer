@@ -12,11 +12,12 @@ div {
 
   .document-actions-container {
     align-self: center;
+    margin-left: auto;
+    margin-right: 25px;
   }
 
   .document-viewer-container {
     display: flex;
     justify-content: center;
-    flex-grow: 4;
   }
 }

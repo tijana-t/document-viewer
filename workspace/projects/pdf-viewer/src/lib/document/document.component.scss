@@ -6,12 +6,11 @@
   margin-top: 50px;
   flex-direction: column;
   align-items: center;
+  padding: 30px;
+  border: 4px solid cv.$main-white;
 
-  .img-container {
-    padding: 30px;
-    border: 4px solid cv.$main-white;
-  }
   img {
+    height: auto;
     box-shadow: 1px 0px 20px 10px rgb(50 50 93 / 10%);
   }
 }
