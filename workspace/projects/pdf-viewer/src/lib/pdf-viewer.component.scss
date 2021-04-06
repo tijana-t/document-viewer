@@ -1,5 +1,12 @@
+@use './_styles/color-variables' as cv;
+
+body {
+  background: cv.$bg-color;
+}
+
 .viewer-container {
   margin-top: 5%;
+  background: cv.$bg-color;
   display: flex;
   justify-content: space-between;
 
@@ -8,6 +15,8 @@
   }
 
   .document-viewer-container {
+    display: flex;
+    justify-content: center;
     flex-grow: 4;
   }
 }
