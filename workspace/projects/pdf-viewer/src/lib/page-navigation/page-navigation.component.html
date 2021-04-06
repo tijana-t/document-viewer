@@ -5,6 +5,7 @@
     class="thumbnail-container d-inline-flex flex-column align-items-center"
   >
     <div
+      (click)="changePage(i + 1)"
       #thumbnailImage
       style="position: relative"
       *ngFor="let image of thumbnails; index as i"

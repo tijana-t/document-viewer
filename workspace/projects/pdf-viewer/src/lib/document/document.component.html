@@ -1,1 +1,11 @@
-<p>document works!</p>
+<div class="document-container">
+  <img
+    #documentImage
+    [ngStyle]="{
+      width: canvasConfig.canvasWidth + 'px',
+      height: 'auto'
+    }"
+    src="{{ pages[0].src }}"
+    alt=""
+  />
+</div>

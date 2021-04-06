@@ -1,0 +1,9 @@
+@use '../_styles/color-variables' as cv;
+
+.document-container {
+  background-color: cv.$bg-color;
+  display: inline-flex;
+  padding: 20px;
+  border: 4px solid cv.$main-white;
+  box-shadow: cv.$box-shadow;
+}
