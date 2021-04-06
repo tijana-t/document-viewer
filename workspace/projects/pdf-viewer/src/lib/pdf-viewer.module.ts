@@ -3,25 +3,23 @@ import { NgModule } from '@angular/core';
 import { PdfViewerComponent } from './pdf-viewer.component';
 import { DocumentComponent } from './document/document.component';
 import { DocumentActionsComponent } from './document-actions/document-actions.component';
-import { PageChangeComponent } from './page-change/page-change.component';
-import { PageThumbnailComponent } from './page-thumbnail/page-thumbnail.component';
+import { PageNavigationComponent } from './page-navigation/page-navigation.component';
 import { SharedComponentsModule } from '../shared/shared-components.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     PdfViewerComponent,
     DocumentComponent,
     DocumentActionsComponent,
-    PageChangeComponent,
-    PageThumbnailComponent,
+    PageNavigationComponent,
   ],
-  imports: [SharedComponentsModule, CommonModule],
+  imports: [SharedComponentsModule, CommonModule, FormsModule],
   exports: [
     PdfViewerComponent,
     DocumentComponent,
     DocumentActionsComponent,
-    PageChangeComponent,
-    PageThumbnailComponent,
+    PageNavigationComponent,
   ],
 })
 export class PdfViewerModule {}
