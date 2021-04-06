@@ -6,8 +6,10 @@ input[type="text"]:focus {
   border: 1px solid cv.$main-yellow;
 }
 input[type="text"] {
+  height: 30px;
   border-radius: 25px;
   text-align: center;
+  border: 1px solid cv.$main-white;
 }
 
 .search-container {

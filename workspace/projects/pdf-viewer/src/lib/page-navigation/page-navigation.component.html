@@ -1,7 +1,18 @@
 <div class="navigation-container">
+  <!-- <div class="form-group number-input">
+    <input
+      type="number"
+      class="form-control"
+      [(ngModel)]="pageNumber"
+      #page="ngModel"
+      name="pageNumber"
+      id="pageNumber"
+    />
+  </div> -->
+
   <div
     #thumbnailContainer
-    [ngStyle]="{ height: navigationConfig.containerHeight + 'px' }"
+    [ngStyle]="{ height: documentConfig.containerHeight + 'px' }"
     class="thumbnail-container d-inline-flex flex-column align-items-center"
   >
     <div
@@ -11,6 +22,7 @@
       *ngFor="let image of thumbnails; index as i"
     >
       <img
+        [ngClass]="pageNumber === i + 1 ? 'active-thumbnail' : ''"
         class="thumbnail"
         [style]="{ marginBottom: navigationConfig.imageMargin }"
         src="{{ image.src }}"
@@ -28,7 +40,7 @@
 
   <div
     class="range-wrap"
-    [ngStyle]="{ width: thumbnailContainer.style.height }"
+    [ngStyle]="{ width: documentConfig.containerHeight + 'px' }"
   >
     <div class="bubble-wrap" #bubbleWrap>
       <span #bubbleValue id="bubble"></span>

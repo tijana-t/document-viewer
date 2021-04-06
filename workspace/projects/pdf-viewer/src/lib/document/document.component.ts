@@ -1,16 +1,15 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { from, Subject, Subscription } from 'rxjs';
-import { PdfViewerService } from '../pdf-viewer.service';
-import { CanvasConfig } from '../_config/canvas.model';
-import { pages } from '../pages';
+import { Subject, Subscription } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
+import { pages } from '../pages';
+import { PdfViewerService } from '../pdf-viewer.service';
+import { DocumentConfig } from '../_config/document.model';
 
 @Component({
   selector: 'lib-document',
@@ -21,14 +20,13 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('documentCanvas') documentCanvas: any;
   @ViewChild('documentImage') documentImage: any;
   private readonly destroy$ = new Subject();
+  documentConfig: DocumentConfig = {
+    containerHeight: 750,
+  };
 
   pages: { id: string; src: string }[] = [{ id: '', src: '' }];
   image = new Image();
   pageNumber: number = 1;
-  canvasConfig: CanvasConfig = {
-    canvasWidth: 600,
-    canvasHeight: 1000,
-  };
   subscriptions = new Subscription();
   constructor(private pdfViewerService: PdfViewerService) {
     this.pdfViewerService.pageNumberSubject

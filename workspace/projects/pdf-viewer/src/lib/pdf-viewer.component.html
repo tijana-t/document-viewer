@@ -4,9 +4,12 @@
       [document]="document"
       class="document-actions-container"
     ></lib-document-actions>
-    <lib-document #document class="document-viewer-container"></lib-document>
-    <lib-page-navigation
-      class="document-page-navigation-container"
-    ></lib-page-navigation>
+
+    <div class="d-flex flex-row">
+      <lib-document #document class="document-viewer-container"></lib-document>
+      <lib-page-navigation
+        class="document-page-navigation-container"
+      ></lib-page-navigation>
+    </div>
   </div>
 </div>

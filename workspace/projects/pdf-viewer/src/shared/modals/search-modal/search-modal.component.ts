@@ -9,7 +9,7 @@ import { SearchConfig } from 'projects/pdf-viewer/src/lib/_config/search.model';
 export class SearchModalComponent implements OnInit {
   searchDocument = '';
   config: SearchConfig = {
-    containerWidth: 250,
+    containerWidth: 180,
   };
   constructor() {}
 

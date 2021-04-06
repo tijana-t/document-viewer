@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { PdfViewerService } from '../pdf-viewer.service';
 import { thumbnails } from '../thumbnails';
+import { DocumentConfig } from '../_config/document.model';
 import { NavigationConfig } from '../_config/page-navigation.model';
 
 @Component({
@@ -22,8 +23,10 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
   @ViewChild('bubbleValue') bubbleValue: ElementRef | undefined;
   thumbnails: { id: string; src: string }[] = [{ id: '', src: '' }];
   navigationConfig: NavigationConfig = {
-    containerHeight: 600,
     imageMargin: 20,
+  };
+  documentConfig: DocumentConfig = {
+    containerHeight: 750,
   };
   oldPageNumber: number = 1;
   pageNumber: number = 1;
@@ -39,6 +42,7 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
   }
 
   changePage(pageNumber: number) {
+    this.pageNumber = pageNumber;
     this.pdfViewerService.pageNumberSubject.next(pageNumber);
   }
 

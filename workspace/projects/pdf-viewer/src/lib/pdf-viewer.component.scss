@@ -1,14 +1,11 @@
 @use './_styles/color-variables' as cv;
 
-div {
-  background: cv.$bg-color;
-}
-
 .viewer-container {
-  margin-top: 5%;
   background: cv.$bg-color;
+  height: 100vh;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   .document-actions-container {
     align-self: center;
@@ -17,6 +14,5 @@ div {
   .document-viewer-container {
     display: flex;
     justify-content: center;
-    flex-grow: 4;
   }
 }

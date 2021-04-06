@@ -1,14 +1,9 @@
-<div class="document-container">
-  <lib-search-modal></lib-search-modal>
-  <div class="img-container">
-    <img
-      #documentImage
-      [ngStyle]="{
-        width: canvasConfig.canvasWidth + 'px',
-        height: 'auto'
-      }"
-      src="{{ pages[0].src }}"
-      alt=""
-    />
-  </div>
+<div
+  class="document-container"
+  [ngStyle]="{
+    height: documentConfig.containerHeight + 'px'
+  }"
+>
+  <lib-search-modal class="search-component"></lib-search-modal>
+  <img #documentImage src="{{ pages[0].src }}" alt="" />
 </div>
