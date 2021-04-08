@@ -37,6 +37,13 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
     this.thumbnails = thumbnails;
   }
 
+  scrollToPageNumber(pageNumber: number) {
+    this.thumbnailContainer?.nativeElement.scrollTo({
+      top: pageNumber * this.thumbnailContainer.nativeElement.clientHeight,
+      behavior: 'smooth',
+    });
+  }
+
   ngAfterViewInit() {
     this.calculateThumbPosition();
   }
@@ -46,7 +53,20 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
     this.pdfViewerService.pageNumberSubject.next(pageNumber);
   }
 
-  calculateThumbPosition = (inputEvent?: any) => {
+  scrollThumbnail(event: WheelEvent, inputRange: any) {
+    const inputNumber = parseInt(inputRange.value, 10);
+    if (event.deltaY < 0 && inputNumber !== 1) {
+      // scrolling up
+      inputRange.value = (inputNumber - 1).toString();
+      this.calculateThumbPosition(parseInt(inputRange.value, 10));
+    } else if (event.deltaY > 0 && inputNumber !== this.thumbnails.length - 1) {
+      //  scrolling down
+      inputRange.value = (parseInt(inputRange.value, 10) + 1).toString();
+      this.calculateThumbPosition(parseInt(inputRange.value, 10));
+    }
+  }
+
+  calculateThumbPosition = (pageNumber?: number) => {
     if (
       this.inputRange &&
       this.bubbleValue &&
@@ -63,14 +83,14 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
         ),
         newPosition = 10 - newValue * 0.2;
       this.bubbleValue.nativeElement.innerText = this.inputRange.nativeElement.value;
-      this.bubbleWrap.nativeElement.style.left = `calc(${newValue}% + (${newPosition}px))`;
+      this.bubbleWrap.nativeElement.style.top = `calc(${newValue}% + (${newPosition}px))`;
 
       // call only on input change
-      if (inputEvent) {
+      if (pageNumber) {
         this.scrollThumbnailContainer(
           this.thumbnailContainer.nativeElement,
           this.thumbnail.nativeElement,
-          inputEvent.target.value
+          pageNumber
         );
       }
     }
@@ -83,8 +103,18 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
   ) {
     if (pageNumber >= this.oldPageNumber) {
       container.scrollTop += thumbnail.clientHeight;
+
+      // container.scrollTo({
+      //   top: container.scrollTop + thumbnail.clientHeight,
+      //   behavior: 'smooth',
+      // });
     } else {
       container.scrollTop -= thumbnail.clientHeight;
+
+      // container.scrollTo({
+      //   top: container.scrollTop - thumbnail.clientHeight,
+      //   behavior: 'smooth',
+      // });
     }
 
     this.oldPageNumber = pageNumber;

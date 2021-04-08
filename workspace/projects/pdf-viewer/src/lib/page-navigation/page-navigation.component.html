@@ -1,6 +1,7 @@
-<div class="navigation-container">
-  <!-- <div class="form-group number-input">
+<div (wheel)="scrollThumbnail($event, inputRange)" class="navigation-container">
+  <div class="form-group number-input">
     <input
+      (ngModelChange)="scrollToPageNumber(pageNumber)"
       type="number"
       class="form-control"
       [(ngModel)]="pageNumber"
@@ -8,8 +9,7 @@
       name="pageNumber"
       id="pageNumber"
     />
-  </div> -->
-
+  </div>
   <div
     #thumbnailContainer
     [ngStyle]="{ height: documentConfig.containerHeight + 'px' }"
@@ -38,20 +38,21 @@
     </div>
   </div>
 
-  <div
-    class="range-wrap"
-    [ngStyle]="{ width: documentConfig.containerHeight + 'px' }"
-  >
-    <div class="bubble-wrap" #bubbleWrap>
+  <div class="wrap">
+    <div
+      class="bubble-wrap d-flex align-items-center justify-content-center"
+      #bubbleWrap
+    >
       <span #bubbleValue id="bubble"></span>
     </div>
     <span class="value-field min"> 1 </span>
     <span class="value-field max"> {{ thumbnails.length }} </span>
     <input
-      #inputRange
-      (input)="calculateThumbPosition($event)"
-      id="range"
+      [ngStyle]="{ width: documentConfig.containerHeight + 'px' }"
       type="range"
+      #inputRange
+      (input)="calculateThumbPosition($event.target.value)"
+      id="range"
       min="1"
       value="1"
       [max]="thumbnails.length - 1"
