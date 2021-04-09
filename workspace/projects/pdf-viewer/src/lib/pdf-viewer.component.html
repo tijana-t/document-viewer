@@ -1,15 +1,11 @@
-<div>
-  <div class="viewer-container">
-    <lib-document-actions
-      [document]="document"
-      class="document-actions-container"
-    ></lib-document-actions>
+<div class="viewer-container">
+  <lib-document-actions
+    [document]="document"
+    class="document-actions-container"
+  ></lib-document-actions>
 
-    <div class="d-flex flex-row" style="margin: auto">
-      <lib-document #document class="document-viewer-container"></lib-document>
-      <lib-page-navigation
-        class="document-page-navigation-container"
-      ></lib-page-navigation>
-    </div>
-  </div>
+  <lib-document #document class="document-viewer-container"></lib-document>
+  <lib-page-navigation
+    class="document-page-navigation-container"
+  ></lib-page-navigation>
 </div>

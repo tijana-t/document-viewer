@@ -39,7 +39,9 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
 
   scrollToPageNumber(pageNumber: number) {
     this.thumbnailContainer?.nativeElement.scrollTo({
-      top: pageNumber * this.thumbnailContainer.nativeElement.clientHeight,
+      top:
+        this.thumbnailContainer.nativeElement.offsetTop -
+        pageNumber * this.thumbnailContainer.nativeElement.clientHeight,
       behavior: 'smooth',
     });
   }
@@ -59,7 +61,7 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
       // scrolling up
       inputRange.value = (inputNumber - 1).toString();
       this.calculateThumbPosition(parseInt(inputRange.value, 10));
-    } else if (event.deltaY > 0 && inputNumber !== this.thumbnails.length - 1) {
+    } else if (event.deltaY > 0 && inputNumber !== this.thumbnails.length) {
       //  scrolling down
       inputRange.value = (parseInt(inputRange.value, 10) + 1).toString();
       this.calculateThumbPosition(parseInt(inputRange.value, 10));

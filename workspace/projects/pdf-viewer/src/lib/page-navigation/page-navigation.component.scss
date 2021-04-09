@@ -19,6 +19,7 @@
 }
 
 .navigation-container {
+  margin: 20px;
   position: relative;
   display: inline-flex;
 
@@ -51,6 +52,7 @@
 
   //thumbnail style
   .thumbnail-container {
+    height: 90vh;
     overflow: hidden;
     position: relative;
     margin: 0 0 0 25px;
@@ -139,11 +141,17 @@
       border-radius: 4px;
       padding-left: 4px;
       padding-right: 4px;
-      background-color: cv.$main-yellow;
-      color: cv.$main-white;
       position: absolute;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+    .yellow-number {
+      background-color: cv.$main-yellow;
+      color: cv.$main-white;
+    }
+    .white-number {
+      background-color: cv.$main-white;
+      color: cv.$main-yellow;
     }
 
     .value-field.min {
@@ -196,6 +204,54 @@
       &::-ms-tooltip {
         display: none;
       }
+    }
+
+    /*Chrome*/
+    // @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    //   input[type="range"] {
+    //     overflow: hidden;
+    //     width: 750px;
+    //     -webkit-appearance: none;
+    //   }
+
+    //   input[type="range"]::-webkit-slider-runnable-track {
+    //     width: 750px;
+    //     -webkit-appearance: none;
+    //     color: cv.$main-yellow;
+    //     margin-top: -1px;
+    //   }
+    // }
+
+    // #range {
+    //   background: linear-gradient(
+    //     to bottom,
+    //     #82cfd0 0%,
+    //     #82cfd0 50%,
+    //     #fff 50%,
+    //     #fff 100%
+    //   );
+    //   border: solid 1px #82cfd0;
+    //   border-radius: 8px;
+    //   height: 7px;
+    //   width: 356px;
+    //   outline: none;
+    //   transition: background 450ms ease-in;
+    //   -webkit-appearance: none;
+    // }
+
+    /** FF*/
+    input[type="range"]::-moz-range-progress {
+      background-color: cv.$main-yellow;
+    }
+    input[type="range"]::-moz-range-track {
+      background-color: cv.$main-white;
+    }
+    /* IE*/
+    input[type="range"]::-ms-fill-lower {
+      background-color: cv.$main-yellow;
+    }
+    input[type="range"]::-ms-fill-upper {
+      background-color: cv.$main-white;
     }
   }
 }

@@ -12,7 +12,6 @@
   </div>
   <div
     #thumbnailContainer
-    [ngStyle]="{ height: documentConfig.containerHeight + 'px' }"
     class="thumbnail-container d-inline-flex flex-column align-items-center"
   >
     <div
@@ -45,17 +44,26 @@
     >
       <span #bubbleValue id="bubble"></span>
     </div>
-    <span class="value-field min"> 1 </span>
-    <span class="value-field max"> {{ thumbnails.length }} </span>
+    <span class="yellow-number value-field min"> 1 </span>
+    <span
+      [ngClass]="
+        inputRange.value == thumbnails.length.toString()
+          ? 'yellow-number'
+          : 'white-number'
+      "
+      class="value-field max"
+    >
+      {{ thumbnails.length }}
+    </span>
     <input
-      [ngStyle]="{ width: documentConfig.containerHeight + 'px' }"
+      [ngStyle]="{ width: '90vh' }"
       type="range"
       #inputRange
       (input)="calculateThumbPosition($event.target.value)"
       id="range"
       min="1"
       value="1"
-      [max]="thumbnails.length - 1"
+      [max]="thumbnails.length"
       step="1"
     />
   </div>
