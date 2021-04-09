@@ -1,7 +1,7 @@
 <div (wheel)="scrollThumbnail($event, inputRange)" class="navigation-container">
   <div class="form-group number-input">
     <input
-      (ngModelChange)="scrollToPageNumber(pageNumber)"
+      (ngModelChange)="scrollToPageNumber(page.value)"
       type="number"
       class="form-control"
       [(ngModel)]="pageNumber"
@@ -17,6 +17,7 @@
     <div
       (click)="changePage(i + 1)"
       #thumbnailImage
+      id="img-{{ i + 1 }}"
       style="position: relative"
       *ngFor="let image of thumbnails; index as i"
     >

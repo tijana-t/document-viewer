@@ -38,12 +38,12 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
   }
 
   scrollToPageNumber(pageNumber: number) {
+    const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
     this.thumbnailContainer?.nativeElement.scrollTo({
-      top:
-        this.thumbnailContainer.nativeElement.offsetTop -
-        pageNumber * this.thumbnailContainer.nativeElement.clientHeight,
+      top: offsetTop,
       behavior: 'smooth',
     });
+    this.pdfViewerService.pageNumberSubject.next(pageNumber);
   }
 
   ngAfterViewInit() {
@@ -105,18 +105,8 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
   ) {
     if (pageNumber >= this.oldPageNumber) {
       container.scrollTop += thumbnail.clientHeight;
-
-      // container.scrollTo({
-      //   top: container.scrollTop + thumbnail.clientHeight,
-      //   behavior: 'smooth',
-      // });
     } else {
       container.scrollTop -= thumbnail.clientHeight;
-
-      // container.scrollTo({
-      //   top: container.scrollTop - thumbnail.clientHeight,
-      //   behavior: 'smooth',
-      // });
     }
 
     this.oldPageNumber = pageNumber;

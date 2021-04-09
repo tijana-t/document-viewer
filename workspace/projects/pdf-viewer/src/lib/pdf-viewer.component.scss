@@ -1,6 +1,7 @@
 @use './_styles/color-variables' as cv;
 
 .viewer-container {
+  padding: 30px;
   width: auto;
   height: 100vh;
   background: cv.$bg-color;
