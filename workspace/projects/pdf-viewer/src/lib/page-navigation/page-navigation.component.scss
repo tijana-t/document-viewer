@@ -18,44 +18,46 @@
   margin-top: -4px;
 }
 
+// search style
+.number-input {
+  input[type="number"] {
+    top: 34px;
+    right: 74px;
+    position: absolute;
+    width: 90px;
+    height: 30px;
+    border: none;
+    border-radius: 25px;
+    text-align: center;
+  }
+  input[type="number"]:focus {
+    outline: 0 !important;
+    box-shadow: none;
+    border: 1px solid cv.$main-yellow;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
 .navigation-container {
   position: relative;
   display: inline-flex;
 
-  // search style
-  .number-input {
-    width: 90px !important;
-    input[type="number"] {
-      height: 30px;
-      border: none;
-      border-radius: 25px;
-      text-align: center;
-    }
-    input[type="number"]:focus {
-      outline: 0 !important;
-      box-shadow: none;
-      border: 1px solid cv.$main-yellow;
-    }
-
-    /* Chrome, Safari, Edge, Opera */
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    /* Firefox */
-    input[type="number"] {
-      -moz-appearance: textfield;
-    }
-  }
-
   //thumbnail style
   .thumbnail-container {
-    height: 90vh;
     overflow: hidden;
     position: relative;
-    padding: 0 25px 0 25px;
+    padding: 10px 25px 0 25px;
     position: relative;
 
     // img style

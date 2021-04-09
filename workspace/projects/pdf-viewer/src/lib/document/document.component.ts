@@ -21,7 +21,7 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('documentImage') documentImage: any;
   private readonly destroy$ = new Subject();
   documentConfig: DocumentConfig = {
-    containerHeight: 750,
+    containerHeight: '750px',
   };
 
   pages: { id: string; src: string }[] = [{ id: '', src: '' }];

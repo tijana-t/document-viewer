@@ -24,9 +24,7 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
   thumbnails: { id: string; src: string }[] = [{ id: '', src: '' }];
   navigationConfig: NavigationConfig = {
     imageMargin: 20,
-  };
-  documentConfig: DocumentConfig = {
-    containerHeight: 750,
+    containerHeight: '85vh',
   };
   oldPageNumber: number = 1;
   pageNumber: number = 1;
@@ -43,6 +41,10 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
       top: offsetTop,
       behavior: 'smooth',
     });
+    if (this.inputRange) {
+      this.inputRange.nativeElement.value = pageNumber;
+    }
+    this.calculateThumbPosition();
     this.pdfViewerService.pageNumberSubject.next(pageNumber);
   }
 

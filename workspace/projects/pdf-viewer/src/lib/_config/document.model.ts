@@ -1,3 +1,3 @@
 export type DocumentConfig = {
-  containerHeight: number;
+  containerHeight: string;
 };
