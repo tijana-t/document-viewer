@@ -1,30 +1,38 @@
 import {
   AfterViewInit,
   Component,
+  Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
-import { pages } from '../pages';
 import { PdfViewerService } from '../pdf-viewer.service';
 import { DocumentConfig } from '../_config/document.model';
+import { Thumbnail } from '../_config/thumbnail.model';
 
 @Component({
   selector: 'lib-document',
   templateUrl: './document.component.html',
   styleUrls: ['./document.component.scss'],
 })
-export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DocumentComponent
+  implements OnInit, AfterViewInit, OnDestroy, OnChanges
+{
   @ViewChild('documentCanvas') documentCanvas: any;
   @ViewChild('documentImage') documentImage: any;
+  @Input('thumbnails') thumbnails: Thumbnail[] = [{ id: '', src: '' }];
+  @Input('documentImg') documentImg: string = '';
+
   private readonly destroy$ = new Subject();
   documentConfig: DocumentConfig = {
-    containerHeight: '750px',
+    containerHeight: '700px',
+    containerWidth: 'auto',
   };
 
-  pages: { id: string; src: string }[] = [{ id: '', src: '' }];
   image = new Image();
   pageNumber: number = 1;
   subscriptions = new Subscription();
@@ -34,17 +42,27 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((res: any) => {
         if (res) {
           this.pageNumber = res;
-          this.documentImage.nativeElement.src = pages[this.pageNumber - 1].src;
+          this.documentImage.nativeElement.src =
+            this.thumbnails[this.pageNumber - 1].src;
         }
       });
   }
 
-  ngOnInit(): void {
-    this.pages = pages;
-  }
+  ngOnInit(): void {}
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
   ngAfterViewInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['documentImg'] && changes['documentImg'].currentValue) {
+      this.documentImg = changes['documentImg'].currentValue;
+
+      console.log(localStorage.getItem('token'));
+    }
+    if (changes['thumbnails'] && changes['thumbnails'].currentValue) {
+      this.thumbnails = changes['thumbnails'].currentValue;
+    }
+  }
 }

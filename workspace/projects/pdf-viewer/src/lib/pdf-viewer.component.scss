@@ -1,21 +1,18 @@
 @use './_styles/color-variables' as cv;
 
 .viewer-container {
-  padding: 30px;
-  width: auto;
-  height: 100vh;
-  background: cv.$bg-color;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  height: 100vh;
 
   .document-actions-container {
     align-self: center;
   }
-
-  .document-viewer-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .document-page-navigation-container {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }

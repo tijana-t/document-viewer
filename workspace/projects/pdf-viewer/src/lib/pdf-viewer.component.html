@@ -4,8 +4,14 @@
     class="document-actions-container"
   ></lib-document-actions>
 
-  <lib-document #document class="document-viewer-container"></lib-document>
+  <lib-document
+    [thumbnails]="thumbnails"
+    [documentImg]="documentImg"
+    #document
+    class="document-viewer-container"
+  ></lib-document>
   <lib-page-navigation
+    [thumbnails]="thumbnails"
     class="document-page-navigation-container"
   ></lib-page-navigation>
 </div>

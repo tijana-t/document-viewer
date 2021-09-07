@@ -1,9 +1,16 @@
-<div
-  class="document-container"
-  [ngStyle]="{
-    height: documentConfig.containerHeight
-  }"
->
-  <lib-search-modal class="search-component"></lib-search-modal>
-  <img #documentImage src="{{ pages[0].src }}" alt="" />
+<div class="outer" style="position: relative">
+  <!-- <img src="{{ pages[0].src }}" class="trans-img" alt="" /> -->
+  <div class="document-container">
+    <lib-search-modal class="search-component"></lib-search-modal>
+    <div
+      class="document-page"
+      id="document-page"
+      [ngStyle]="{
+        height: documentConfig.containerHeight,
+        width: 'auto'
+      }"
+    >
+      <img #documentImage [src]="documentImg" />
+    </div>
+  </div>
 </div>

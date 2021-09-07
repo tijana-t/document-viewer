@@ -8,3 +8,4 @@ export * from './lib/pdf-viewer.module';
 export * from './lib/document/document.component';
 export * from './lib/document-actions/document-actions.component';
 export * from './lib/page-navigation/page-navigation.component';
+export * from './lib/_config/document.model';

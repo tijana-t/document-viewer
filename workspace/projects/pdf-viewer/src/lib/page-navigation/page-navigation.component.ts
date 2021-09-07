@@ -2,13 +2,14 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Input,
   OnInit,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { PdfViewerService } from '../pdf-viewer.service';
-import { thumbnails } from '../thumbnails';
-import { DocumentConfig } from '../_config/document.model';
 import { NavigationConfig } from '../_config/page-navigation.model';
+import { Thumbnail } from '../_config/thumbnail.model';
 
 @Component({
   selector: 'lib-page-navigation',
@@ -21,7 +22,7 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
   @ViewChild('bubbleWrap') bubbleWrap: ElementRef | undefined;
   @ViewChild('inputRange') inputRange: ElementRef | undefined;
   @ViewChild('bubbleValue') bubbleValue: ElementRef | undefined;
-  thumbnails: { id: string; src: string }[] = [{ id: '', src: '' }];
+  @Input('thumbnails') thumbnails: Thumbnail[] = [{ id: '', src: '' }];
   navigationConfig: NavigationConfig = {
     imageMargin: 20,
     containerHeight: '85vh',
@@ -31,9 +32,7 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
 
   constructor(private pdfViewerService: PdfViewerService) {}
 
-  ngOnInit(): void {
-    this.thumbnails = thumbnails;
-  }
+  ngOnInit(): void {}
 
   scrollToPageNumber(pageNumber: number) {
     const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
@@ -86,7 +85,8 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
               this.inputRange.nativeElement.min)
         ),
         newPosition = 10 - newValue * 0.2;
-      this.bubbleValue.nativeElement.innerText = this.inputRange.nativeElement.value;
+      this.bubbleValue.nativeElement.innerText =
+        this.inputRange.nativeElement.value;
       this.bubbleWrap.nativeElement.style.top = `calc(${newValue}% + (${newPosition}px))`;
 
       // call only on input change
@@ -99,6 +99,12 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
       }
     }
   };
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['thumbnails'] && changes['thumbnails'].currentValue) {
+      this.thumbnails = changes['thumbnails'].currentValue;
+    }
+  }
 
   scrollThumbnailContainer(
     container: HTMLElement,

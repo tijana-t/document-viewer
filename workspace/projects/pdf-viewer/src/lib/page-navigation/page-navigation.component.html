@@ -1,20 +1,20 @@
-<div class="form-group number-input">
-  <input
-    (ngModelChange)="scrollToPageNumber(page.value)"
-    type="number"
-    class="form-control"
-    [(ngModel)]="pageNumber"
-    #page="ngModel"
-    name="pageNumber"
-    id="pageNumber"
-  />
-</div>
 <div (wheel)="scrollThumbnail($event, inputRange)" class="navigation-container">
   <div
     [ngStyle]="{ height: navigationConfig.containerHeight }"
     #thumbnailContainer
     class="thumbnail-container d-inline-flex flex-column align-items-center"
   >
+    <div class="form-group number-input">
+      <input
+        (ngModelChange)="scrollToPageNumber(page.value)"
+        type="number"
+        class="form-control"
+        [(ngModel)]="pageNumber"
+        #page="ngModel"
+        name="pageNumber"
+        id="pageNumber"
+      />
+    </div>
     <div
       (click)="changePage(i + 1)"
       #thumbnailImage

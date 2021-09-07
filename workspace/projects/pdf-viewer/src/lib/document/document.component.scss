@@ -1,11 +1,7 @@
 @use '../_styles/color-variables' as cv;
 
 .document-container {
-  display: inline-flex;
-  position: relative;
   background: cv.$bg-color;
-  flex-direction: column;
-  align-items: center;
   padding: 30px;
   border: 4px solid cv.$main-white;
 
@@ -18,5 +14,18 @@
   .search-component {
     position: absolute;
     top: -48px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .trans-img {
+    position: absolute;
+    opacity: 0.3;
+    top: 50px;
+    left: 50px;
+  }
+
+  .document-page {
+    position: relative;
   }
 }
