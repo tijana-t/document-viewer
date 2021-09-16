@@ -9,6 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { PdfViewerService } from './pdf-viewer.service';
+import { DocumentActions } from './_config/document-actions.model';
 import { DocumentConfig } from './_config/document.model';
 import { Thumbnail } from './_config/thumbnail.model';
 @Component({
@@ -21,9 +22,14 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   @Input('documentImg') documentImg: string = '';
   @Input('token') token?: string = '';
   @Input('thumbnails') thumbnails: Thumbnail[] = [{ id: '', src: '' }];
+  @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
+    zoomInSrc: '',
+    zoomOutSrc: '',
+    fitToPageSrc: '',
+  };
   @Input('documentConfig') documentConfig: DocumentConfig = {
-    containerHeight: '',
-    containerWidth: '',
+    containerHeight: 0,
+    containerWidth: 0,
   };
 
   ngOnInit() {}
@@ -41,7 +47,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
       this.thumbnails = changes['thumbnails'].currentValue;
     }
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
-      this.thumbnails = changes['documentConfig'].currentValue;
+      this.documentConfig = changes['documentConfig'].currentValue;
     }
   }
 }

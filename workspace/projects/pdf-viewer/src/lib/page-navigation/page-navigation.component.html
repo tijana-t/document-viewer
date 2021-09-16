@@ -1,20 +1,20 @@
 <div (wheel)="scrollThumbnail($event, inputRange)" class="navigation-container">
+  <div class="form-group number-input">
+    <input
+      (ngModelChange)="scrollToPageNumber(page.value)"
+      type="number"
+      class="form-control"
+      [(ngModel)]="pageNumber"
+      #page="ngModel"
+      name="pageNumber"
+      id="pageNumber"
+    />
+  </div>
   <div
     [ngStyle]="{ height: navigationConfig.containerHeight }"
     #thumbnailContainer
     class="thumbnail-container d-inline-flex flex-column align-items-center"
   >
-    <div class="form-group number-input">
-      <input
-        (ngModelChange)="scrollToPageNumber(page.value)"
-        type="number"
-        class="form-control"
-        [(ngModel)]="pageNumber"
-        #page="ngModel"
-        name="pageNumber"
-        id="pageNumber"
-      />
-    </div>
     <div
       (click)="changePage(i + 1)"
       #thumbnailImage
@@ -49,7 +49,7 @@
     <span class="yellow-number value-field min"> 1 </span>
     <span
       [ngClass]="
-        inputRange.value == thumbnails.length.toString()
+        inputRange.value == thumbnails.length?.toString()
           ? 'yellow-number'
           : 'white-number'
       "
@@ -61,7 +61,7 @@
       [ngStyle]="{ width: navigationConfig.containerHeight }"
       type="range"
       #inputRange
-      (input)="calculateThumbPosition($event.target.value)"
+      (input)="calculateThumbPosition($event.target?.value)"
       id="range"
       min="1"
       value="1"

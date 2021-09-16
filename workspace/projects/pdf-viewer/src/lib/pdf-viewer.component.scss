@@ -3,16 +3,18 @@
 .viewer-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   height: 100vh;
 
   .document-actions-container {
     align-self: center;
   }
-  .document-page-navigation-container {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+
+  .search-component {
+    z-index: 10000;
   }
+}
+
+:host ::ng-deep .viewer-container:hover .action-buttons {
+  opacity: 1 !important;
 }

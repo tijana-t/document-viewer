@@ -2,47 +2,95 @@ import {
   AfterViewInit,
   Component,
   Input,
+  OnChanges,
   OnInit,
-  ViewChild,
+  SimpleChanges,
 } from '@angular/core';
 import { DocumentComponent } from '../document/document.component';
-import { PdfViewerComponent } from './../pdf-viewer.component';
+import { PdfViewerService } from '../pdf-viewer.service';
+import { DocumentActions } from '../_config/document-actions.model';
+import { DocumentConfig } from '../_config/document.model';
 
 @Component({
   selector: 'lib-document-actions',
   templateUrl: './document-actions.component.html',
   styleUrls: ['./document-actions.component.scss'],
 })
-export class DocumentActionsComponent implements OnInit, AfterViewInit {
+export class DocumentActionsComponent
+  implements OnInit, AfterViewInit, OnChanges
+{
   @Input('document') document: DocumentComponent | undefined;
-  constructor() {}
+  @Input('documentConfig') documentConfig: DocumentConfig = {
+    containerWidth: 0,
+    containerHeight: 0,
+  };
+  @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
+    zoomInSrc: '',
+    zoomOutSrc: '',
+    fitToPageSrc: '',
+  };
+  defaultConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
+  zoomInDisabled = false;
+  zoomOutDisabled = false;
+
+  constructor(private pdfViewerService: PdfViewerService) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    console.log('DOCA', this.document?.documentImage.nativeElement);
+    this.defaultConfig = { ...this.documentConfig };
   }
 
-  zoomIn() {
-    let myImg = this.document?.documentImage.nativeElement;
-    let currWidth = myImg.clientWidth;
-    if (currWidth == 2500) return false;
-    else {
-      return (myImg.style.width = currWidth + 100 + 'px');
+  zoomInImg() {
+    if (this.documentConfig.containerHeight > 2200) {
+      this.zoomInDisabled = true;
+    } else {
+      this.documentConfig.containerHeight =
+        50 + this.documentConfig.containerHeight;
+
+      this.pdfViewerService.docConfSubject.next({
+        containerHeight: 50 + this.documentConfig.containerHeight,
+        containerWidth: null,
+      });
+      this.zoomOutDisabled = false;
     }
   }
 
-  zoomOut() {
-    let myImg = this.document?.documentImage.nativeElement;
-    let currWidth = myImg.clientWidth;
-    if (currWidth == 100) return false;
-    else {
-      return (myImg.style.width = currWidth - 100 + 'px');
+  zoomOutImg() {
+    if (this.documentConfig.containerHeight <= 400) {
+      this.zoomOutDisabled = true;
+    } else {
+      this.documentConfig.containerHeight =
+        this.documentConfig.containerHeight - 50;
+
+      this.pdfViewerService.docConfSubject.next({
+        containerHeight: this.documentConfig.containerHeight - 50,
+        containerWidth: null,
+      });
+      this.zoomInDisabled = false;
     }
   }
 
   fitToPage() {
-    let myImg = this.document?.documentImage.nativeElement;
-    return (myImg.style.width = '80%');
+    this.zoomInDisabled = false;
+    this.zoomOutDisabled = false;
+    this.documentConfig = { ...this.defaultConfig };
+
+    this.pdfViewerService.docConfSubject.next({
+      containerHeight: this.documentConfig.containerHeight,
+      containerWidth: this.documentConfig.containerWidth,
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
+      this.documentConfig = changes['documentConfig'].currentValue;
+    }
+    if (
+      changes['documentActionsSrc'] &&
+      changes['documentActionsSrc'].currentValue
+    ) {
+      this.documentActionsSrc = changes['documentActionsSrc'].currentValue;
+    }
   }
 }

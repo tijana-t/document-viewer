@@ -1,15 +1,22 @@
 <div class="viewer-container">
   <lib-document-actions
+    [documentConfig]="documentConfig"
     [document]="document"
     class="document-actions-container"
+    [documentActionsSrc]="documentActionsSrc"
   ></lib-document-actions>
 
-  <lib-document
-    [thumbnails]="thumbnails"
-    [documentImg]="documentImg"
-    #document
-    class="document-viewer-container"
-  ></lib-document>
+  <div class="d-flex align-items-center flex-column">
+    <lib-search-modal class="search-component"> </lib-search-modal>
+    <lib-document
+      [documentConfig]="documentConfig"
+      [thumbnails]="thumbnails"
+      [documentImg]="documentImg"
+      #document
+      class="document-viewer-container"
+    ></lib-document>
+  </div>
+
   <lib-page-navigation
     [thumbnails]="thumbnails"
     class="document-page-navigation-container"

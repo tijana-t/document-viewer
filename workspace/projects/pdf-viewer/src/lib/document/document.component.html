@@ -1,16 +1,38 @@
-<div class="outer" style="position: relative">
-  <!-- <img src="{{ pages[0].src }}" class="trans-img" alt="" /> -->
-  <div class="document-container">
-    <lib-search-modal class="search-component"></lib-search-modal>
-    <div
-      class="document-page"
-      id="document-page"
-      [ngStyle]="{
-        height: documentConfig.containerHeight,
-        width: 'auto'
-      }"
-    >
-      <img #documentImage [src]="documentImg" />
+<div style="position: relative" id="outer-cont">
+  <img
+    *ngIf="documentConfig.containerHeight > defaultDocConfig.containerHeight"
+    [ngStyle]="{
+      height: documentConfig.containerHeight + 'px',
+      width: 'auto',
+      position: 'absolute',
+      opacity: 0.3,
+      top: imageTopVal,
+      left: imageLeftVal
+    }"
+    [src]="documentImg"
+    class="trans-img"
+    alt=""
+  />
+  <div
+    (scroll)="scrollEvent($event, documentImage)"
+    id="document-container"
+    [ngStyle]="{
+      'max-height': maxContainerHeight + 'px',
+      'max-width': maxContainerWidth + 'px'
+    }"
+  >
+    <div class="document-page" id="document-page">
+      <img
+        [ngStyle]="{
+          height: documentConfig.containerHeight + 'px',
+          width: documentConfig.containerWidth
+            ? documentConfig.containerWidth + 'px'
+            : 'auto'
+        }"
+        id="docImg"
+        #documentImage
+        [src]="documentImg"
+      />
     </div>
   </div>
 </div>

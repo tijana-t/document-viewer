@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -26,12 +27,17 @@ export class DocumentComponent
   @ViewChild('documentImage') documentImage: any;
   @Input('thumbnails') thumbnails: Thumbnail[] = [{ id: '', src: '' }];
   @Input('documentImg') documentImg: string = '';
+  @Input('documentConfig') documentConfig: DocumentConfig = {
+    containerWidth: 0,
+    containerHeight: 0,
+  };
+  defaultDocConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
+  imageTopVal = '34px';
+  imageLeftVal = '34px';
+  maxContainerHeight = 0;
+  maxContainerWidth = 0;
 
   private readonly destroy$ = new Subject();
-  documentConfig: DocumentConfig = {
-    containerHeight: '700px',
-    containerWidth: 'auto',
-  };
 
   image = new Image();
   pageNumber: number = 1;
@@ -46,23 +52,60 @@ export class DocumentComponent
             this.thumbnails[this.pageNumber - 1].src;
         }
       });
+
+    this.subscriptions.add(
+      this.pdfViewerService.docConfSubject
+        .pipe(skip(1), takeUntil(this.destroy$))
+        .subscribe((res: DocumentConfig) => {
+          if (res) {
+            this.documentConfig = res;
+          }
+        })
+    );
   }
 
   ngOnInit(): void {}
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.subscriptions.unsubscribe();
   }
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    this.defaultDocConfig = { ...this.documentConfig };
+
+    const docContainer = document.getElementById('document-container');
+    if (docContainer) {
+      this.maxContainerHeight =
+        this.defaultDocConfig.containerHeight + docContainer.offsetHeight;
+      this.maxContainerWidth =
+        this.defaultDocConfig.containerWidth + docContainer.offsetWidth;
+    }
+  }
+
+  scrollEvent(event: Event, documentImage: HTMLElement) {
+    const outerCont = document.getElementById('outer-cont');
+    if (outerCont) outerCont.style.position = 'static';
+
+    const rectObj: DOMRect = documentImage.getBoundingClientRect();
+    const patt = document.getElementById('container-left');
+    const widthToSubstract = patt?.clientWidth;
+
+    if (widthToSubstract && rectObj) {
+      this.imageLeftVal = rectObj.x - widthToSubstract - 175 + 'px';
+      this.imageTopVal = rectObj.y + 'px';
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentImg'] && changes['documentImg'].currentValue) {
       this.documentImg = changes['documentImg'].currentValue;
-
-      console.log(localStorage.getItem('token'));
     }
     if (changes['thumbnails'] && changes['thumbnails'].currentValue) {
       this.thumbnails = changes['thumbnails'].currentValue;
+    }
+
+    if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
+      this.documentConfig = changes['documentConfig'].currentValue;
     }
   }
 }

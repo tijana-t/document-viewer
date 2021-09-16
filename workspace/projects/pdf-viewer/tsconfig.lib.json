@@ -14,7 +14,8 @@
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "enableResourceInlining": true,
-    "strictDomEventTypes": false
+    "strictDomEventTypes": false,
+    "strictPropertyInitialization": false
   },
   "exclude": ["src/test.ts", "**/*.spec.ts"]
 }

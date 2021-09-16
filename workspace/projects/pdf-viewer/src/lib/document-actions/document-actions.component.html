@@ -1,8 +1,40 @@
-<div class="column col-12">
-  <div class="col circle">
-    <div (click)="zoomIn()">+</div>
-  </div>
-  <div class="col circle" (click)="fitToPage()">Fit</div>
-  <div class="col circle" (click)="zoomOut()">-</div>
-  <div class="col circle">Downl</div>
+<div class="column action-buttons col-12">
+  <button
+    [disabled]="zoomInDisabled"
+    type="button"
+    class="col circle"
+    [ngStyle]="{ opacity: zoomInDisabled ? '0.6' : '' }"
+    (click)="zoomInImg()"
+  >
+    <img
+      width="16px"
+      height="16px"
+      [src]="documentActionsSrc.zoomInSrc"
+      alt=""
+    />
+  </button>
+
+  <svg-icon src=""></svg-icon>
+
+  <button class="col circle" (click)="fitToPage()">
+    <img
+      width="16px"
+      height="16px"
+      [src]="documentActionsSrc.fitToPageSrc"
+      alt=""
+    />
+  </button>
+  <button
+    [disabled]="zoomOutDisabled"
+    [ngStyle]="{ opacity: zoomOutDisabled ? '0.6' : '' }"
+    (click)="zoomOutImg()"
+    class="col circle"
+  >
+    <img
+      width="16px"
+      height="16px"
+      [src]="documentActionsSrc.zoomOutSrc"
+      alt=""
+    />
+  </button>
 </div>
