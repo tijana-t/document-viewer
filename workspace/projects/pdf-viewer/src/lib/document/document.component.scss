@@ -14,7 +14,16 @@
 
     #docImg {
       pointer-events: auto;
+      -webkit-transition: height 0.2s ease-in-out;
+      transition: height 0.2s ease-in-out;
     }
+  }
+}
+
+#outer-cont {
+  .trans-img {
+    -webkit-transition: height 0.2s ease-in-out;
+    transition: height 0.2s ease-in-out;
   }
 }
 

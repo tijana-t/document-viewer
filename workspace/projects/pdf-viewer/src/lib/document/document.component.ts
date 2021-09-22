@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   Component,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -9,7 +8,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { fromEvent, Subject, Subscription } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
 import { PdfViewerService } from '../pdf-viewer.service';
 import { DocumentConfig } from '../_config/document.model';
@@ -36,6 +35,7 @@ export class DocumentComponent
   imageLeftVal = '34px';
   maxContainerHeight = 0;
   maxContainerWidth = 0;
+  positon = { top: 0, left: 0, x: 0, y: 0 };
 
   private readonly destroy$ = new Subject();
 
@@ -72,6 +72,7 @@ export class DocumentComponent
   }
   ngAfterViewInit() {
     this.defaultDocConfig = { ...this.documentConfig };
+    this.initDrag();
 
     const docContainer = document.getElementById('document-container');
     if (docContainer) {
@@ -86,14 +87,71 @@ export class DocumentComponent
     const outerCont = document.getElementById('outer-cont');
     if (outerCont) outerCont.style.position = 'static';
 
+    // needs refactoring
     const rectObj: DOMRect = documentImage.getBoundingClientRect();
     const patt = document.getElementById('container-left');
+    const sidebar = document.getElementById('sidebar');
     const widthToSubstract = patt?.clientWidth;
 
-    if (widthToSubstract && rectObj) {
-      this.imageLeftVal = rectObj.x - widthToSubstract - 175 + 'px';
+    if (widthToSubstract && rectObj && sidebar) {
+      this.imageLeftVal =
+        rectObj.x - widthToSubstract - sidebar.clientWidth + 'px';
       this.imageTopVal = rectObj.y + 'px';
     }
+  }
+
+  initDrag() {
+    const dragStart$ = fromEvent<MouseEvent>(
+      this.documentImage.nativeElement,
+      'mousedown'
+    );
+    const dragEnd$ = fromEvent<MouseEvent>(
+      this.documentImage.nativeElement,
+      'mouseup'
+    );
+    const drag$ = fromEvent<MouseEvent>(
+      this.documentImage.nativeElement,
+      'mousemove'
+    ).pipe(takeUntil(dragEnd$));
+    const dragEnter$ = fromEvent<MouseEvent>(
+      this.documentImage.nativeElement,
+      'dragenter'
+    ).pipe(takeUntil(dragEnd$));
+
+    const dragStartSub = dragStart$.subscribe((event) => {
+      this.documentImage.nativeElement =
+        document.getElementById('document-container');
+      if (this.documentImage.nativeElement) {
+        this.positon = {
+          left: this.documentImage.nativeElement.scrollLeft,
+          top: this.documentImage.nativeElement.scrollTop,
+          x: event.clientX,
+          y: event.clientY,
+        };
+        this.documentImage.nativeElement.style.cursor = 'grabbing';
+        this.documentImage.nativeElement.style.userSelect = 'none';
+      }
+
+      const dragSub = drag$.subscribe((event) => {
+        event.preventDefault();
+        if (this.documentImage.nativeElement) {
+          // How far the mouse has been moved
+          const dx = event.clientX - this.positon.x;
+          const dy = event.clientY - this.positon.y;
+
+          // Scroll the element
+          this.documentImage.nativeElement.scrollTop = this.positon.top - dy;
+          this.documentImage.nativeElement.scrollLeft = this.positon.left - dx;
+        }
+      });
+    });
+
+    const dragEndSub = dragEnd$.subscribe((event) => {
+      if (this.documentImage.nativeElement) {
+        this.documentImage.nativeElement.style.cursor = 'grab';
+        this.documentImage.nativeElement.style.removeProperty('user-select');
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {

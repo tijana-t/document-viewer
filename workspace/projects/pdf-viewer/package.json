@@ -6,10 +6,13 @@
     "@angular/core": "^11.0.9",
     "@ng-bootstrap/ng-bootstrap": "^9.1.0",
     "@angular/localize": "^11.2.6",
-    "bootstrap": "^4.6.0"
+    "bootstrap": "^4.6.0",
+    "ngx-drag-scroll": "^12.0.0-beta.2"
   },
   "dependencies": {
     "tslib": "^2.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "ngx-drag-scroll": "^12.0.0-beta.2"
+  }
 }

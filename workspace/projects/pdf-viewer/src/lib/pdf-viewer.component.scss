@@ -18,3 +18,7 @@
 :host ::ng-deep .viewer-container:hover .action-buttons {
   opacity: 1 !important;
 }
+
+:host ::ng-deep .viewer-container:hover .navigation-container {
+  opacity: 1 !important;
+}
