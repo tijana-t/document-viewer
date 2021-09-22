@@ -1,0 +1,24 @@
+@use './_styles/color-variables' as cv;
+
+.viewer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+
+  .document-actions-container {
+    align-self: center;
+  }
+
+  .search-component {
+    z-index: 10000;
+  }
+}
+
+:host ::ng-deep .viewer-container:hover .action-buttons {
+  opacity: 1 !important;
+}
+
+:host ::ng-deep .viewer-container:hover .navigation-container {
+  opacity: 1 !important;
+}

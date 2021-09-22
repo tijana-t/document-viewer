@@ -1,0 +1,260 @@
+@use '../_styles/color-variables' as cv;
+
+// reusable styles
+@mixin track() {
+  border: none;
+  height: 4px;
+  background: cv.$main-white;
+}
+
+@mixin thumb() {
+  height: 10px;
+  border: none;
+  width: 10px;
+  border-radius: 50%;
+  background: cv.$main-yellow;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -4px;
+}
+
+// search style
+.number-input {
+  input[type="number"] {
+    top: -38px;
+    right: 44px;
+    position: absolute;
+    width: 90px;
+    height: 30px;
+    border: none;
+    border-radius: 25px;
+    text-align: center;
+  }
+  input[type="number"]:focus {
+    outline: 0 !important;
+    box-shadow: none;
+    border: 1px solid cv.$main-yellow;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+.navigation-container {
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  display: inline-flex;
+
+  //thumbnail style
+  .thumbnail-container {
+    overflow: hidden;
+    position: relative;
+    padding: 10px 25px 0 25px;
+    position: relative;
+
+    // img style
+    .thumbnail {
+      margin-bottom: 20px;
+      width: 100px;
+
+      -webkit-box-shadow: 0px 0px 16px 1px cv.$box-shadow;
+      -moz-box-shadow: 0px 0px 16px 1px cv.$box-shadow;
+      box-shadow: 0px 0px 16px 1px cv.$box-shadow;
+    }
+
+    .active-thumbnail {
+      border: 2px solid cv.$main-yellow;
+    }
+
+    // absolute elements style (pageNum, circle)
+    .page-number {
+      color: cv.$light-gray;
+      bottom: 0;
+      left: -20px;
+      position: absolute;
+    }
+    .important-page {
+      border-radius: 50%;
+      position: absolute;
+      top: -9px;
+      left: -9px;
+      background-color: cv.$main-green;
+      width: 18px;
+      height: 18px;
+      border: 2px solid cv.$main-white;
+    }
+  }
+
+  // range custom elements
+  .wrap {
+    position: relative;
+    width: 15px;
+    // bubble style
+    .bubble-wrap {
+      transform: rotate(-90deg) translate(70%) !important;
+      left: -37px;
+      width: 35px;
+      border-radius: 50%;
+      height: 35px;
+      z-index: 1000;
+      line-height: 24px;
+      text-align: center;
+      background: cv.$main-white !important;
+      font-size: 12px;
+      position: absolute;
+      border-radius: 50%;
+      box-shadow: 0px 0px 16px 1px cv.$box-shadow;
+
+      span#bubble {
+        color: cv.$main-yellow;
+        font-weight: 700;
+        transform: rotate(90deg);
+      }
+    }
+    .bubble-wrap:before {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-top: 10px solid cv.$main-white;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      top: 92%;
+      left: 35%;
+      margin-left: -5px;
+      margin-top: -1px;
+    }
+
+    // max and min style
+    .value-field {
+      font-weight: bold;
+      display: inline-table;
+      font-size: 12px;
+      bottom: 12px;
+      border-radius: 4px;
+      padding-left: 4px;
+      padding-right: 4px;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .yellow-number {
+      background-color: cv.$main-yellow;
+      color: cv.$main-white;
+    }
+    .white-number {
+      background-color: cv.$main-white;
+      color: cv.$main-yellow;
+    }
+
+    .value-field.min {
+      top: -10px;
+    }
+    .value-field.max {
+      bottom: -28px;
+    }
+
+    // input["range"] style
+    input[type="range"]:focus {
+      outline: none;
+    }
+
+    [type="range"] {
+      &,
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+      }
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: 0;
+      padding: 0;
+      transform: translate(-50%, -50%) rotate(90deg);
+      background: transparent;
+
+      &::-webkit-slider-runnable-track {
+        @include track;
+      }
+      &::-moz-range-track {
+        @include track;
+      }
+      &::-ms-track {
+        @include track;
+      }
+
+      &::-webkit-slider-thumb {
+        @include thumb;
+      }
+      &::-moz-range-thumb {
+        @include thumb;
+      }
+      &::-ms-thumb {
+        margin-top: 0;
+        @include thumb;
+      }
+
+      &::-ms-tooltip {
+        display: none;
+      }
+    }
+
+    /*Chrome*/
+    // @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    //   input[type="range"] {
+    //     overflow: hidden;
+    //     width: 750px;
+    //     -webkit-appearance: none;
+    //   }
+
+    //   input[type="range"]::-webkit-slider-runnable-track {
+    //     width: 750px;
+    //     -webkit-appearance: none;
+    //     color: cv.$main-yellow;
+    //     margin-top: -1px;
+    //   }
+    // }
+
+    // #range {
+    //   background: linear-gradient(
+    //     to bottom,
+    //     #82cfd0 0%,
+    //     #82cfd0 50%,
+    //     #fff 50%,
+    //     #fff 100%
+    //   );
+    //   border: solid 1px #82cfd0;
+    //   border-radius: 8px;
+    //   height: 7px;
+    //   width: 356px;
+    //   outline: none;
+    //   transition: background 450ms ease-in;
+    //   -webkit-appearance: none;
+    // }
+
+    /** FF*/
+    input[type="range"]::-moz-range-progress {
+      background-color: cv.$main-yellow;
+    }
+    input[type="range"]::-moz-range-track {
+      background-color: cv.$main-white;
+    }
+    /* IE*/
+    input[type="range"]::-ms-fill-lower {
+      background-color: cv.$main-yellow;
+    }
+    input[type="range"]::-ms-fill-upper {
+      background-color: cv.$main-white;
+    }
+  }
+}

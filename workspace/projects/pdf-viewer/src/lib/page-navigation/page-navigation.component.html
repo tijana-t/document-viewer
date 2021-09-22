@@ -1,0 +1,72 @@
+<div (wheel)="scrollThumbnail($event, inputRange)" class="navigation-container">
+  <div class="form-group number-input">
+    <input
+      (ngModelChange)="scrollToPageNumber(page.value)"
+      type="number"
+      class="form-control"
+      [(ngModel)]="pageNumber"
+      #page="ngModel"
+      name="pageNumber"
+      id="pageNumber"
+    />
+  </div>
+  <div
+    [ngStyle]="{ height: navigationConfig.containerHeight }"
+    #thumbnailContainer
+    class="thumbnail-container d-inline-flex flex-column align-items-center"
+  >
+    <div
+      (click)="changePage(i + 1)"
+      #thumbnailImage
+      id="img-{{ i + 1 }}"
+      style="position: relative"
+      *ngFor="let image of thumbnails; index as i"
+    >
+      <img
+        [ngClass]="pageNumber === i + 1 ? 'active-thumbnail' : ''"
+        class="thumbnail"
+        [style]="{ marginBottom: navigationConfig.imageMargin }"
+        src="{{ image.src }}"
+        alt=""
+      />
+      <span
+        class="page-number"
+        [ngStyle]="{ bottom: navigationConfig.imageMargin + 'px' }"
+      >
+        {{ i + 1 }}
+      </span>
+      <span class="important-page"></span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div
+      class="bubble-wrap d-flex align-items-center justify-content-center"
+      #bubbleWrap
+    >
+      <span #bubbleValue id="bubble"></span>
+    </div>
+    <span class="yellow-number value-field min"> 1 </span>
+    <span
+      [ngClass]="
+        inputRange.value == thumbnails.length?.toString()
+          ? 'yellow-number'
+          : 'white-number'
+      "
+      class="value-field max"
+    >
+      {{ thumbnails.length }}
+    </span>
+    <input
+      [ngStyle]="{ width: navigationConfig.containerHeight }"
+      type="range"
+      #inputRange
+      (input)="calculateThumbPosition($event.target?.value)"
+      id="range"
+      min="1"
+      value="1"
+      [max]="thumbnails.length"
+      step="1"
+    />
+  </div>
+</div>

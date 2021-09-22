@@ -1,1 +1,38 @@
-<p>document works!</p>
+<div style="position: relative" id="outer-cont">
+  <img
+    *ngIf="documentConfig.containerHeight > defaultDocConfig.containerHeight"
+    [ngStyle]="{
+      height: documentConfig.containerHeight + 'px',
+      width: 'auto',
+      position: 'absolute',
+      opacity: 0.3,
+      top: imageTopVal,
+      left: imageLeftVal
+    }"
+    [src]="documentImg"
+    class="trans-img"
+    alt=""
+  />
+  <div
+    (scroll)="scrollEvent($event, documentImage)"
+    id="document-container"
+    [ngStyle]="{
+      'max-height': maxContainerHeight + 'px',
+      'max-width': maxContainerWidth + 'px'
+    }"
+  >
+    <div class="document-page" id="document-page">
+      <img
+        [ngStyle]="{
+          height: documentConfig.containerHeight + 'px',
+          width: documentConfig.containerWidth
+            ? documentConfig.containerWidth + 'px'
+            : 'auto'
+        }"
+        id="docImg"
+        #documentImage
+        [src]="documentImg"
+      />
+    </div>
+  </div>
+</div>

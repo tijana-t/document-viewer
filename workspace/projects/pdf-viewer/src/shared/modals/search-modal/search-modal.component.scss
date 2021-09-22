@@ -1,0 +1,25 @@
+@use '../../../lib/_styles/color-variables' as cv;
+
+input[type="text"]:focus {
+  outline: 0 !important;
+  box-shadow: none;
+  border: 1px solid cv.$main-yellow;
+}
+input[type="text"] {
+  height: 30px;
+  border-radius: 25px;
+  text-align: center;
+  border: 1px solid cv.$main-white;
+}
+
+.search-container {
+  display: inline-flex;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translate(-50%, -50%);
+}

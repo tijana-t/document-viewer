@@ -1,1 +1,15 @@
-<p>search-modal works!</p>
+<div
+  [ngStyle]="{ width: config.containerWidth + 'px' }"
+  class="align-items-strech form-group search-container"
+>
+  <span class="search-icon">S</span>
+  <input
+    type="text"
+    class="form-control"
+    [(ngModel)]="searchDocument"
+    #search="ngModel"
+    name="searchDocument"
+    id="searchDocument"
+    placeholder="Search"
+  />
+</div>

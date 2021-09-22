@@ -1,0 +1,34 @@
+@use '../_styles/color-variables' as cv;
+
+#document-container {
+  overflow: auto;
+  z-index: 10000;
+  position: relative;
+  background: cv.$bg-color;
+  padding: 30px;
+  border: 4px solid cv.$main-white;
+
+  .document-page {
+    background-size: cover;
+    position: relative;
+
+    #docImg {
+      pointer-events: auto;
+      -webkit-transition: height 0.2s ease-in-out;
+      transition: height 0.2s ease-in-out;
+    }
+  }
+}
+
+#outer-cont {
+  .trans-img {
+    -webkit-transition: height 0.2s ease-in-out;
+    transition: height 0.2s ease-in-out;
+  }
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: cv.$main-yellow;
+  border-radius: 12px;
+  border: 2px solid cv.$bg-color;
+}
