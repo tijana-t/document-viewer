@@ -84,7 +84,7 @@ export class PageNavigationComponent implements OnInit, AfterViewInit {
             (this.inputRange.nativeElement.max -
               this.inputRange.nativeElement.min)
         ),
-        newPosition = 10 - newValue * 0.2;
+        newPosition = 10 - newValue * 0.1;
       this.bubbleValue.nativeElement.innerText =
         this.inputRange.nativeElement.value;
       this.bubbleWrap.nativeElement.style.top = `calc(${newValue}% + (${newPosition}px))`;

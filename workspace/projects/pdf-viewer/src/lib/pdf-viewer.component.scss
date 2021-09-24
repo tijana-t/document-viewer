@@ -1,4 +1,4 @@
-@use './_styles/color-variables' as cv;
+@use "./_styles/color-variables" as cv;
 
 .viewer-container {
   display: flex;
@@ -21,4 +21,8 @@
 
 :host ::ng-deep .viewer-container:hover .navigation-container {
   opacity: 1 !important;
+}
+
+.document-page-navigation-container {
+  margin-right: 14px;
 }

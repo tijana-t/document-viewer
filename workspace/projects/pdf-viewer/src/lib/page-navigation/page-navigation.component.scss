@@ -1,4 +1,4 @@
-@use '../_styles/color-variables' as cv;
+@use "../_styles/color-variables" as cv;
 
 // reusable styles
 @mixin track() {
@@ -21,14 +21,15 @@
 // search style
 .number-input {
   input[type="number"] {
-    top: -38px;
-    right: 44px;
+    top: -28px;
+    right: 66px;
     position: absolute;
-    width: 90px;
-    height: 30px;
+    width: 46px;
+    height: 20px;
     border: none;
-    border-radius: 25px;
+    border-radius: 5px;
     text-align: center;
+    font-size: 12px;
   }
   input[type="number"]:focus {
     outline: 0 !important;
@@ -49,6 +50,26 @@
   }
 }
 
+.shadow-over {
+  background: #eff3f8;
+  background: linear-gradient(0deg, #eff3f8, #eff3f800);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 90%;
+  height: 20px;
+}
+.shadow-over-top {
+  background: #eff3f8;
+  background: linear-gradient(180deg, #eff3f8, #eff3f800);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 20px;
+  z-index: 2;
+}
+
 .navigation-container {
   opacity: 0;
   transition: all 0.2s ease-in-out;
@@ -66,6 +87,8 @@
     .thumbnail {
       margin-bottom: 20px;
       width: 100px;
+      border: 1px solid #fff;
+      transition: all 0.2s ease;
 
       -webkit-box-shadow: 0px 0px 16px 1px cv.$box-shadow;
       -moz-box-shadow: 0px 0px 16px 1px cv.$box-shadow;
@@ -73,25 +96,32 @@
     }
 
     .active-thumbnail {
-      border: 2px solid cv.$main-yellow;
+      border: 1px solid cv.$main-yellow;
     }
 
     // absolute elements style (pageNum, circle)
     .page-number {
       color: cv.$light-gray;
-      bottom: 0;
-      left: -20px;
+      right: 100%;
       position: absolute;
+      text-align: right;
+      bottom: 3px;
+      font-size: 10px;
+      max-width: 27px;
+      border-radius: 4px;
+      padding: 0 3px;
+    }
+    .active-page-number {
+      color: cv.$main-yellow !important;
     }
     .important-page {
       border-radius: 50%;
       position: absolute;
-      top: -9px;
-      left: -9px;
+      top: -4px;
+      left: -4px;
       background-color: cv.$main-green;
-      width: 18px;
-      height: 18px;
-      border: 2px solid cv.$main-white;
+      width: 8px;
+      height: 8px;
     }
   }
 
@@ -116,9 +146,10 @@
       box-shadow: 0px 0px 16px 1px cv.$box-shadow;
 
       span#bubble {
-        color: cv.$main-yellow;
+        color: cv.$font-main;
         font-weight: 700;
         transform: rotate(90deg);
+        user-select: none;
       }
     }
     .bubble-wrap:before {
@@ -137,9 +168,9 @@
 
     // max and min style
     .value-field {
-      font-weight: bold;
+      font-weight: 700;
       display: inline-table;
-      font-size: 12px;
+      font-size: 9px;
       bottom: 12px;
       border-radius: 4px;
       padding-left: 4px;
@@ -149,19 +180,19 @@
       transform: translate(-50%, -50%);
     }
     .yellow-number {
-      background-color: cv.$main-yellow;
+      background-color: cv.$font-main;
       color: cv.$main-white;
     }
     .white-number {
-      background-color: cv.$main-white;
-      color: cv.$main-yellow;
+      background-color: cv.$font-main;
+      color: cv.$main-white;
     }
 
     .value-field.min {
-      top: -10px;
+      top: -8px;
     }
     .value-field.max {
-      bottom: -28px;
+      bottom: -21px;
     }
 
     // input["range"] style

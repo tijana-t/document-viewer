@@ -4,12 +4,14 @@
       (ngModelChange)="scrollToPageNumber(page.value)"
       type="number"
       class="form-control"
+      placeholder="page"
       [(ngModel)]="pageNumber"
       #page="ngModel"
       name="pageNumber"
       id="pageNumber"
     />
   </div>
+  <div class="shadow-over-top"></div>
   <div
     [ngStyle]="{ height: navigationConfig.containerHeight }"
     #thumbnailContainer
@@ -31,6 +33,7 @@
       />
       <span
         class="page-number"
+        [ngClass]="pageNumber === i + 1 ? 'active-page-number' : ''"
         [ngStyle]="{ bottom: navigationConfig.imageMargin + 'px' }"
       >
         {{ i + 1 }}
@@ -38,6 +41,7 @@
       <span class="important-page"></span>
     </div>
   </div>
+  <div class="shadow-over"></div>
 
   <div class="wrap">
     <div
