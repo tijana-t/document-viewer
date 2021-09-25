@@ -19,10 +19,27 @@
   opacity: 1 !important;
 }
 
-:host ::ng-deep .viewer-container:hover .navigation-container {
-  opacity: 1 !important;
+:host
+  ::ng-deep
+  #viewer-container
+  > #doc-box
+  > .document-viewer-container
+  > #outer-cont
+  > .trans-img {
+  opacity: 0 !important;
+}
+
+:host
+  ::ng-deep
+  #viewer-container:hover
+  > #doc-box
+  > .document-viewer-container
+  > #outer-cont
+  > .trans-img {
+  opacity: 0.3 !important;
 }
 
 .document-page-navigation-container {
   margin-right: 14px;
+  margin-top: 50px;
 }

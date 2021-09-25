@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -14,6 +15,7 @@ import { PdfViewerService } from '../pdf-viewer.service';
 import { DocumentConfig } from '../_config/document.model';
 import { Thumbnail } from '../_config/thumbnail.model';
 
+declare var ResizeObserver: any;
 @Component({
   selector: 'lib-document',
   templateUrl: './document.component.html',
@@ -36,13 +38,17 @@ export class DocumentComponent
   maxContainerHeight = 0;
   maxContainerWidth = 0;
   positon = { top: 0, left: 0, x: 0, y: 0 };
+  observer: any;
 
   private readonly destroy$ = new Subject();
 
   image = new Image();
   pageNumber: number = 1;
   subscriptions = new Subscription();
-  constructor(private pdfViewerService: PdfViewerService) {
+  constructor(
+    private pdfViewerService: PdfViewerService,
+    private zone: NgZone
+  ) {
     this.pdfViewerService.pageNumberSubject
       .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe((res: any) => {
@@ -69,6 +75,7 @@ export class DocumentComponent
     this.destroy$.next();
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
+    this.observer.unobserve(document.querySelector('#container-right'));
   }
   ngAfterViewInit() {
     this.defaultDocConfig = { ...this.documentConfig };
@@ -81,6 +88,18 @@ export class DocumentComponent
       this.maxContainerWidth =
         this.defaultDocConfig.containerWidth + docContainer.offsetWidth;
     }
+    this.observer = new ResizeObserver((entries: any) => {
+      const widthSet = Math.floor(
+        entries[0].contentRect.width - 60 - 200
+      ).toString();
+      if (docContainer) {
+        docContainer.style.width = widthSet + 'px';
+      }
+
+      console.log('sirina', entries[0].contentRect.width);
+    });
+
+    this.observer.observe(document.querySelector('#container-right'));
   }
 
   scrollEvent(event: Event, documentImage: HTMLElement) {

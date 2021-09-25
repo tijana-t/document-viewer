@@ -15,7 +15,28 @@
   background: cv.$main-yellow;
   cursor: pointer;
   -webkit-appearance: none;
-  margin-top: -4px;
+  margin-top: -3px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: cv.$box-shadow 0px 1px 4px;
+}
+.navigation-container:hover > .wrap > #range::-webkit-slider-thumb {
+  height: 14px;
+  width: 14px;
+  margin-top: -5px;
+  box-shadow: 0 0px 12px 4px cv.$box-shadow;
+}
+
+#range::-webkit-slider-thumb {
+  height: 10px;
+  border: none;
+  width: 10px;
+  border-radius: 50%;
+  background: cv.$main-yellow;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -3px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: cv.$box-shadow 0px 1px 4px;
 }
 
 // search style
@@ -71,7 +92,7 @@
 }
 
 .navigation-container {
-  opacity: 0;
+  opacity: 1;
   transition: all 0.2s ease-in-out;
   position: relative;
   display: inline-flex;
@@ -102,17 +123,15 @@
     // absolute elements style (pageNum, circle)
     .page-number {
       color: cv.$light-gray;
-      right: 100%;
+      right: calc(50% - 5px);
       position: absolute;
-      text-align: right;
-      bottom: 3px;
+      text-align: center;
+      bottom: 5px !important;
       font-size: 10px;
-      max-width: 27px;
-      border-radius: 4px;
-      padding: 0 3px;
     }
     .active-page-number {
       color: cv.$main-yellow !important;
+      font-weight: 800;
     }
     .important-page {
       border-radius: 50%;
@@ -132,7 +151,7 @@
     // bubble style
     .bubble-wrap {
       transform: rotate(-90deg) translate(70%) !important;
-      left: -37px;
+      left: -40px;
       width: 35px;
       border-radius: 50%;
       height: 35px;
@@ -143,7 +162,8 @@
       font-size: 12px;
       position: absolute;
       border-radius: 50%;
-      box-shadow: 0px 0px 16px 1px cv.$box-shadow;
+      box-shadow: 0px 0px 16px 12px cv.$box-shadow;
+      transition: all 0.5s ease;
 
       span#bubble {
         color: cv.$font-main;
@@ -177,8 +197,10 @@
       padding-right: 4px;
       position: absolute;
       left: 50%;
+      box-shadow: 0 0px 12px cv.$box-shadow;
       transform: translate(-50%, -50%);
     }
+
     .yellow-number {
       background-color: cv.$font-main;
       color: cv.$main-white;
@@ -275,14 +297,14 @@
 
     /** FF*/
     input[type="range"]::-moz-range-progress {
-      background-color: cv.$main-yellow;
+      background-color: blue;
     }
     input[type="range"]::-moz-range-track {
       background-color: cv.$main-white;
     }
     /* IE*/
     input[type="range"]::-ms-fill-lower {
-      background-color: cv.$main-yellow;
+      background-color: red;
     }
     input[type="range"]::-ms-fill-upper {
       background-color: cv.$main-white;

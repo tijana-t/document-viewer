@@ -17,17 +17,14 @@
     (scroll)="scrollEvent($event, documentImage)"
     id="document-container"
     [ngStyle]="{
-      'max-height': maxContainerHeight + 'px',
-      'max-width': maxContainerWidth + 'px'
+      height: maxContainerHeight + 'px'
     }"
   >
+    <!--  <div class="shadow-test"></div> -->
     <div class="document-page" id="document-page">
       <img
         [ngStyle]="{
-          height: documentConfig.containerHeight + 'px',
-          width: documentConfig.containerWidth
-            ? documentConfig.containerWidth + 'px'
-            : 'auto'
+          height: documentConfig.containerHeight - 60 + 'px'
         }"
         id="docImg"
         #documentImage

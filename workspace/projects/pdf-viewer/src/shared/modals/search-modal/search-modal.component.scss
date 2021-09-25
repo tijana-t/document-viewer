@@ -1,4 +1,4 @@
-@use '../../../lib/_styles/color-variables' as cv;
+@use "../../../lib/_styles/color-variables" as cv;
 
 input[type="text"]:focus {
   outline: 0 !important;
@@ -7,9 +7,15 @@ input[type="text"]:focus {
 }
 input[type="text"] {
   height: 30px;
-  border-radius: 25px;
+  border-radius: 5px;
   text-align: center;
   border: 1px solid cv.$main-white;
+}
+
+.search-icon > svg {
+  height: 16px;
+  margin-top: -3px;
+  fill: cv.$light-gray;
 }
 
 .search-container {
