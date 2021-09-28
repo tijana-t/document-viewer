@@ -41,6 +41,37 @@
 
 #search-box {
   position: absolute;
+  bottom: 0;
+  margin-left: 56px;
+  width: calc(100% - 262px);
+  align-items: center;
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.info-container {
+  text-align: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #969696;
+}
+
+.model-info {
+  font-weight: 500;
+  color: #737373;
+  margin-bottom: 0px;
+}
+
+.model-info > p {
+  margin: 0;
+}
+
+#info-box {
+  position: absolute;
   top: 0;
   margin-left: 56px;
   width: calc(100% - 262px);
@@ -54,5 +85,4 @@
 
 .document-page-navigation-container {
   margin-right: 14px;
-  margin-top: 50px;
 }

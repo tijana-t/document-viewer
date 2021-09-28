@@ -2,7 +2,7 @@
 
 #document-container {
   overflow: auto;
-  z-index: 10000;
+  z-index: 2;
   position: relative;
   background: #dbe2e8;
   border: 4px solid cv.$main-white;
@@ -12,7 +12,8 @@
   border-radius: 12px;
   box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
   margin-top: 34px;
-  height: calc(100vh - 108px);
+  margin-bottom: 34px;
+  height: calc(100vh - 150px);
 
   .document-page {
     position: absolute;

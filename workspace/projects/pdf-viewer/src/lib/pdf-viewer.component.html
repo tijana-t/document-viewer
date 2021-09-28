@@ -1,5 +1,16 @@
 <div class="viewer-container" id="viewer-container">
-  <div class="" id="search-box">
+  <div id="info-box">
+    <div class="col-12 col-sm-12 p-0">
+      <div class="model-info p-0">
+        <p class="traning-model-name">EX-12.1 Service Agreement 04-Tb.pdf</p>
+      </div>
+      <div class="align-items-center info-container">
+        <p>MODEL: File upload test - Version 1 | Jul 22, 2021 14:32</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="search-box">
     <lib-document-actions
       [documentConfig]="documentConfig"
       [document]="document"
@@ -9,10 +20,7 @@
     ></lib-document-actions>
     <lib-search-modal class="search-component"> </lib-search-modal>
     <lib-document-actions
-      [documentConfig]="documentConfig"
-      [document]="document"
-      class="document-actions-container"
-      [documentActionsSrc]="documentActionsSrc"
+      class="document-actions-left-container"
       id="viewer"
     ></lib-document-actions>
   </div>

@@ -1,15 +1,14 @@
 <div class="action-buttons">
   <button
-    [disabled]="zoomInDisabled"
-    type="button"
+    [disabled]="zoomOutDisabled"
+    [ngStyle]="{ opacity: zoomOutDisabled ? '0.6' : '' }"
+    (click)="zoomOutImg()"
     class="col circle"
-    [ngStyle]="{ opacity: zoomInDisabled ? '0.6' : '' }"
-    (click)="zoomInImg()"
   >
     <img
       width="10px"
       height="10px"
-      [src]="documentActionsSrc.zoomInSrc"
+      [src]="documentActionsSrc.zoomOutSrc"
       alt=""
     />
   </button>
@@ -22,16 +21,18 @@
       alt=""
     />
   </button>
+
   <button
-    [disabled]="zoomOutDisabled"
-    [ngStyle]="{ opacity: zoomOutDisabled ? '0.6' : '' }"
-    (click)="zoomOutImg()"
+    [disabled]="zoomInDisabled"
+    type="button"
     class="col circle"
+    [ngStyle]="{ opacity: zoomInDisabled ? '0.6' : '' }"
+    (click)="zoomInImg()"
   >
     <img
       width="10px"
       height="10px"
-      [src]="documentActionsSrc.zoomOutSrc"
+      [src]="documentActionsSrc.zoomInSrc"
       alt=""
     />
   </button>
