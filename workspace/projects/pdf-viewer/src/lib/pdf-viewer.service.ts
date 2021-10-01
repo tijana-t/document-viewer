@@ -8,6 +8,7 @@ import { DocumentConfig } from '../public-api';
 export class PdfViewerService {
   pageNumberSubject = new BehaviorSubject<number>(1);
   token = new BehaviorSubject<string>('');
+  modalStatus = new BehaviorSubject<boolean>(false);
   docConfSubject = new BehaviorSubject<DocumentConfig>({
     containerWidth: 0,
     containerHeight: 0,

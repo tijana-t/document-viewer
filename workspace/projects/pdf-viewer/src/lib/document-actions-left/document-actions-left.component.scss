@@ -6,9 +6,10 @@
 
 .action-buttons {
   z-index: 10000;
+  opacity: 1;
   transition: all 0.2s ease-in-out;
   bottom: 32px;
-  margin-right: 16px;
+  margin-left: 16px;
 }
 
 .circle {
@@ -18,7 +19,7 @@
   height: 30px;
   width: 30px;
   align-items: center;
-  margin-right: 5px;
+  margin-left: 5px;
   margin-bottom: 0 !important;
   padding: 0px 0px;
   box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
