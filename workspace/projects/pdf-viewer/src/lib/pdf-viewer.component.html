@@ -3,13 +3,12 @@
     <div class="col-12 col-sm-12 p-0">
       <div class="model-info p-0">
         <p class="traning-model-name">
-          <span class="doc-prev typcn typcn-chevron-left"></span> EX-12.1
-          Service Agreement 04-Tb.pdf
+          <span class="doc-prev typcn typcn-chevron-left"></span> {{docName}}
           <span class="doc-next typcn typcn-chevron-right"></span>
         </p>
       </div>
       <div class="align-items-center info-container">
-        <p>MODEL: File upload test - Version 1 | Jul 22, 2021 14:32</p>
+        <p>MODEL: File {{docModel}} | {{ docDate | date: 'MMM d, y HH:mm' }}</p> 
       </div>
     </div>
   </div>

@@ -1,3 +1,4 @@
+
 import {
   AfterViewInit,
   Component,
@@ -31,6 +32,10 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
     containerHeight: 0,
     containerWidth: 0,
   };
+  @Input('docName') docName: string = '';
+  @Input('docDate') docDate: string = '';
+  @Input('docModel') docModel: string= '';
+
 
   ngOnInit() {}
 
@@ -50,4 +55,5 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
       this.documentConfig = changes['documentConfig'].currentValue;
     }
   }
+  
 }
