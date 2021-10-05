@@ -3,8 +3,8 @@
     <div class="col-12 col-sm-12 p-0">
       <div class="model-info p-0">
         <p class="traning-model-name">
-          <span class="doc-prev typcn typcn-chevron-left"></span> {{docName}}
-          <span class="doc-next typcn typcn-chevron-right"></span>
+          <span  [ngClass]="this.singleDocument.prev.fileName ? '':'disable-next-prev'" class="doc-prev typcn typcn-chevron-left" (click)="!this.singleDocument.prev.fileName ? null:  changeDoc(false)"></span> {{docName}}
+          <span  [ngClass]="this.singleDocument.next.fileName ? '':'disable-next-prev'" class="doc-next typcn typcn-chevron-right" (click)="!this.singleDocument.next.fileName ? null:  changeDoc(true)"></span>
         </p>
       </div>
       <div class="align-items-center info-container">
