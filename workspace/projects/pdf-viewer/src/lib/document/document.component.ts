@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -39,23 +38,19 @@ export class DocumentComponent
   maxContainerWidth = 0;
   positon = { top: 0, left: 0, x: 0, y: 0 };
   observer: any;
-
-  private readonly destroy$ = new Subject();
+  destroy$ = new Subject();
 
   image = new Image();
   pageNumber: number = 1;
   subscriptions = new Subscription();
-  constructor(
-    private pdfViewerService: PdfViewerService,
-    private zone: NgZone
-  ) {
-    this.pdfViewerService.pageNumberSubject
-      .pipe(skip(1), takeUntil(this.destroy$))
-      .subscribe((res: any) => {
-        if (res) {
-          this.pageNumber = res;
-          this.documentImage.nativeElement.src =
-            this.thumbnails[this.pageNumber - 1].src;
+  constructor(private pdfViewerService: PdfViewerService) {
+    this.pdfViewerService.pageInfo
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: { pages: Thumbnail[]; currentPage: number }) => {
+        if (res && res.pages && res.pages.length !== 0) {
+          this.thumbnails = res.pages;
+          this.pageNumber = res.currentPage;
+          this.documentImg = this.thumbnails[this.pageNumber - 1].src;
         }
       });
 
@@ -95,8 +90,6 @@ export class DocumentComponent
       if (docContainer) {
         docContainer.style.width = widthSet + 'px';
       }
-
-      console.log('sirina', entries[0].contentRect.width);
     });
 
     this.observer.observe(document.querySelector('#container-right'));
@@ -138,8 +131,6 @@ export class DocumentComponent
     ).pipe(takeUntil(dragEnd$));
 
     const dragStartSub = dragStart$.subscribe((event) => {
-      this.documentImage.nativeElement =
-        document.getElementById('document-container');
       if (this.documentImage.nativeElement) {
         this.positon = {
           left: this.documentImage.nativeElement.scrollLeft,
@@ -171,6 +162,9 @@ export class DocumentComponent
         this.documentImage.nativeElement.style.removeProperty('user-select');
       }
     });
+
+    this.subscriptions.add(dragStartSub);
+    this.subscriptions.add(dragEndSub);
   }
 
   ngOnChanges(changes: SimpleChanges) {

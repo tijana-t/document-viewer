@@ -1,14 +1,17 @@
 <div (wheel)="scrollThumbnail($event, inputRange)" class="navigation-container">
   <div class="form-group number-input">
     <input
-      (ngModelChange)="scrollToPageNumber(page.value)"
+      (ngModelChange)="searchPage(page.value)"
+      #page="ngModel"
       type="number"
       class="form-control"
       placeholder="page"
       [(ngModel)]="pageNumber"
-      #page="ngModel"
       name="pageNumber"
       id="pageNumber"
+      pattern="-?[0-9]*(\.[0-9]+)?"
+      max="{{ thumbnails.length - 1 }}"
+      min="1"
     />
   </div>
   <div class="shadow-over-top"></div>
@@ -18,19 +21,26 @@
     class="thumbnail-container d-inline-flex flex-column align-items-center"
   >
     <div
+      *ngFor="let image of thumbnails; index as i"
       (click)="changePage(i + 1)"
       #thumbnailImage
       id="img-{{ i + 1 }}"
       style="position: relative"
-      *ngFor="let image of thumbnails; index as i"
     >
       <img
+        appLazyLoad
+        [imageObj]="image"
+        [src]="image.src"
+        height="150px"
         [ngClass]="pageNumber === i + 1 ? 'active-thumbnail' : ''"
         class="thumbnail"
         [style]="{ marginBottom: navigationConfig.imageMargin }"
-        src="{{ image.src }}"
-        alt=""
       />
+      <!-- <div class="spinner" id="spinner-{{ image.id }}">
+        <div style="display: inline-flex" class="spinner-border" role="loading">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div> -->
       <span
         class="page-number"
         [ngClass]="pageNumber === i + 1 ? 'active-page-number' : ''"
@@ -38,7 +48,7 @@
       >
         {{ i + 1 }}
       </span>
-      <span class="important-page"></span>
+      <span class="important-page" *ngIf="image.isImportant"></span>
     </div>
   </div>
   <div class="shadow-over"></div>

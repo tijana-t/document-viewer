@@ -42,13 +42,50 @@
       </g>
     </svg>
   </span>
-  <input
-    type="text"
-    class="form-control"
-    [(ngModel)]="searchDocument"
-    #search="ngModel"
-    name="searchDocument"
-    id="searchDocument"
-    placeholder="search..."
-  />
+
+  <!-- found text in document -->
+  <div
+    ngbDropdown
+    class="d-inline-block mr-1 dropdown-container"
+    placement="top-right"
+  >
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="searchDocument"
+      (ngModelChange)="searchTextInDocument($event)"
+      #search="ngModel"
+      name="searchDocument"
+      ngbDropdownToggle
+      id="searchDocument"
+      placeholder="search..."
+    />
+    <div
+      style="width: 350px"
+      *ngIf="searchResult && searchResult.length !== 0"
+      ngbDropdownMenu
+      aria-labelledby="searchDocument"
+      class="dropdown-options"
+    >
+      <span *ngFor="let searchObj of searchResult">
+        <button
+          style="white-space: initial"
+          (click)="sendSearchObj(searchObj)"
+          ngbDropdownItem
+          class="dropdown-border"
+        >
+          <span>
+            {{ searchObj.heading }}
+          </span>
+          <br />
+          <span
+            style="font-size: 13px; color: rgb(161, 161, 150)"
+            *ngIf="searchObj.pageNums"
+            >PAGE:{{ searchObj.pageNums[0] }}</span
+          ><br />
+          {{ searchObj.text }}
+        </button>
+      </span>
+    </div>
+  </div>
 </div>

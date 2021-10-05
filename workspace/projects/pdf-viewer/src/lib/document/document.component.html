@@ -9,7 +9,7 @@
       top: imageTopVal,
       left: imageLeftVal
     }"
-    [src]="documentImg"
+    [src]="documentImg | secureImg | async"
     class="trans-img"
     alt=""
   />
@@ -18,11 +18,11 @@
     <div class="document-page" id="document-page">
       <img
         [ngStyle]="{
-          height: documentConfig.containerHeight - 60 + 'px'
+          height: documentConfig.containerHeight + 'px'
         }"
         id="docImg"
         #documentImage
-        [src]="documentImg"
+        [src]="documentImg | secureImg | async"
       />
     </div>
   </div>

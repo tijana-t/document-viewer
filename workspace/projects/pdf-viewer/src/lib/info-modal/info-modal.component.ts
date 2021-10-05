@@ -57,12 +57,6 @@ export class InfoModalComponent
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
     }
-    if (
-      changes['documentActionsSrc'] &&
-      changes['documentActionsSrc'].currentValue
-    ) {
-      this.documentActionsSrc = changes['documentActionsSrc'].currentValue;
-    }
   }
 
   ngOnDestroy(): void {

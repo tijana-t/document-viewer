@@ -3,9 +3,11 @@ import {
   Component,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
 } from '@angular/core';
+import { Subject } from 'rxjs';
 import { DocumentComponent } from '../document/document.component';
 import { PdfViewerService } from '../pdf-viewer.service';
 import { DocumentActions } from '../_config/document-actions.model';
@@ -17,7 +19,7 @@ import { DocumentConfig } from '../_config/document.model';
   styleUrls: ['./document-actions.component.scss'],
 })
 export class DocumentActionsComponent
-  implements OnInit, AfterViewInit, OnChanges
+  implements OnInit, AfterViewInit, OnChanges, OnDestroy
 {
   @Input('document') document: DocumentComponent | undefined;
   @Input('documentConfig') documentConfig: DocumentConfig = {
@@ -28,10 +30,13 @@ export class DocumentActionsComponent
     zoomInSrc: '',
     zoomOutSrc: '',
     fitToPageSrc: '',
+    informationHelp: '',
+    downloadPdfPlain: '',
   };
   defaultConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
   zoomInDisabled = false;
   zoomOutDisabled = false;
+  destroy$ = new Subject();
 
   constructor(private pdfViewerService: PdfViewerService) {}
 
@@ -48,10 +53,18 @@ export class DocumentActionsComponent
       this.documentConfig.containerHeight =
         50 + this.documentConfig.containerHeight;
 
+      //note: find better way!
+      // const textLayer = document.getElementById('textLayer');
+      // if (textLayer) {
+      //   textLayer.style.height =
+      //     50 + this.documentConfig.containerHeight + 'px';
+      // }
+
       this.pdfViewerService.docConfSubject.next({
-        containerHeight: 50 + this.documentConfig.containerHeight,
+        containerHeight: this.documentConfig.containerHeight,
         containerWidth: null,
       });
+
       this.zoomOutDisabled = false;
     }
   }
@@ -64,7 +77,7 @@ export class DocumentActionsComponent
         this.documentConfig.containerHeight - 50;
 
       this.pdfViewerService.docConfSubject.next({
-        containerHeight: this.documentConfig.containerHeight - 50,
+        containerHeight: this.documentConfig.containerHeight,
         containerWidth: null,
       });
       this.zoomInDisabled = false;
@@ -86,11 +99,10 @@ export class DocumentActionsComponent
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
     }
-    if (
-      changes['documentActionsSrc'] &&
-      changes['documentActionsSrc'].currentValue
-    ) {
-      this.documentActionsSrc = changes['documentActionsSrc'].currentValue;
-    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

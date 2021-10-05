@@ -142,6 +142,24 @@
       width: 8px;
       height: 8px;
     }
+
+    //spinner style
+    .spinner {
+      // visibility: hidden;
+      position: absolute;
+      height: 40px;
+      width: 40px;
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+      z-index: 10000;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+    .spinner-border {
+      color: cv.$main-yellow !important;
+    }
   }
 
   // range custom elements

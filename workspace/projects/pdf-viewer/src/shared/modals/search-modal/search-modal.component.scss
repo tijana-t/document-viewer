@@ -22,6 +22,11 @@ input[type="text"] {
   display: inline-flex;
   position: relative;
   margin-bottom: 0px !important;
+
+  .dropdown-menu.show {
+    max-height: 350px;
+    overflow-y: scroll;
+  }
 }
 
 .search-icon {

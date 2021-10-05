@@ -3,12 +3,14 @@
     <div class="col-12 col-sm-12 p-0">
       <div class="model-info p-0">
         <p class="traning-model-name">
-          <span class="doc-prev typcn typcn-chevron-left"></span> {{docName}}
+          <span class="doc-prev typcn typcn-chevron-left"></span> {{ docName }}
           <span class="doc-next typcn typcn-chevron-right"></span>
         </p>
       </div>
       <div class="align-items-center info-container">
-        <p>MODEL: File {{docModel}} | {{ docDate | date: 'MMM d, y HH:mm' }}</p> 
+        <p>
+          MODEL: File {{ docModel }} | {{ docDate | date: "MMM d, y HH:mm" }}
+        </p>
       </div>
     </div>
   </div>
@@ -21,7 +23,12 @@
       [documentActionsSrc]="documentActionsSrc"
       id="viewer"
     ></lib-document-actions>
-    <lib-search-modal class="search-component"> </lib-search-modal>
+    <lib-search-modal
+      class="search-component"
+      (searchTextInDoc)="emitSearchedText($event)"
+      (searchObject)="emitSearchedObj($event)"
+    >
+    </lib-search-modal>
     <lib-document-actions-left
       class="document-actions-left-container"
       id="viewer"
@@ -33,7 +40,6 @@
     <lib-document
       [documentConfig]="documentConfig"
       [thumbnails]="thumbnails"
-      [documentImg]="documentImg"
       #document
       class="document-viewer-container"
     ></lib-document>
@@ -41,6 +47,7 @@
 
   <lib-page-navigation
     [thumbnails]="thumbnails"
+    (triggerTextLayer)="triggerTextLayerCreation($event)"
     class="document-page-navigation-container"
   ></lib-page-navigation>
 </div>
