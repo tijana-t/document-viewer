@@ -7,7 +7,6 @@ import { DocumentActionsLeftComponent } from './document-actions-left/document-a
 import { DocumentComponent } from './document/document.component';
 import { PageNavigationComponent } from './page-navigation/page-navigation.component';
 import { PdfViewerComponent } from './pdf-viewer.component';
-import { DragScrollModule } from 'ngx-drag-scroll';
 import { InfoModalComponent } from './info-modal/info-modal.component';
 
 @NgModule({
@@ -19,12 +18,7 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
     PageNavigationComponent,
     InfoModalComponent,
   ],
-  imports: [
-    SharedComponentsModule,
-    CommonModule,
-    FormsModule,
-    DragScrollModule,
-  ],
+  imports: [SharedComponentsModule, CommonModule, FormsModule],
   exports: [
     PdfViewerComponent,
     DocumentComponent,

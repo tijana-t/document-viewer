@@ -16,7 +16,7 @@ import { Thumbnail } from '../../lib/_config/thumbnail.model';
 export class LazyLoadDirective implements AfterViewInit {
   @HostBinding('attr.src') srcAttr: any = null;
   @Input() src: string = '';
-  @Input() imageObj: Thumbnail = { id: '', src: '', show: false };
+  @Input() imageObj: Thumbnail = { id: '', src: '', show: true };
 
   constructor(private el: ElementRef, private http: HttpClient) {}
 
@@ -41,18 +41,10 @@ export class LazyLoadDirective implements AfterViewInit {
   }
 
   private loadImage() {
-    // try to add loader over image, before source is loaded
-    // const doc = document.getElementById(`spinner-${this.imageObj.id}`);
-    // if (doc) {
-    //   doc.style.visibility = 'visible !important';
-    // }
-    // this.srcAttr = '';
-
-    this.imageObj.show = true;
+    this.imageObj.show = false;
     this.transform(this.src).subscribe((res) => {
       if (res) {
         this.srcAttr = res;
-        this.imageObj.show = false;
       }
     });
   }
@@ -78,6 +70,7 @@ export class LazyLoadDirective implements AfterViewInit {
           reader.onloadend = () => {
             if (reader && reader.result) {
               observer.next(reader.result.toString());
+              this.imageObj.show = true;
             }
           };
         });

@@ -36,11 +36,11 @@
         class="thumbnail"
         [style]="{ marginBottom: navigationConfig.imageMargin }"
       />
-      <!-- <div class="spinner" id="spinner-{{ image.id }}">
+      <div class="spinner" *ngIf="!image.show">
         <div style="display: inline-flex" class="spinner-border" role="loading">
           <span class="sr-only">Loading...</span>
         </div>
-      </div> -->
+      </div>
       <span
         class="page-number"
         [ngClass]="pageNumber === i + 1 ? 'active-page-number' : ''"
