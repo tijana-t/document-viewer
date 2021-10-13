@@ -106,6 +106,11 @@
   transition: all 0.2s ease;
   opacity: 0;
 }
+.disable-next-prev:hover {
+  text-shadow: none !important;
+  cursor: default !important;
+  opacity: 0.7;
+}
 
 .doc-next:hover,
 .doc-prev:hover {

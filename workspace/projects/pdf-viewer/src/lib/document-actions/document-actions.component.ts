@@ -37,50 +37,33 @@ export class DocumentActionsComponent
   zoomInDisabled = false;
   zoomOutDisabled = false;
   destroy$ = new Subject();
+  documentPage: HTMLElement | null = null;
+  transImg: HTMLElement | null = null;
+  incrementScale = 1;
 
   constructor(private pdfViewerService: PdfViewerService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.documentPage = document.getElementById('document-page');
+    this.transImg = document.getElementById('trans-img');
+  }
 
   ngAfterViewInit() {
     this.defaultConfig = { ...this.documentConfig };
   }
 
   zoomInImg() {
-    if (this.documentConfig.containerHeight > 2200) {
-      this.zoomInDisabled = true;
-    } else {
-      this.documentConfig.containerHeight =
-        50 + this.documentConfig.containerHeight;
-
-      //note: find better way!
-      // const textLayer = document.getElementById('textLayer');
-      // if (textLayer) {
-      //   textLayer.style.height =
-      //     50 + this.documentConfig.containerHeight + 'px';
-      // }
-
-      this.pdfViewerService.docConfSubject.next({
-        containerHeight: this.documentConfig.containerHeight,
-        containerWidth: null,
-      });
-
-      this.zoomOutDisabled = false;
+    this.incrementScale += 0.1;
+    if (this.documentPage) {
+      this.documentPage.style.transform = `scale(${this.incrementScale}) translate(-50%, -50%)`;
+      // this.transImg.style.transform = `scale(${this.incrementScale}) translate(-50%, -50%)`;
     }
   }
 
   zoomOutImg() {
-    if (this.documentConfig.containerHeight <= 400) {
-      this.zoomOutDisabled = true;
-    } else {
-      this.documentConfig.containerHeight =
-        this.documentConfig.containerHeight - 50;
-
-      this.pdfViewerService.docConfSubject.next({
-        containerHeight: this.documentConfig.containerHeight,
-        containerWidth: null,
-      });
-      this.zoomInDisabled = false;
+    this.incrementScale -= 0.1;
+    if (this.documentPage) {
+      this.documentPage.style.transform = `scale(${this.incrementScale}) translate(-50%, -50%)`;
     }
   }
 
@@ -88,11 +71,11 @@ export class DocumentActionsComponent
     this.zoomInDisabled = false;
     this.zoomOutDisabled = false;
     this.documentConfig = { ...this.defaultConfig };
+    this.incrementScale = 1;
 
-    this.pdfViewerService.docConfSubject.next({
-      containerHeight: this.documentConfig.containerHeight,
-      containerWidth: this.documentConfig.containerWidth,
-    });
+    if (this.documentPage) {
+      this.documentPage.style.transform = `scale(1) translate(-50%, -50%)`;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {

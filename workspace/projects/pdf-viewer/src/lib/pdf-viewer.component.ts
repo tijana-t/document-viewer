@@ -17,22 +17,20 @@ import { DocumentActions } from './_config/document-actions.model';
 import { SearchResult } from './_config/document-search.model';
 import { DocumentConfig } from './_config/document.model';
 import { Thumbnail } from './_config/thumbnail.model';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'lib-pdf-viewer',
   templateUrl: './pdf-viewer.component.html',
   styleUrls: ['./pdf-viewer.component.scss'],
 })
 export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
-  constructor(private pdfViewerService: PdfViewerService) {}
-
-  @Input('searchResult') searchResult: SearchResult[] = [];
   @Output('searchDocument') searchDocument = new EventEmitter();
-  @Output('acceptSearchObj') acceptSearchObj = new EventEmitter();
-  @Output('documentConfig') docConfig = new EventEmitter();
+  @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
+  @Input('searchResult') searchResult: SearchResult[] = [];
   @Input('documentImg') documentImg: string = '';
   @Input('currentPage') initialPage = 1;
-  // @Input('changedPage') changedPage = 1;
   @Input('token') token?: string = '';
   @Input('pageInfo') pageInfo: any;
   @Input('thumbnails') thumbnails: Thumbnail[] = [{ id: '', src: '' }];
@@ -44,36 +42,37 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
     informationHelp: '',
     downloadPdfPlain: '',
   };
-  @Input('docName') docName: string = '';
-  @Input('docDate') docDate: string = '';
-  @Input('docModel') docModel: string = '';
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerHeight: 0,
     containerWidth: 0,
   };
-
+  @Input('docModel') docModel: string = '';
+  @Input('params') params: any;
+  @Input('singleDocument') singleDocument: any;
+  @Input('inProjects') inProjects: any;
+  docName: string = '';
+  docDate: string = '';
+  private url: string = '';
   subscriptions = new Subscription();
   destroy$ = new Subject();
   ngOnInit() {
-    this.subscriptions.add(
-      this.pdfViewerService.docConfSubject
-        .pipe(skip(1), takeUntil(this.destroy$))
-        .subscribe((res: DocumentConfig) => {
-          if (res) {
-            this.documentConfig = res;
-            this.docConfig.emit(this.documentConfig);
-          }
-        })
-    );
+    this.url = this.router.url;
+    this.docName = this.singleDocument.file.originalName;
+    this.docDate = this.singleDocument.file.createdAt.toString();
   }
+
+  constructor(
+    private pdfViewerService: PdfViewerService,
+    private router: Router
+  ) {}
 
   ngAfterViewInit() {}
 
   emitSearchedText(event: any) {
     this.searchDocument.emit(event);
   }
-  emitSearchedObj(searchObj: SearchResult) {
-    this.acceptSearchObj.next(searchObj);
+  emitPageSearch(pageSearch: SearchResult[]) {
+    this.pageSearch.next(pageSearch);
   }
 
   triggerTextLayerCreation(event: Event) {
@@ -82,13 +81,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pageInfo'] && changes['pageInfo'].currentValue) {
-      this.pageInfo = changes['pageInfo'].currentValue;
-      this.pdfViewerService.pageInfo.next(this.pageInfo);
-      console.log('info');
-      //note: needs update
-      this.thumbnails = [...this.pageInfo.pages];
-
-      this.pdfViewerService.pageNumberSubject.next(this.pageInfo.currentPage);
+      this.pdfViewerService.pageInfo.next(changes['pageInfo'].currentValue);
     }
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
@@ -107,5 +100,55 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
     this.destroy$.next();
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
+  }
+
+  changeDoc(status: boolean) {
+    this.docName = this.singleDocument.file.originalName;
+    this.docDate = this.singleDocument.file.createdAt.toString();
+    if (!this.inProjects) {
+      if (status) {
+        this.router.navigateByUrl(
+          `/training/models/${this.url.split('/')[3]}/${this.params.modelId}/${
+            this.url.split('/')[5]
+          }/${this.singleDocument.next.id}/${
+            this.singleDocument.next.fileName
+          }/1/`
+        );
+        this.docName = this.singleDocument.next.name;
+        this.docDate = this.singleDocument.next.date.toString();
+      } else {
+        this.router.navigateByUrl(
+          `/training/models/${this.url.split('/')[3]}/${this.params.modelId}/${
+            this.url.split('/')[5]
+          }/${this.singleDocument.prev.id}/${
+            this.singleDocument.prev.fileName
+          }/1/`
+        );
+        this.docName = this.singleDocument.prev.name;
+        this.docDate = this.singleDocument.prev.date.toString();
+      }
+    } else {
+      if (status) {
+        this.router.navigateByUrl(
+          `/projects/viewer/${this.url.split('/')[3]}/${
+            this.url.split('/')[4]
+          }/${this.singleDocument.next.id}/${
+            this.singleDocument.next.fileName
+          }/1/`
+        );
+        this.docName = this.singleDocument.next.name;
+        this.docDate = this.singleDocument.next.date.toString();
+      } else {
+        this.router.navigateByUrl(
+          `/projects/viewer/${this.url.split('/')[3]}/${
+            this.url.split('/')[4]
+          }/${this.singleDocument.prev.id}/${
+            this.singleDocument.prev.fileName
+          }/1/`
+        );
+        this.docName = this.singleDocument.prev.name;
+        this.docDate = this.singleDocument.prev.date.toString();
+      }
+    }
   }
 }

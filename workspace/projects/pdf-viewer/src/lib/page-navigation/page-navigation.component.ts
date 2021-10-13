@@ -30,9 +30,7 @@ export class PageNavigationComponent
   @ViewChild('inputRange') inputRange: ElementRef | undefined;
   @ViewChild('bubbleValue') bubbleValue: ElementRef | undefined;
   @ViewChild('pageInput') pageInput: ElementRef | undefined;
-  @Input('thumbnails') thumbnails: Thumbnail[] = [
-    { id: '', src: '', show: false },
-  ];
+  thumbnails: Thumbnail[] = [{ id: '', src: '', show: false }];
   destroy$ = new Subject();
   showMyElement: boolean = false;
 
@@ -57,15 +55,7 @@ export class PageNavigationComponent
       .pipe(debounceTime(250), distinctUntilChanged())
       .subscribe((res: number) => {
         if (res) {
-          this.scrollToPageNumber(res);
-        }
-      });
-
-    this.pdfViewerService.pageNumberSubject
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res: any) => {
-        if (res) {
-          this.pageNumber = res;
+          this.scrollToPageNumber(res, true);
         }
       });
 
@@ -74,6 +64,10 @@ export class PageNavigationComponent
       .subscribe((res: any) => {
         if (res) {
           this.pageNumber = res.currentPage;
+          this.previousPageNum = res.currentPage;
+          this.oldPageNumber = res.currentPage;
+          if (res.pages) this.thumbnails = res.pages;
+
           if (this.initialLoad) {
             setTimeout(() => {
               this.scrollToPageNumber(this.pageNumber);
@@ -100,7 +94,7 @@ export class PageNavigationComponent
     this.searchSubject.next(this.pageNumber);
   }
 
-  scrollToPageNumber(pageNumber: number) {
+  scrollToPageNumber(pageNumber: number, isChangePage?: boolean) {
     this.initialLoad = false;
 
     const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
@@ -117,21 +111,26 @@ export class PageNavigationComponent
       currentPage: pageNumber,
       pages: this.thumbnails,
     });
-    this.triggerTextLayer.emit({ pageNumber });
+    this.triggerTextLayer.emit({ pageNumber, pageChange: isChangePage });
   }
 
   changePage(pageNumber: number) {
-    console.log('CHANGE PAGE');
     this.pageNumber = pageNumber;
 
     if (this.pageNumber !== this.oldPageNumber) {
-      this.scrollToPageNumber(pageNumber);
+      this.scrollToPageNumber(pageNumber, true);
 
-      //remove textLayer if exists
+      //remove textLayer and border elements on page change
       const textLayer = document.getElementsByClassName('textLayer')[0];
       if (textLayer) textLayer.remove();
-      // this.triggerTextLayer.emit({ pageNumber });
+
+      const borderElems: any = document.querySelectorAll('.border-intent');
+      if (borderElems)
+        borderElems.forEach((item: Element) => {
+          item.remove();
+        });
     }
+
     this.oldPageNumber = pageNumber;
   }
 
@@ -179,24 +178,18 @@ export class PageNavigationComponent
     }
   };
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['thumbnails'] && changes['thumbnails'].currentValue) {
-      this.thumbnails = changes['thumbnails'].currentValue;
-    }
-  }
-
   scrollThumbnailContainer(
     container: HTMLElement,
     thumbnail: HTMLElement,
     pageNumber: number
   ) {
-    if (pageNumber >= this.oldPageNumber) {
+    if (pageNumber >= this.previousPageNum) {
       container.scrollTop += thumbnail.clientHeight;
     } else {
       container.scrollTop -= thumbnail.clientHeight;
     }
 
-    this.oldPageNumber = pageNumber;
+    this.previousPageNum = pageNumber;
   }
 
   ngOnDestroy(): void {

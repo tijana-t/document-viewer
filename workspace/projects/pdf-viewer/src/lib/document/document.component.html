@@ -1,6 +1,6 @@
 <div style="position: relative" id="outer-cont">
   <img
-    *ngIf="documentConfig.containerHeight > defaultDocConfig.containerHeight"
+    *ngIf="activateTransImg"
     [ngStyle]="{
       height: documentConfig.containerHeight + 'px',
       width: 'auto',
@@ -11,6 +11,7 @@
     }"
     [src]="documentImg | secureImg | async"
     class="trans-img"
+    id="trans-img"
     alt=""
   />
   <div (scroll)="scrollEvent($event, documentImage)" id="document-container">
