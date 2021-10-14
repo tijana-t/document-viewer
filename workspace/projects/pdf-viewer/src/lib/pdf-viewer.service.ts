@@ -11,11 +11,13 @@ export class PdfViewerService {
   token = new BehaviorSubject<string>('');
   modalStatus = new BehaviorSubject<boolean>(false);
   searchResultSubject = new BehaviorSubject<SearchResult[]>([]);
+  zoomInStarted = new BehaviorSubject<boolean>(false);
   docConfSubject = new BehaviorSubject<DocumentConfig>({
     containerWidth: 0,
     containerHeight: 0,
   });
   pageInfo = new BehaviorSubject<any>({});
+  mainImg = new BehaviorSubject<string>('');
 
   constructor() {}
 }

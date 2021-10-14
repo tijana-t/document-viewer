@@ -45,7 +45,6 @@ export class PageNavigationComponent
   oldPageNumber: number = 1;
   pageNumber: number = 1;
   previousPageNum: number = 1;
-  initialLoad = true;
 
   constructor(private pdfViewerService: PdfViewerService) {}
 
@@ -68,17 +67,16 @@ export class PageNavigationComponent
           this.oldPageNumber = res.currentPage;
           if (res.pages) this.thumbnails = res.pages;
 
-          if (this.initialLoad) {
-            setTimeout(() => {
-              this.scrollToPageNumber(this.pageNumber);
-            }, 0);
-          }
+          setTimeout(() => {
+            this.scrollToPageNumber(this.pageNumber);
+          }, 0);
         }
       });
   }
 
   ngAfterViewInit() {}
 
+  //fires on input change
   searchPage(pageNumber: number) {
     //check if pageNumber is more than total, or less than zero
     if (
@@ -94,9 +92,8 @@ export class PageNavigationComponent
     this.searchSubject.next(this.pageNumber);
   }
 
+  //scrolls thumbnail container and updates thumb position
   scrollToPageNumber(pageNumber: number, isChangePage?: boolean) {
-    this.initialLoad = false;
-
     const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
     this.thumbnailContainer?.nativeElement.scrollTo({
       top: offsetTop,
@@ -107,13 +104,13 @@ export class PageNavigationComponent
     }
 
     this.calculateThumbPosition();
-    this.pdfViewerService.pageInfo.next({
-      currentPage: pageNumber,
-      pages: this.thumbnails,
-    });
+    this.pdfViewerService.mainImg.next(
+      this.thumbnails[this.pageNumber - 1].src
+    );
     this.triggerTextLayer.emit({ pageNumber, pageChange: isChangePage });
   }
 
+  //fires on thumbnail click
   changePage(pageNumber: number) {
     this.pageNumber = pageNumber;
 
@@ -134,6 +131,7 @@ export class PageNavigationComponent
     this.oldPageNumber = pageNumber;
   }
 
+  // fires on wheel event
   scrollThumbnail(event: WheelEvent, inputRange: any) {
     const inputNumber = parseInt(inputRange.value, 10);
     if (event.deltaY < 0 && inputNumber !== 1) {
@@ -167,7 +165,7 @@ export class PageNavigationComponent
         this.inputRange.nativeElement.value;
       this.bubbleWrap.nativeElement.style.top = `calc(${newValue}% + (${newPosition}px))`;
 
-      // call only on input change
+      // call only on thumb input change
       if (pageNumber) {
         this.scrollThumbnailContainer(
           this.thumbnailContainer.nativeElement,
@@ -188,7 +186,6 @@ export class PageNavigationComponent
     } else {
       container.scrollTop -= thumbnail.clientHeight;
     }
-
     this.previousPageNum = pageNumber;
   }
 

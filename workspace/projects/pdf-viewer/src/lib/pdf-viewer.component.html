@@ -12,7 +12,7 @@
               !this.singleDocument.prev.fileName ? null : changeDoc(false)
             "
           ></span>
-          {{ docName }}
+          {{ singleDocument?.file?.originalName }}
           <span
             [ngClass]="
               this.singleDocument.next.fileName ? '' : 'disable-next-prev'
@@ -26,7 +26,8 @@
       </div>
       <div class="align-items-center info-container">
         <p>
-          MODEL: File {{ docModel }} | {{ docDate | date: "MMM d, y HH:mm" }}
+          MODEL: File {{ docModel }} |
+          {{ singleDocument.file.createdAt | date: "MMM d, y HH:mm" }}
         </p>
       </div>
     </div>

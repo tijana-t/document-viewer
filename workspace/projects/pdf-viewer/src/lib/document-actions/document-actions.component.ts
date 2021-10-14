@@ -38,7 +38,7 @@ export class DocumentActionsComponent
   zoomOutDisabled = false;
   destroy$ = new Subject();
   documentPage: HTMLElement | null = null;
-  transImg: HTMLElement | null = null;
+  transImg: any;
   incrementScale = 1;
 
   constructor(private pdfViewerService: PdfViewerService) {}
@@ -53,10 +53,24 @@ export class DocumentActionsComponent
   }
 
   zoomInImg() {
+    this.pdfViewerService.zoomInStarted.next(true);
     this.incrementScale += 0.1;
     if (this.documentPage) {
       this.documentPage.style.transform = `scale(${this.incrementScale}) translate(-50%, -50%)`;
-      // this.transImg.style.transform = `scale(${this.incrementScale}) translate(-50%, -50%)`;
+      this.transImg.style.transform = `scale(${this.incrementScale})`;
+    }
+    //disable zoomIn if scale is bigger than 2
+    if (this.incrementScale >= 2.0) {
+      this.zoomInDisabled = true;
+    } else {
+      this.zoomInDisabled = false;
+    }
+
+    //disable zoom if scale is less than 0.3
+    if (this.incrementScale < 0.3) {
+      this.zoomOutDisabled = true;
+    } else {
+      this.zoomOutDisabled = false;
     }
   }
 
@@ -64,6 +78,21 @@ export class DocumentActionsComponent
     this.incrementScale -= 0.1;
     if (this.documentPage) {
       this.documentPage.style.transform = `scale(${this.incrementScale}) translate(-50%, -50%)`;
+      this.transImg.style.transform = `scale(${this.incrementScale})`;
+    }
+
+    //disable zoom if scale is less than 0.3
+    if (this.incrementScale < 0.3) {
+      this.zoomOutDisabled = true;
+    } else {
+      this.zoomOutDisabled = false;
+    }
+
+    //disable zoomIn if scale is bigger than 2
+    if (this.incrementScale >= 2.0) {
+      this.zoomInDisabled = true;
+    } else {
+      this.zoomInDisabled = false;
     }
   }
 
@@ -75,6 +104,7 @@ export class DocumentActionsComponent
 
     if (this.documentPage) {
       this.documentPage.style.transform = `scale(1) translate(-50%, -50%)`;
+      this.transImg.style.transform = `scale(1)`;
     }
   }
 

@@ -70,7 +70,6 @@ export class SearchModalComponent implements OnInit {
       if (highlightedElements) {
         highlightedElements.forEach((el) => el.remove());
       }
-      this.searchSubject.next(event);
       this.groupedByPage = [];
     } else {
       this.searchSubject.next(event);

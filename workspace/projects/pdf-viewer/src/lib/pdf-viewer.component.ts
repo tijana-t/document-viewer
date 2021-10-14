@@ -29,7 +29,6 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
   @Input('searchResult') searchResult: SearchResult[] = [];
-  @Input('documentImg') documentImg: string = '';
   @Input('currentPage') initialPage = 1;
   @Input('token') token?: string = '';
   @Input('pageInfo') pageInfo: any;
@@ -50,15 +49,11 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   @Input('params') params: any;
   @Input('singleDocument') singleDocument: any;
   @Input('inProjects') inProjects: any;
-  docName: string = '';
-  docDate: string = '';
   private url: string = '';
   subscriptions = new Subscription();
   destroy$ = new Subject();
   ngOnInit() {
     this.url = this.router.url;
-    this.docName = this.singleDocument.file.originalName;
-    this.docDate = this.singleDocument.file.createdAt.toString();
   }
 
   constructor(
@@ -94,6 +89,9 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
     if (changes['totalPages'] && changes['totalPages'].currentValue) {
       this.totalPages = changes['totalPages'].currentValue;
     }
+    if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
+      this.singleDocument = changes['singleDocument'].currentValue;
+    }
   }
 
   ngOnDestroy(): void {
@@ -103,8 +101,6 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   changeDoc(status: boolean) {
-    this.docName = this.singleDocument.file.originalName;
-    this.docDate = this.singleDocument.file.createdAt.toString();
     if (!this.inProjects) {
       if (status) {
         this.router.navigateByUrl(
@@ -114,8 +110,6 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
             this.singleDocument.next.fileName
           }/1/`
         );
-        this.docName = this.singleDocument.next.name;
-        this.docDate = this.singleDocument.next.date.toString();
       } else {
         this.router.navigateByUrl(
           `/training/models/${this.url.split('/')[3]}/${this.params.modelId}/${
@@ -124,8 +118,6 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
             this.singleDocument.prev.fileName
           }/1/`
         );
-        this.docName = this.singleDocument.prev.name;
-        this.docDate = this.singleDocument.prev.date.toString();
       }
     } else {
       if (status) {
@@ -136,8 +128,6 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
             this.singleDocument.next.fileName
           }/1/`
         );
-        this.docName = this.singleDocument.next.name;
-        this.docDate = this.singleDocument.next.date.toString();
       } else {
         this.router.navigateByUrl(
           `/projects/viewer/${this.url.split('/')[3]}/${
@@ -146,8 +136,6 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
             this.singleDocument.prev.fileName
           }/1/`
         );
-        this.docName = this.singleDocument.prev.name;
-        this.docDate = this.singleDocument.prev.date.toString();
       }
     }
   }

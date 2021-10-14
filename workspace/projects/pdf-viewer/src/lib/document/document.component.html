@@ -1,15 +1,14 @@
 <div style="position: relative" id="outer-cont">
   <img
-    *ngIf="activateTransImg"
     [ngStyle]="{
       height: documentConfig.containerHeight + 'px',
-      width: 'auto',
+      width: documentConfig.containerWidth + 'px',
       position: 'absolute',
       opacity: 0.3,
       top: imageTopVal,
       left: imageLeftVal
     }"
-    [src]="documentImg | secureImg | async"
+    [src]="mainImg | secureImg | async"
     class="trans-img"
     id="trans-img"
     alt=""
@@ -18,12 +17,11 @@
     <!--  <div class="shadow-test"></div> -->
     <div class="document-page" id="document-page">
       <img
-        [ngStyle]="{
-          height: documentConfig.containerHeight + 'px'
-        }"
+        [attr.height]="documentConfig.containerHeight + 'px'"
+        [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImg"
-        #documentImage
-        [src]="documentImg | secureImg | async"
+        #docImg
+        [src]="mainImg | secureImg | async"
       />
     </div>
   </div>
