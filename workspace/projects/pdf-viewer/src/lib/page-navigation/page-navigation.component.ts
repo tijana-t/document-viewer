@@ -209,7 +209,7 @@ export class PageNavigationComponent
           container.scrollTop += scrollTop;
         } else {
           // we're near the bottom of the list
-          container.scrollTop += scrollBot;
+          container.scrollTop += scrollBot + 30;
         }
       }
     }

@@ -100,12 +100,13 @@
   .thumbnail-container {
     overflow: hidden;
     position: relative;
-    padding: 10px 25px 0 25px;
+    padding: 0px 25px;
     position: relative;
 
     // img style
     .thumbnail {
-      margin-bottom: 20px;
+      margin-top: 10px;
+      margin-bottom: 10px;
       width: 100px;
       border: 1px solid #fff;
       transition: all 0.2s ease;
@@ -126,7 +127,7 @@
       right: calc(50% - 5px);
       position: absolute;
       text-align: center;
-      bottom: 5px !important;
+      bottom: -6px !important;
       font-size: 10px;
     }
     .active-page-number {
@@ -136,7 +137,7 @@
     .important-page {
       border-radius: 50%;
       position: absolute;
-      top: -4px;
+      top: 6px;
       left: -4px;
       background-color: cv.$main-green;
       width: 8px;
