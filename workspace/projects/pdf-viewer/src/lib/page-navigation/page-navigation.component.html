@@ -1,11 +1,11 @@
 <div (wheel)="scrollThumbnail($event, inputRange)" class="navigation-container">
   <div class="form-group number-input">
     <input
-      (ngModelChange)="searchPage(page.value)"
+      (keyup)="searchPage(page.value)"
       #page="ngModel"
       type="number"
       class="form-control"
-      placeholder="page"
+      placeholder="#"
       [(ngModel)]="pageNumber"
       name="pageNumber"
       id="pageNumber"
