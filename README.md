@@ -1,8 +1,8 @@
 ## PDF VIEWER 
 
-### Run app - `ng serve pdf-viewer-showcase`
 ### Build library - `ng build pdf-viewer`
-### Build library and track live changes in app - `ng build pdf-viewer --watch=true`
+### Track live changes (watch): command starts from workspace `ng build pdf-viewer --watch=true`
+### Linking library - `npm link` inside dist folder of a library; `npm link pdf-viewer` inside project where you want library to to be visible 
 
 
 ### Architecture v1
