@@ -104,9 +104,11 @@ export class PageNavigationComponent
     }
 
     this.calculateThumbPosition();
-    this.pdfViewerService.mainImg.next(
-      this.thumbnails[this.pageNumber - 1].src
+    const mainImg = this.thumbnails[this.pageNumber - 1].src.replace(
+      'thumb',
+      'img'
     );
+    this.pdfViewerService.mainImg.next(mainImg);
     this.triggerTextLayer.emit({ pageNumber, pageChange: isChangePage });
   }
 
