@@ -60,7 +60,7 @@ export class DocumentComponent
 
     this.subscriptions.add(
       this.pdfViewerService.zoomInStarted.subscribe((res) => {
-        // if (res) this.setTransImgPosition();
+        //if (res) this.setTransImgPosition();
       })
     );
   }
@@ -79,8 +79,10 @@ export class DocumentComponent
         bottom: rectObj.bottom - rectParent.bottom,
         right: rectObj.right - rectParent.right,
       };
+
+      console.log('set left');
       this.imageTopVal = this.relativePosition.top + 'px';
-      this.imageLeftVal = this.relativePosition.left + 'px';
+      this.imageLeftVal = this.relativePosition.left * 1.4 + 'px';
 
       // const patt = document.getElementById('container-left');
       // const sidebar = document.getElementById('sidebar');
