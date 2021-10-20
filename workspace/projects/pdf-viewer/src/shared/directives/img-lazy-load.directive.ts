@@ -7,8 +7,10 @@ import {
   Input,
 } from '@angular/core';
 import { withCache } from '@ngneat/cashew';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Thumbnail } from '../../lib/_config/thumbnail.model';
+import { PdfViewerService } from '../../lib/pdf-viewer.service';
+import { first, publish, take, takeUntil } from 'rxjs/operators';
 
 @Directive({
   selector: 'img[appLazyLoad]',
@@ -17,8 +19,13 @@ export class LazyLoadDirective implements AfterViewInit {
   @HostBinding('attr.src') srcAttr: any = null;
   @Input() src: string = '';
   @Input() imageObj: Thumbnail = { id: '', src: '', show: true };
+  destroy$ = new Subject();
 
-  constructor(private el: ElementRef, private http: HttpClient) {}
+  constructor(
+    private el: ElementRef,
+    private http: HttpClient,
+    private pdfViewerService: PdfViewerService
+  ) {}
 
   ngAfterViewInit() {
     this.canLazyLoad() ? this.lazyLoadImage() : this.loadImage();
@@ -29,17 +36,15 @@ export class LazyLoadDirective implements AfterViewInit {
   }
 
   private lazyLoadImage() {
-    setTimeout(() => {
-      const obs = new IntersectionObserver((entries) => {
-        entries.forEach(({ isIntersecting }) => {
-          if (isIntersecting) {
-            this.loadImage();
-            obs.unobserve(this.el.nativeElement);
-          }
-        });
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(({ isIntersecting }) => {
+        if (isIntersecting) {
+          this.loadImage();
+          obs.unobserve(this.el.nativeElement);
+        }
       });
-      obs.observe(this.el.nativeElement);
-    }, 1000);
+    });
+    obs.observe(this.el.nativeElement);
   }
 
   private loadImage() {

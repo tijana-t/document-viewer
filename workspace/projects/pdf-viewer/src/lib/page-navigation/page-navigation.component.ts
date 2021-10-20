@@ -45,6 +45,8 @@ export class PageNavigationComponent
   oldPageNumber: number = 1;
   pageNumber: number = 1;
   previousPageNum: number = 1;
+  scrolling = false;
+  timeout: any = null;
 
   constructor(private pdfViewerService: PdfViewerService) {}
 
@@ -75,21 +77,23 @@ export class PageNavigationComponent
   }
 
   ngAfterViewInit() {}
-
-  //fires on input change
   searchPage(pageNumber: number) {
-    //check if pageNumber is more than total, or less than zero
-    if (
-      pageNumber >= this.thumbnails.length &&
-      this.thumbnails.length - 1 > 0
-    ) {
-      this.pageNumber = this.thumbnails.length;
-    } else if (pageNumber < 1) {
-      this.pageNumber = 1;
-    } else {
-      this.pageNumber = pageNumber;
-    }
-    this.searchSubject.next(this.pageNumber);
+    // whait while user is finished typing
+    clearTimeout(this.timeout);
+    var $this = this;
+    this.timeout = setTimeout(function () {
+      if (
+        pageNumber >= $this.thumbnails.length &&
+        $this.thumbnails.length - 1 > 0
+      ) {
+        $this.pageNumber = $this.thumbnails.length;
+      } else if (pageNumber < 1) {
+        $this.pageNumber = 1;
+      } else {
+        $this.pageNumber = pageNumber;
+      }
+      $this.searchSubject.next($this.pageNumber);
+    }, 800);
   }
 
   //scrolls thumbnail container and updates thumb position
@@ -97,7 +101,7 @@ export class PageNavigationComponent
     const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
     this.thumbnailContainer?.nativeElement.scrollTo({
       top: offsetTop,
-      behavior: 'smooth',
+      behavior: 'auto',
     });
     if (this.inputRange) {
       this.inputRange.nativeElement.value = pageNumber;
@@ -148,6 +152,7 @@ export class PageNavigationComponent
   }
 
   calculateThumbPosition = (pageNumber?: number) => {
+    console.log('eeeee', pageNumber);
     if (
       this.inputRange &&
       this.bubbleValue &&
@@ -171,22 +176,44 @@ export class PageNavigationComponent
       if (pageNumber) {
         this.scrollThumbnailContainer(
           this.thumbnailContainer.nativeElement,
-          this.thumbnail.nativeElement,
           pageNumber
         );
       }
     }
   };
 
-  scrollThumbnailContainer(
-    container: HTMLElement,
-    thumbnail: HTMLElement,
-    pageNumber: number
-  ) {
-    if (pageNumber >= this.previousPageNum) {
-      container.scrollTop += thumbnail.clientHeight;
-    } else {
-      container.scrollTop -= thumbnail.clientHeight;
+  scrollThumbnailContainer(container: HTMLElement, pageNumber: number) {
+    // Where is the parent on page
+    var parentRect = container.getBoundingClientRect();
+    // What can you see?
+    var parentViewableArea = {
+      height: container.clientHeight,
+      width: container.clientWidth,
+    };
+
+    const child = document.getElementById('img-' + pageNumber);
+    // Where is the child
+
+    if (child) {
+      var childRect = child.getBoundingClientRect();
+      // Is the child viewable?
+      var isViewable =
+        childRect.top >= parentRect.top &&
+        childRect.bottom <= parentRect.top + parentViewableArea.height;
+
+      // if you can't see the child try to scroll parent
+      if (!isViewable) {
+        // Should we scroll using top or bottom? Find the smaller ABS adjustment
+        const scrollTop = childRect.top - parentRect.top;
+        const scrollBot = childRect.bottom - parentRect.bottom;
+        if (Math.abs(scrollTop) < Math.abs(scrollBot)) {
+          // we're near the top of the list
+          container.scrollTop += scrollTop;
+        } else {
+          // we're near the bottom of the list
+          container.scrollTop += scrollBot + 30;
+        }
+      }
     }
     this.previousPageNum = pageNumber;
   }
