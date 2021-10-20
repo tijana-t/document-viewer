@@ -56,7 +56,7 @@ export class DocumentActionsComponent
     this.pdfViewerService.zoomInStarted.next(true);
     this.incrementScale += 0.1;
     if (this.documentPage) {
-      this.documentPage.style.transform = `scale(${this.incrementScale}) translate(-50%, -50%)`;
+      this.documentPage.style.transform = `scale(${this.incrementScale})`;
       this.transImg.style.transform = `scale(${this.incrementScale})`;
     }
     //disable zoomIn if scale is bigger than 2
@@ -77,7 +77,7 @@ export class DocumentActionsComponent
   zoomOutImg() {
     this.incrementScale -= 0.1;
     if (this.documentPage) {
-      this.documentPage.style.transform = `scale(${this.incrementScale}) translate(-50%, -50%)`;
+      this.documentPage.style.transform = `scale(${this.incrementScale})`;
       this.transImg.style.transform = `scale(${this.incrementScale})`;
     }
 
@@ -103,7 +103,7 @@ export class DocumentActionsComponent
     this.incrementScale = 1;
 
     if (this.documentPage) {
-      this.documentPage.style.transform = `scale(1) translate(-50%, -50%)`;
+      this.documentPage.style.transform = `scale(1)`;
       this.transImg.style.transform = `scale(1)`;
     }
   }
