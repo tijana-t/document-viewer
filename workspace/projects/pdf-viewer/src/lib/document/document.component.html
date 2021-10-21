@@ -15,7 +15,14 @@
   />
   <div (scroll)="scrollEvent($event, documentImage)" id="document-container">
     <!--  <div class="shadow-test"></div> -->
-    <div class="document-page" id="document-page">
+    <div
+      class="document-page"
+      id="document-page"
+      [ngStyle]="{
+        width: documentConfig.containerWidth + 'px',
+        height: documentConfig.containerHeight + 'px'
+      }"
+    >
       <img
         [attr.height]="documentConfig.containerHeight + 'px'"
         [attr.width]="documentConfig.containerWidth + 'px'"
