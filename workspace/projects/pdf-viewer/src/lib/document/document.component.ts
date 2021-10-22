@@ -51,11 +51,12 @@ export class DocumentComponent
     private pdfViewerService: PdfViewerService,
     private ngZone: NgZone
   ) {
-    this.pdfViewerService.mainImg
+    this.subscriptions = this.pdfViewerService.mainImg
       .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe((res: string) => {
         if (res) {
           this.mainImg = res;
+          this.pdfViewerService.fitToPage.next(true);
         }
       });
   }

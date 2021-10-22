@@ -7,7 +7,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { DocumentComponent } from '../document/document.component';
 import { PdfViewerService } from '../pdf-viewer.service';
 import { DocumentActions } from '../_config/document-actions.model';
@@ -43,12 +43,20 @@ export class DocumentActionsComponent
   ZOOM_STEP = 1.12;
   pageHeight: number = 0;
   pageWidth: number = 0;
+  subscriptions = new Subscription();
 
   constructor(private pdfViewerService: PdfViewerService) {}
 
   ngOnInit(): void {
     this.documentPage = document.getElementById('document-page');
     this.transImg = document.getElementById('trans-img');
+    this.subscriptions = this.pdfViewerService.fitToPage.subscribe(
+      (res: boolean) => {
+        if (res) {
+          this.fitToPage();
+        }
+      }
+    );
   }
 
   ngAfterViewInit() {
@@ -117,11 +125,13 @@ export class DocumentActionsComponent
     });
     setTimeout(() => {
       const textLayer = document.getElementById('textLayer');
-      const zoomLevel = 1;
       this.zoomInDisabled = false;
       this.zoomOutDisabled = false;
       if (textLayer) {
-        textLayer.style.transform = 'scale(' + zoomLevel + ')';
+        console.log('ima lehjere');
+        textLayer.style.transform = 'scale(1)';
+      } else {
+        console.log('nema lejera');
       }
       this.documentConfig.containerHeight = this.pageHeight;
       this.documentConfig.containerWidth = this.pageWidth;
@@ -137,5 +147,6 @@ export class DocumentActionsComponent
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    this.subscriptions.unsubscribe();
   }
 }

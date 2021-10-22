@@ -92,6 +92,7 @@ export class PageNavigationComponent
       } else {
         $this.pageNumber = pageNumber;
       }
+      $this.clearTextLayer();
       $this.searchSubject.next($this.pageNumber);
     }, 800);
   }
@@ -123,18 +124,24 @@ export class PageNavigationComponent
     if (this.pageNumber !== this.oldPageNumber) {
       this.scrollToPageNumber(pageNumber, true);
 
-      //remove textLayer and border elements on page change
-      const textLayer = document.getElementsByClassName('textLayer')[0];
-      if (textLayer) textLayer.remove();
-
-      const borderElems: any = document.querySelectorAll('.border-intent');
-      if (borderElems)
-        borderElems.forEach((item: Element) => {
-          item.remove();
-        });
+      this.clearTextLayer();
     }
 
     this.oldPageNumber = pageNumber;
+  }
+
+  clearTextLayer() {
+    const borderElems: any = document.querySelectorAll('.border-intent');
+    if (borderElems)
+      borderElems.forEach((item: Element) => {
+        item.remove();
+      });
+
+    const SpanElems: any = document.querySelectorAll('.gray-border');
+    if (SpanElems)
+      SpanElems.forEach((item: Element) => {
+        item.remove();
+      });
   }
 
   // fires on wheel event
