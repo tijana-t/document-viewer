@@ -88,7 +88,7 @@ export class DocumentComponent
   }
 
   scrollToCenter() {
-    const parentElement = document.getElementById('document-container');
+    /* const parentElement = document.getElementById('document-container');
     const childElement = document.getElementById('document-page');
     let centerY = 0;
     let centerX = 0;
@@ -100,7 +100,7 @@ export class DocumentComponent
         (parentElement.clientWidth - childElement.clientWidth) / 2
       );
       parentElement.scrollTo(centerX, centerY);
-    }
+    } */
   }
   ngOnDestroy(): void {
     this.destroy$.next();

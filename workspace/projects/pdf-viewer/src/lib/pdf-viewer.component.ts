@@ -106,7 +106,22 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
     this.subscriptions.unsubscribe();
   }
 
+  clearTextLayer() {
+    const borderElems: any = document.querySelectorAll('.border-intent');
+    if (borderElems)
+      borderElems.forEach((item: Element) => {
+        item.remove();
+      });
+
+    const SpanElems: any = document.querySelectorAll('.gray-border');
+    if (SpanElems)
+      SpanElems.forEach((item: Element) => {
+        item.remove();
+      });
+  }
+
   changeDoc(status: boolean) {
+    this.clearTextLayer();
     if (!this.inProjects) {
       if (status) {
         this.router.navigateByUrl(
