@@ -40,6 +40,9 @@ export class DocumentActionsComponent
   documentPage: HTMLElement | null = null;
   transImg: any;
   incrementScale = 1;
+  ZOOM_STEP = 1.12;
+  pageHeight: number = 0;
+  pageWidth: number = 0;
 
   constructor(private pdfViewerService: PdfViewerService) {}
 
@@ -50,62 +53,79 @@ export class DocumentActionsComponent
 
   ngAfterViewInit() {
     this.defaultConfig = { ...this.documentConfig };
+    this.pageHeight = this.defaultConfig.containerHeight;
+    this.pageWidth = this.defaultConfig.containerWidth;
   }
 
   zoomInImg() {
-    this.pdfViewerService.zoomInStarted.next(true);
-    this.incrementScale += 0.1;
-    if (this.documentPage) {
-      this.documentPage.style.transform = `scale(${this.incrementScale})`;
-      this.transImg.style.transform = `scale(${this.incrementScale})`;
-    }
-    //disable zoomIn if scale is bigger than 2
-    if (this.incrementScale >= 2.0) {
+    if (this.documentConfig.containerHeight > 2200) {
       this.zoomInDisabled = true;
     } else {
-      this.zoomInDisabled = false;
-    }
+      this.pdfViewerService.docConfSubject.next({
+        containerHeight: this.ZOOM_STEP * this.documentConfig.containerHeight,
+        containerWidth: this.ZOOM_STEP * this.documentConfig.containerWidth,
+      });
+      setTimeout(() => {
+        const textLayer = document.getElementById('textLayer');
+        const zoomLevel =
+          (this.documentConfig.containerHeight * this.ZOOM_STEP) /
+          this.pageHeight;
+        if (textLayer) {
+          textLayer.style.transform = 'scale(' + zoomLevel + ')';
+        }
+        this.documentConfig.containerHeight =
+          this.ZOOM_STEP * this.documentConfig.containerHeight;
+        this.documentConfig.containerWidth =
+          this.ZOOM_STEP * this.documentConfig.containerWidth;
+      }, 0);
 
-    //disable zoom if scale is less than 0.3
-    if (this.incrementScale < 0.3) {
-      this.zoomOutDisabled = true;
-    } else {
       this.zoomOutDisabled = false;
     }
   }
 
   zoomOutImg() {
-    this.incrementScale -= 0.1;
-    if (this.documentPage) {
-      this.documentPage.style.transform = `scale(${this.incrementScale})`;
-      this.transImg.style.transform = `scale(${this.incrementScale})`;
-    }
-
-    //disable zoom if scale is less than 0.3
-    if (this.incrementScale < 0.3) {
+    if (this.documentConfig.containerHeight <= 400) {
       this.zoomOutDisabled = true;
     } else {
-      this.zoomOutDisabled = false;
-    }
+      this.pdfViewerService.docConfSubject.next({
+        containerHeight: this.documentConfig.containerHeight / this.ZOOM_STEP,
+        containerWidth: this.ZOOM_STEP * this.documentConfig.containerWidth,
+      });
+      setTimeout(() => {
+        const textLayer = document.getElementById('textLayer');
+        const zoomLevel =
+          this.documentConfig.containerHeight /
+          this.ZOOM_STEP /
+          this.pageHeight;
+        if (textLayer) {
+          textLayer.style.transform = 'scale(' + zoomLevel + ')';
+        }
+        this.documentConfig.containerHeight =
+          this.documentConfig.containerHeight / this.ZOOM_STEP;
+        this.documentConfig.containerWidth =
+          this.documentConfig.containerWidth / this.ZOOM_STEP;
+      }, 0);
 
-    //disable zoomIn if scale is bigger than 2
-    if (this.incrementScale >= 2.0) {
-      this.zoomInDisabled = true;
-    } else {
       this.zoomInDisabled = false;
     }
   }
 
   fitToPage() {
-    this.zoomInDisabled = false;
-    this.zoomOutDisabled = false;
-    this.documentConfig = { ...this.defaultConfig };
-    this.incrementScale = 1;
-
-    if (this.documentPage) {
-      this.documentPage.style.transform = `scale(1)`;
-      this.transImg.style.transform = `scale(1)`;
-    }
+    this.pdfViewerService.docConfSubject.next({
+      containerHeight: this.pageHeight,
+      containerWidth: this.pageWidth,
+    });
+    setTimeout(() => {
+      const textLayer = document.getElementById('textLayer');
+      const zoomLevel = 1;
+      this.zoomInDisabled = false;
+      this.zoomOutDisabled = false;
+      if (textLayer) {
+        textLayer.style.transform = 'scale(' + zoomLevel + ')';
+      }
+      this.documentConfig.containerHeight = this.pageHeight;
+      this.documentConfig.containerWidth = this.pageWidth;
+    }, 0);
   }
 
   ngOnChanges(changes: SimpleChanges) {

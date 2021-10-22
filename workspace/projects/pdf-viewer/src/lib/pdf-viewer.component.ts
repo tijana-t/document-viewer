@@ -1,17 +1,14 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { skip, takeUntil } from 'rxjs/operators';
 import { PdfViewerService } from './pdf-viewer.service';
 import { DocumentActions } from './_config/document-actions.model';
 import { SearchResult } from './_config/document-search.model';
@@ -28,6 +25,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   @Output('searchDocument') searchDocument = new EventEmitter();
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
+  @Output('linePosition') linePosition = new EventEmitter();
   @Input('searchResult') searchResult: SearchResult[] = [];
   @Input('currentPage') initialPage = 1;
   @Input('token') token?: string = '';
@@ -54,6 +52,14 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   destroy$ = new Subject();
   ngOnInit() {
     this.url = this.router.url;
+
+    this.subscriptions = this.pdfViewerService.lineStatus.subscribe(
+      (status) => {
+        if (status) {
+          this.linePosition.emit();
+        }
+      }
+    );
   }
 
   constructor(

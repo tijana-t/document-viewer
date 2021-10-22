@@ -152,7 +152,6 @@ export class PageNavigationComponent
   }
 
   calculateThumbPosition = (pageNumber?: number) => {
-    console.log('eeeee', pageNumber);
     if (
       this.inputRange &&
       this.bubbleValue &&

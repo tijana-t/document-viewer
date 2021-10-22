@@ -1,7 +1,9 @@
 import {
   AfterViewInit,
   Component,
+  HostListener,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -45,7 +47,10 @@ export class DocumentComponent
   pageNumber: number = 1;
   subscriptions = new Subscription();
   activateTransImg = false;
-  constructor(private pdfViewerService: PdfViewerService) {
+  constructor(
+    private pdfViewerService: PdfViewerService,
+    private ngZone: NgZone
+  ) {
     this.pdfViewerService.mainImg
       .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe((res: string) => {
@@ -57,17 +62,10 @@ export class DocumentComponent
 
   ngOnInit(): void {
     this.documentImage = document.getElementById('docImg');
-
-    this.subscriptions.add(
-      this.pdfViewerService.zoomInStarted.subscribe((res) => {
-        //if (res) this.setTransImgPosition();
-      })
-    );
   }
 
-  setTransImgPosition() {
+  setTransImgPosition(number: number) {
     const outerCont = document.getElementById('outer-cont');
-    // if (outerCont) outerCont.style.position = 'static';
 
     if (this.documentImage && outerCont) {
       const rectObj: DOMRect = this.documentImage.getBoundingClientRect();
@@ -80,19 +78,27 @@ export class DocumentComponent
         right: rectObj.right - rectParent.right,
       };
 
-      console.log('set left');
-      this.imageTopVal = this.relativePosition.top + 'px';
-      this.imageLeftVal = this.relativePosition.left * 1.4 + 'px';
+      this.ngZone.run(() => {
+        this.imageLeftVal = this.relativePosition.left + 'px';
+        this.imageTopVal = this.relativePosition.top + 'px';
+      });
+    }
+    this.pdfViewerService.lineStatus.next(true);
+  }
 
-      // const patt = document.getElementById('container-left');
-      // const sidebar = document.getElementById('sidebar');
-      // const widthToSubstract = patt?.clientWidth;
-
-      // if (widthToSubstract && rectObj && sidebar) {
-      //   this.imageLeftVal =
-      //     rectObj.x - widthToSubstract - sidebar.clientWidth + 'px';
-      //   this.imageTopVal = rectObj.y + 'px';
-      // }
+  scrollToCenter() {
+    const parentElement = document.getElementById('document-container');
+    const childElement = document.getElementById('document-page');
+    let centerY = 0;
+    let centerX = 0;
+    if (parentElement && childElement) {
+      centerY = Math.abs(
+        (parentElement.clientHeight - childElement.clientHeight) / 2
+      );
+      centerX = Math.abs(
+        (parentElement.clientWidth - childElement.clientWidth) / 2
+      );
+      parentElement.scrollTo(centerX, centerY);
     }
   }
   ngOnDestroy(): void {
@@ -100,26 +106,33 @@ export class DocumentComponent
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
     this.observer.unobserve(document.querySelector('#container-right'));
+    this.observer.unobserve(document.querySelector('#document-page'));
   }
   ngAfterViewInit() {
     this.defaultDocConfig = { ...this.documentConfig };
     this.initDrag();
-
     const docContainer = document.getElementById('document-container');
     this.observer = new ResizeObserver((entries: any) => {
-      const widthSet = Math.floor(
-        entries[0].contentRect.width - 60 - 200
-      ).toString();
-      if (docContainer) {
-        docContainer.style.width = widthSet + 'px';
+      for (const entry of entries) {
+        if (entry.target.id === 'container-right') {
+          const widthSet = Math.floor(
+            entries[0].contentRect.width - 60 - 200
+          ).toString();
+          if (docContainer) {
+            docContainer.style.width = widthSet + 'px';
+          }
+        }
+        this.scrollToCenter();
+        this.setTransImgPosition(2);
       }
     });
 
     this.observer.observe(document.querySelector('#container-right'));
+    this.observer.observe(document.querySelector('#document-page'));
   }
 
   scrollEvent(event: Event, documentImage: any) {
-    this.setTransImgPosition();
+    this.setTransImgPosition(4);
   }
 
   initDrag() {
@@ -175,11 +188,13 @@ export class DocumentComponent
 
     this.subscriptions.add(dragStartSub);
     this.subscriptions.add(dragEndSub);
+    this.setTransImgPosition(5);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
     }
+    this.setTransImgPosition(6);
   }
 }
