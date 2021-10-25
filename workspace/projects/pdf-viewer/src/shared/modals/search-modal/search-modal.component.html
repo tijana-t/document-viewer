@@ -60,42 +60,5 @@
       id="searchDocument"
       placeholder="search..."
     />
-    <ng-container *ngIf="groupedByPage && groupedByPage.length > 0">
-      <div
-        style="width: 500px; padding: 10px"
-        ngbDropdownMenu
-        aria-labelledby="searchDocument"
-        class="dropdown-options"
-      >
-        <div
-          *ngFor="
-            let pageResult of groupedByPage;
-            index as index;
-            let last = last
-          "
-        >
-          <span
-            class="dropdown-border"
-            style="font-size: 13px; color: rgb(161, 161, 150)"
-            *ngIf="pageResult[0].pageNums[0]"
-            >PAGE:{{ pageResult[0].pageNums[0] }}</span
-          >
-          <hr style="padding: 0; margin: 0" />
-
-          <button
-            (click)="sendSearchObj(item)"
-            ngbDropdownItem
-            *ngFor="let item of pageResult"
-            style="
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-            "
-          >
-            <span style="font-size: 12px"> {{ item.text }}</span>
-          </button>
-        </div>
-      </div>
-    </ng-container>
   </div>
 </div>

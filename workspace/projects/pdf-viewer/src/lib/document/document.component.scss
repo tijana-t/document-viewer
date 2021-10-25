@@ -32,22 +32,43 @@
       background-color: cv.$main-white;
     }
   }
-}
 
-/* #document-container:before {
-  background: none;
-  border: 1px solid #e4e4e4;
-  content: "";
-  display: block;
-  position: sticky;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  pointer-events: none;
-  border-radius: 8px;
-  height: 100%;
-} */
+  // search-container style
+
+  .dropdown-options {
+    height: 250px;
+    width: 100%;
+    overflow-y: scroll;
+    background-color: cv.$main-white;
+    position: absolute;
+    left: 0;
+    padding: 0px !important;
+  }
+
+  .dropdown-button {
+    text-align: left !important;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    width: 100%;
+  }
+  .dropdown-button:hover {
+    background-color: cv.$main-yellow;
+    color: cv.$main-white;
+  }
+  .page-header {
+    background-color: #f8f8f8;
+    position: sticky;
+    top: 0;
+  }
+  .dropdown-border {
+    margin: 0 !important;
+  }
+}
 
 .shadow-test {
   position: absolute;

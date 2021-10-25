@@ -31,5 +31,39 @@
         [src]="mainImg | secureImg | async"
       />
     </div>
+
+    <!-- search container -->
+    <ng-container *ngIf="groupedByPage && groupedByPage.length > 0">
+      <div
+        style="padding: 10px"
+        aria-labelledby="searchDocument"
+        class="dropdown-options"
+      >
+        <div
+          *ngFor="
+            let pageResult of groupedByPage;
+            index as index;
+            let last = last
+          "
+        >
+          <p
+            class="dropdown-border page-header"
+            style="font-size: 13px; color: rgb(161, 161, 150); padding: 7px"
+            *ngIf="pageResult[0].pageNums[0]"
+          >
+            PAGE:{{ pageResult[0].pageNums[0] }}
+          </p>
+          <hr style="padding: 0; margin: 0" />
+
+          <button
+            class="dropdown-button"
+            (click)="sendSearchObj(item)"
+            *ngFor="let item of pageResult"
+          >
+            <span style="font-size: 12px"> {{ item.text }}</span>
+          </button>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>

@@ -44,7 +44,6 @@
     <lib-search-modal
       class="search-component"
       (searchTextInDoc)="emitSearchedText($event)"
-      (pageSearch)="emitPageSearch($event)"
     >
     </lib-search-modal>
     <lib-document-actions-left
@@ -58,6 +57,7 @@
     <lib-document
       [documentConfig]="documentConfig"
       #document
+      (pageSearch)="emitPageSearch($event)"
       class="document-viewer-container"
     ></lib-document>
   </div>

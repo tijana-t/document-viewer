@@ -33,6 +33,8 @@ export class SearchModalComponent implements OnInit {
               this.groupedByPage.push(groupedSearchResult[obj]);
             }
           }
+          this.pdfViewerService.groupedByPageSubj.next(this.groupedByPage);
+
           if (this.groupedByPage) {
             const importantPages: number[] = this.groupedByPage.map(
               (arr: any) => arr[0].pageNums[0]
@@ -99,6 +101,8 @@ export class SearchModalComponent implements OnInit {
         highlightedElements.forEach((el) => el.remove());
       }
       this.groupedByPage = [];
+      this.pdfViewerService.groupedByPageSubj.next(null);
+
       this.searchSubject.next(null);
     } else {
       this.searchSubject.next(event);

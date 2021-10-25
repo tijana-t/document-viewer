@@ -1,18 +1,20 @@
 import {
   AfterViewInit,
   Component,
-  HostListener,
+  EventEmitter,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { fromEvent, Subject, Subscription } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
 import { PdfViewerService } from '../pdf-viewer.service';
+import { SearchResult } from '../_config/document-search.model';
 import { DocumentConfig } from '../_config/document.model';
 import { Thumbnail } from '../_config/thumbnail.model';
 
@@ -29,6 +31,7 @@ export class DocumentComponent
   documentImage: any;
   mainImg: string = '';
   @ViewChild('docImg') docImage: any;
+  @Output('pageSearch') pageSearch = new EventEmitter();
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
     containerHeight: 0,
@@ -47,6 +50,7 @@ export class DocumentComponent
   pageNumber: number = 1;
   subscriptions = new Subscription();
   activateTransImg = false;
+  groupedByPage: any;
   constructor(
     private pdfViewerService: PdfViewerService,
     private ngZone: NgZone
@@ -59,10 +63,20 @@ export class DocumentComponent
           this.pdfViewerService.fitToPage.next(true);
         }
       });
+
+    this.subscriptions = this.pdfViewerService.groupedByPageSubj
+      .pipe(skip(1), takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        this.groupedByPage = res;
+      });
   }
 
   ngOnInit(): void {
     this.documentImage = document.getElementById('docImg');
+  }
+
+  sendSearchObj(pageSearch: SearchResult) {
+    this.pageSearch.next([pageSearch]);
   }
 
   setTransImgPosition(number: number) {
