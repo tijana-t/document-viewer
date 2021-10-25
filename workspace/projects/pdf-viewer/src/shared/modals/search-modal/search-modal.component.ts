@@ -33,25 +33,53 @@ export class SearchModalComponent implements OnInit {
               this.groupedByPage.push(groupedSearchResult[obj]);
             }
           }
+          if (this.groupedByPage) {
+            const importantPages: number[] = this.groupedByPage.map(
+              (arr: any) => arr[0].pageNums[0]
+            );
+            this.pdfViewerService.importantPages.next(importantPages);
+          }
         }
       )
     );
+    5;
 
     //wait small amount of time before another request is called
     this.subscriptions.add(
       this.searchSubject
-        .pipe(debounceTime(350), distinctUntilChanged())
+        .pipe(debounceTime(800), distinctUntilChanged())
         .subscribe((res: any) => {
           if (res) {
-            console.log('from subscribe');
             this.searchTextInDoc.emit(res);
+          } else {
+            this.pdfViewerService.importantPages.next([]);
           }
         })
     );
+
+    this.subscriptions.add(
+      this.pdfViewerService.activateSearch.subscribe((pageNumber) => {
+        if (this.groupedByPage && pageNumber !== 0) {
+          for (const pageResult of this.groupedByPage) {
+            if (pageResult[0].pageNums[0] === pageNumber) {
+              this.pageSearch.next(pageResult);
+            }
+          }
+          // if we don't have searchedText on selected page, remove selection if already existed
+        } else if (pageNumber === 0) {
+          const highlightedElements = document.querySelectorAll(
+            `[class*="search-intent"]`
+          );
+          if (highlightedElements) {
+            highlightedElements.forEach((el) => el.remove());
+          }
+        }
+      })
+    );
   }
-  sendSearchObj(pageSearch: SearchResult[]) {
+  sendSearchObj(pageSearch: SearchResult) {
     console.log({ pageSearch });
-    this.pageSearch.next(pageSearch);
+    this.pageSearch.next([pageSearch]);
   }
 
   groupByPageNumber(array: SearchResult[]): { [key: number]: SearchResult[] } {
@@ -71,6 +99,7 @@ export class SearchModalComponent implements OnInit {
         highlightedElements.forEach((el) => el.remove());
       }
       this.groupedByPage = [];
+      this.searchSubject.next(null);
     } else {
       this.searchSubject.next(event);
     }

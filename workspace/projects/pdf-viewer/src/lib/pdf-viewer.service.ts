@@ -20,6 +20,8 @@ export class PdfViewerService {
   });
   pageInfo = new BehaviorSubject<any>({});
   mainImg = new BehaviorSubject<string>('');
+  importantPages = new BehaviorSubject<number[]>([0]);
+  activateSearch = new BehaviorSubject<number>(0);
 
   constructor() {}
 }

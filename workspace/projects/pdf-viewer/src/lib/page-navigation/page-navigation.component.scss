@@ -137,11 +137,17 @@
     .important-page {
       border-radius: 50%;
       position: absolute;
-      top: 6px;
       left: -4px;
-      background-color: cv.$main-green;
       width: 8px;
       height: 8px;
+    }
+    .mark {
+      background-color: cv.$main-green;
+      top: 6px;
+    }
+    .search {
+      background-color: #e0d3f0;
+      bottom: 6px;
     }
 
     //spinner style

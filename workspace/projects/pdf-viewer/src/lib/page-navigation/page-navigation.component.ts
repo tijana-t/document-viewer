@@ -47,13 +47,28 @@ export class PageNavigationComponent
   previousPageNum: number = 1;
   scrolling = false;
   timeout: any = null;
+  subscriptions = new Subscription();
+  importantPages: number[] = [0];
 
-  constructor(private pdfViewerService: PdfViewerService) {}
+  constructor(private pdfViewerService: PdfViewerService) {
+    this.subscriptions.add(
+      this.pdfViewerService.importantPages.subscribe((res: number[]) => {
+        this.importantPages = res;
+        for (const thumb of this.thumbnails) {
+          if (this.importantPages.find((page) => page === parseInt(thumb.id))) {
+            thumb.hasSearchedText = true;
+          } else {
+            thumb.hasSearchedText = false;
+          }
+        }
+      })
+    );
+  }
 
   ngOnInit(): void {
     //wait small amount of time before another request is called
     this.results$ = this.searchSubject
-      .pipe(debounceTime(250), distinctUntilChanged())
+      .pipe(debounceTime(800), distinctUntilChanged())
       .subscribe((res: number) => {
         if (res) {
           this.scrollToPageNumber(res, true);
@@ -78,23 +93,17 @@ export class PageNavigationComponent
 
   ngAfterViewInit() {}
   searchPage(pageNumber: number) {
-    // whait while user is finished typing
-    clearTimeout(this.timeout);
-    var $this = this;
-    this.timeout = setTimeout(function () {
-      if (
-        pageNumber >= $this.thumbnails.length &&
-        $this.thumbnails.length - 1 > 0
-      ) {
-        $this.pageNumber = $this.thumbnails.length;
-      } else if (pageNumber < 1) {
-        $this.pageNumber = 1;
-      } else {
-        $this.pageNumber = pageNumber;
-      }
-      $this.clearTextLayer();
-      $this.searchSubject.next($this.pageNumber);
-    }, 800);
+    if (
+      pageNumber >= this.thumbnails.length &&
+      this.thumbnails.length - 1 > 0
+    ) {
+      this.pageNumber = this.thumbnails.length;
+    } else if (pageNumber < 1) {
+      this.pageNumber = 1;
+    } else {
+      this.pageNumber = pageNumber;
+    }
+    this.searchSubject.next(this.pageNumber);
   }
 
   //scrolls thumbnail container and updates thumb position
@@ -118,7 +127,7 @@ export class PageNavigationComponent
   }
 
   //fires on thumbnail click
-  changePage(pageNumber: number) {
+  changePage(pageNumber: number, thumbnail: Thumbnail) {
     this.pageNumber = pageNumber;
 
     if (this.pageNumber !== this.oldPageNumber) {
@@ -126,8 +135,12 @@ export class PageNavigationComponent
 
       this.clearTextLayer();
     }
-
     this.oldPageNumber = pageNumber;
+    if (thumbnail.hasSearchedText) {
+      this.pdfViewerService.activateSearch.next(pageNumber);
+    } else {
+      this.pdfViewerService.activateSearch.next(0);
+    }
   }
 
   clearTextLayer() {

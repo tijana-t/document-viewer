@@ -22,7 +22,7 @@
   >
     <div
       *ngFor="let image of thumbnails; index as i"
-      (click)="changePage(i + 1)"
+      (click)="changePage(i + 1, image)"
       #thumbnailImage
       id="img-{{ i + 1 }}"
       style="position: relative"
@@ -48,7 +48,8 @@
       >
         {{ i + 1 }}
       </span>
-      <span class="important-page" *ngIf="image.isImportant"></span>
+      <span class="important-page mark" *ngIf="image.isImportant"></span>
+      <span class="important-page search" *ngIf="image.hasSearchedText"></span>
     </div>
   </div>
   <div class="shadow-over"></div>

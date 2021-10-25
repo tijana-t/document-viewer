@@ -3,4 +3,5 @@ export type Thumbnail = {
   src: any;
   show?: boolean;
   isImportant?: boolean;
+  hasSearchedText?: boolean;
 };
