@@ -23,6 +23,7 @@ export class PdfViewerService {
   importantPages = new BehaviorSubject<number[]>([0]);
   activateSearch = new BehaviorSubject<number>(0);
   groupedByPageSubj = new BehaviorSubject<any>(null);
+  searchValue = new BehaviorSubject<string>('');
 
   constructor() {}
 }

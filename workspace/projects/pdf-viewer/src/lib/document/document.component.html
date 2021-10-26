@@ -15,7 +15,7 @@
       [ngClass]="{ 'colaps-search-box': colapsSearchStatus }"
     >
       <div class="info-search">
-        {{ groupedByPage.length }} search found
+        "{{ searchValueForDoc }}" {{ groupedByPage.length }} search found
         <span
           class="typcn typcn-chevron-left colaps-search"
           [ngClass]="{ 'colaps-search-rotate': colapsSearchStatus }"
@@ -41,7 +41,7 @@
           (click)="sendSearchObj(item)"
           *ngFor="let item of pageResult"
         >
-          <span> {{ item.text }}</span>
+          <span [innerHTML]="findSearchItemIn(item.text)"> </span>
         </button>
       </div>
     </div>

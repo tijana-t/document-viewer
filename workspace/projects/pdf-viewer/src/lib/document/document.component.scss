@@ -104,6 +104,11 @@
     color: cv.$main-yellow;
   }
 
+  .selected-search {
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
   .colaps-search-rotate {
     transform: rotate(90deg);
   }
@@ -128,7 +133,7 @@
     span {
       font-size: 12px;
       padding: 8px 0;
-      display: block;
+      display: inline-block;
     }
   }
   .dropdown-button:not(:last-child) {

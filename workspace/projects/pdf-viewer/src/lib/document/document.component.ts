@@ -10,6 +10,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { fromEvent, Subject, Subscription } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
@@ -23,6 +24,7 @@ declare var ResizeObserver: any;
   selector: 'lib-document',
   templateUrl: './document.component.html',
   styleUrls: ['./document.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class DocumentComponent
   implements OnInit, AfterViewInit, OnDestroy, OnChanges
@@ -54,6 +56,7 @@ export class DocumentComponent
   noSearchItems = false;
   searchInit = 0;
   colapsSearchStatus = false;
+  searchValueForDoc: string = '';
   constructor(
     private pdfViewerService: PdfViewerService,
     private ngZone: NgZone
@@ -67,6 +70,14 @@ export class DocumentComponent
         }
       });
 
+    this.subscriptions = this.pdfViewerService.searchValue.subscribe(
+      (res: string) => {
+        if (res) {
+          this.searchValueForDoc = res;
+        }
+      }
+    );
+
     this.subscriptions = this.pdfViewerService.groupedByPageSubj
       .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe((res: any) => {
@@ -75,7 +86,6 @@ export class DocumentComponent
             this.groupedByPage = res;
             this.noSearchItems = false;
           } else if (res.length === 0 && this.searchInit > 0) {
-            console.log('nemaaa');
             this.groupedByPage = [];
             this.noSearchItems = true;
             setTimeout(() => {
@@ -134,13 +144,24 @@ export class DocumentComponent
       parentElement.scrollTo(centerX, centerY);
     } */
   }
+
+  findSearchItemIn(sentence: string) {
+    return sentence.replace(
+      this.searchValueForDoc,
+      '<span class="selected-search">' + this.searchValueForDoc + '</span>'
+    );
+  }
+
   ngOnDestroy(): void {
+    this.groupedByPage = [];
+    this.noSearchItems = false;
     this.destroy$.next();
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
     this.observer.unobserve(document.querySelector('#container-right'));
     this.observer.unobserve(document.querySelector('#document-page'));
   }
+
   ngAfterViewInit() {
     this.defaultDocConfig = { ...this.documentConfig };
     this.initDrag();
@@ -230,6 +251,8 @@ export class DocumentComponent
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
+      this.groupedByPage = [];
+      this.noSearchItems = false;
       this.documentConfig = changes['documentConfig'].currentValue;
     }
     this.setTransImgPosition(6);

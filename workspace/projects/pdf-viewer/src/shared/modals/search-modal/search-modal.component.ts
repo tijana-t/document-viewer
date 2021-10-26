@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { SearchResult } from 'projects/pdf-viewer/src/lib/_config/document-search.model';
 import { SearchConfig } from 'projects/pdf-viewer/src/lib/_config/search.model';
 import { Subject, Subscription } from 'rxjs';
@@ -10,7 +16,7 @@ import { PdfViewerService } from '../../../lib/pdf-viewer.service';
   templateUrl: './search-modal.component.html',
   styleUrls: ['./search-modal.component.scss'],
 })
-export class SearchModalComponent implements OnInit {
+export class SearchModalComponent implements OnInit, OnDestroy {
   @Output('searchTextInDoc') searchTextInDoc = new EventEmitter();
   @Output('pageSearch') pageSearch = new EventEmitter();
   searchDocument = '';
@@ -114,6 +120,12 @@ export class SearchModalComponent implements OnInit {
     } else {
       this.searchLoader = true;
       this.searchSubject.next(event);
+      this.pdfViewerService.searchValue.next(event);
     }
+  }
+
+  ngOnDestroy() {
+    this.cleanSearch();
+    this.subscriptions.unsubscribe();
   }
 }
