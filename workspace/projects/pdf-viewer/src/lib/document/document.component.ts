@@ -51,6 +51,9 @@ export class DocumentComponent
   subscriptions = new Subscription();
   activateTransImg = false;
   groupedByPage: any;
+  noSearchItems = false;
+  searchInit = 0;
+  colapsSearchStatus = false;
   constructor(
     private pdfViewerService: PdfViewerService,
     private ngZone: NgZone
@@ -67,7 +70,22 @@ export class DocumentComponent
     this.subscriptions = this.pdfViewerService.groupedByPageSubj
       .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe((res: any) => {
-        this.groupedByPage = res;
+        if (res) {
+          if (res.length > 0) {
+            this.groupedByPage = res;
+            this.noSearchItems = false;
+          } else if (res.length === 0 && this.searchInit > 0) {
+            console.log('nemaaa');
+            this.groupedByPage = [];
+            this.noSearchItems = true;
+            setTimeout(() => {
+              this.noSearchItems = false;
+            }, 3000);
+          }
+        } else {
+          this.groupedByPage = [];
+        }
+        this.searchInit = 1;
       });
   }
 
@@ -204,6 +222,10 @@ export class DocumentComponent
     this.subscriptions.add(dragStartSub);
     this.subscriptions.add(dragEndSub);
     this.setTransImgPosition(5);
+  }
+
+  colapsSearch() {
+    this.colapsSearchStatus = !this.colapsSearchStatus;
   }
 
   ngOnChanges(changes: SimpleChanges) {

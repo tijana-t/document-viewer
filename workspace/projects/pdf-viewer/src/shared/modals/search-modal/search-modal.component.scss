@@ -12,10 +12,65 @@ input[type="text"] {
   border: 1px solid cv.$main-white;
 }
 
+.search-loader > svg {
+  animation-name: loaderSearch;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  transition: all ease-in;
+}
+
+@keyframes loaderSearch {
+  0% {
+    fill: cv.$main-yellow;
+  }
+  50% {
+    fill: cv.$font-main;
+  }
+  100% {
+    fill: cv.$main-yellow;
+  }
+}
+
+.search-loader > svg > g > g > #search-dot {
+  animation-name: loaderSearchDot;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  transition: all ease-in;
+  transform-origin: 11% 7%;
+  transition-property: all;
+}
+
+@keyframes loaderSearchDot {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  50% {
+    transform: translate(20px, 15px);
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+
 .search-icon > svg {
   height: 16px;
   margin-top: -3px;
   fill: cv.$light-gray;
+}
+
+.close-search {
+  color: cv.$font-main;
+  position: absolute;
+  top: 3px;
+  z-index: 9999999;
+  display: block;
+  right: 10px;
+  cursor: pointer;
+  transition: ease-in all 0.3s;
+}
+
+.close-search:hover {
+  color: cv.$main-yellow;
 }
 
 .search-container {

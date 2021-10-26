@@ -20,6 +20,7 @@ export class SearchModalComponent implements OnInit {
   };
   searchSubject = new Subject();
   groupedByPage: any;
+  searchLoader = false;
   constructor(private pdfViewerService: PdfViewerService) {}
 
   ngOnInit(): void {
@@ -41,6 +42,7 @@ export class SearchModalComponent implements OnInit {
             );
             this.pdfViewerService.importantPages.next(importantPages);
           }
+          this.searchLoader = false;
         }
       )
     );
@@ -91,20 +93,26 @@ export class SearchModalComponent implements OnInit {
       return r;
     }, Object.apply(null));
   }
-  searchTextInDocument(event: string) {
-    if (event === '') {
-      // if we delete input, remove highlighted elements
-      const highlightedElements = document.querySelectorAll(
-        `[class*="search-intent"]`
-      );
-      if (highlightedElements) {
-        highlightedElements.forEach((el) => el.remove());
-      }
-      this.groupedByPage = [];
-      this.pdfViewerService.groupedByPageSubj.next(null);
 
-      this.searchSubject.next(null);
+  cleanSearch() {
+    // if we delete input, remove highlighted elements
+    this.searchDocument = '';
+    const highlightedElements = document.querySelectorAll(
+      `[class*="search-intent"]`
+    );
+    if (highlightedElements) {
+      highlightedElements.forEach((el) => el.remove());
+    }
+    this.groupedByPage = [];
+    this.pdfViewerService.groupedByPageSubj.next(null);
+    this.searchSubject.next(null);
+  }
+
+  searchTextInDocument(event: string) {
+    if (event.length < 3) {
+      this.cleanSearch();
     } else {
+      this.searchLoader = true;
       this.searchSubject.next(event);
     }
   }

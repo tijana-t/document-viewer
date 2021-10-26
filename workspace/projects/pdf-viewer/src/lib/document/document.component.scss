@@ -34,40 +34,6 @@
   }
 
   // search-container style
-
-  .dropdown-options {
-    height: 250px;
-    width: 100%;
-    overflow-y: scroll;
-    background-color: cv.$main-white;
-    position: absolute;
-    left: 0;
-    padding: 0px !important;
-  }
-
-  .dropdown-button {
-    text-align: left !important;
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-    width: 100%;
-  }
-  .dropdown-button:hover {
-    background-color: cv.$main-yellow;
-    color: cv.$main-white;
-  }
-  .page-header {
-    background-color: #f8f8f8;
-    position: sticky;
-    top: 0;
-  }
-  .dropdown-border {
-    margin: 0 !important;
-  }
 }
 
 .shadow-test {
@@ -92,6 +58,100 @@
     transform-origin: center top;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .dropdown-options {
+    max-height: 30%;
+    width: calc(100% - 18px);
+    overflow-y: scroll;
+    background-color: cv.$main-white;
+    position: absolute;
+    left: 4px;
+    padding: 0 !important;
+    bottom: 4px;
+    min-height: 0%;
+    z-index: 3;
+    transition: all 0.3s;
+    box-shadow: rgb(50 50 93 / 15%) 0px -50px 60px -20px,
+      rgb(0 0 0 / 20%) 0px -30px 25px -30px;
+  }
+
+  .info-search {
+    margin-bottom: 0;
+    text-align: center;
+    padding: 4px;
+    font-size: 12px;
+    color: #707070;
+    background: cv.$main-white;
+    position: sticky;
+    top: 0px;
+    border-bottom: 1px solid cv.$main-yellow;
+    z-index: 9;
+  }
+
+  .colaps-search {
+    color: cv.$font-main;
+    float: right;
+    transform: rotate(270deg);
+    transform-origin: center center;
+    font-size: 16px;
+    margin-right: 4px;
+    margin-top: -2px;
+    transition: all ease-in 0.3s;
+  }
+
+  .colaps-search:hover {
+    color: cv.$main-yellow;
+  }
+
+  .colaps-search-rotate {
+    transform: rotate(90deg);
+  }
+
+  .colaps-search-box {
+    max-height: 27px;
+  }
+
+  .dropdown-button {
+    text-align: left !important;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0 8px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    width: 100%;
+    border-radius: 4px;
+    transition: all 0.2s ease-in;
+
+    span {
+      font-size: 12px;
+      padding: 8px 0;
+      display: block;
+    }
+  }
+  .dropdown-button:not(:last-child) {
+    border-bottom: 1px dashed #cdcdcd;
+  }
+  .dropdown-button:hover {
+    background-color: cv.$main-yellow;
+    color: cv.$font-main;
+  }
+  .page-header {
+    background-color: #f8f8f8;
+    position: sticky;
+    top: 27px;
+  }
+  .dropdown-border {
+    margin: 0 !important;
+    font-size: 13px;
+    color: cv.$main-yellow;
+    padding: 7px;
+    font-weight: 700;
+    padding: 8px;
+    border: 0.5px solid #dadada;
+    border-radius: 4px;
   }
 }
 

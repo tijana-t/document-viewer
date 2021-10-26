@@ -2,7 +2,10 @@
   [ngStyle]="{ width: config.containerWidth + 'px' }"
   class="align-items-strech form-group search-container"
 >
-  <span class="search-icon">
+  <span
+    class="search-icon search-loader"
+    [ngClass]="{ 'search-loader': searchLoader }"
+  >
     <svg
       version="1.1"
       id="Capa_1"
@@ -17,6 +20,7 @@
       <g>
         <g>
           <path
+            id="search-dot"
             d="M141.367,116.518c-7.384-7.39-19.364-7.39-26.748,0c-27.416,27.416-40.891,65.608-36.975,104.79
 			c0.977,9.761,9.2,17.037,18.803,17.037c0.631,0,1.267-0.032,1.898-0.095c10.398-1.04,17.983-10.316,16.943-20.707
 			c-2.787-27.845,6.722-54.92,26.079-74.278C148.757,135.882,148.757,123.901,141.367,116.518z"
@@ -49,6 +53,11 @@
     class="d-inline-block mr-1 dropdown-container"
     placement="top-right"
   >
+    <span
+      class="typcn typcn-times close-search"
+      *ngIf="searchDocument.length > 0"
+      (click)="cleanSearch()"
+    ></span>
     <input
       type="text"
       class="form-control"
