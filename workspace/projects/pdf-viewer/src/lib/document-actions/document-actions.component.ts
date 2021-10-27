@@ -63,6 +63,7 @@ export class DocumentActionsComponent
     this.defaultConfig = { ...this.documentConfig };
     this.pageHeight = this.defaultConfig.containerHeight;
     this.pageWidth = this.defaultConfig.containerWidth;
+    this.scrollEvent();
   }
 
   zoomInImg() {
@@ -85,6 +86,7 @@ export class DocumentActionsComponent
           this.ZOOM_STEP * this.documentConfig.containerHeight;
         this.documentConfig.containerWidth =
           this.ZOOM_STEP * this.documentConfig.containerWidth;
+        this.scrollEvent();
       }, 0);
 
       this.zoomOutDisabled = false;
@@ -112,6 +114,7 @@ export class DocumentActionsComponent
           this.documentConfig.containerHeight / this.ZOOM_STEP;
         this.documentConfig.containerWidth =
           this.documentConfig.containerWidth / this.ZOOM_STEP;
+        this.scrollEvent();
       }, 0);
 
       this.zoomInDisabled = false;
@@ -135,12 +138,26 @@ export class DocumentActionsComponent
       }
       this.documentConfig.containerHeight = this.pageHeight;
       this.documentConfig.containerWidth = this.pageWidth;
+      this.scrollEvent();
     }, 0);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
+      this.scrollEvent();
+    }
+  }
+
+  scrollEvent() {
+    const documentContainer = document.getElementById('document-container');
+    if (documentContainer) {
+      console.log(documentContainer.scrollHeight);
+      if (documentContainer.scrollWidth > documentContainer.clientWidth) {
+        this.pdfViewerService.zoomXStatus.next(true);
+      } else {
+        this.pdfViewerService.zoomXStatus.next(false);
+      }
     }
   }
 

@@ -86,7 +86,12 @@
     position: sticky;
     top: 0px;
     border-bottom: 1px solid cv.$main-yellow;
+    border-top: 1px solid #dbe2e8;
     z-index: 9;
+  }
+
+  .scroll-x {
+    bottom: 14px;
   }
 
   .colaps-search {

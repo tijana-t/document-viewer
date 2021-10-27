@@ -12,10 +12,13 @@
       style="padding: 10px"
       aria-labelledby="searchDocument"
       class="dropdown-options"
-      [ngClass]="{ 'colaps-search-box': colapsSearchStatus }"
+      [ngClass]="{
+        'colaps-search-box': colapsSearchStatus,
+        'scroll-x': scrollVisibleX
+      }"
     >
       <div class="info-search">
-        "{{ searchValueForDoc }}" {{ groupedByPage.length }} search found
+        {{ groupedByPage.length }} search found for "{{ searchValueForDoc }}"
         <span
           class="typcn typcn-chevron-left colaps-search"
           [ngClass]="{ 'colaps-search-rotate': colapsSearchStatus }"
