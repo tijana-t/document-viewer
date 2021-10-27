@@ -32,7 +32,7 @@ export class DocumentComponent
   @ViewChild('documentCanvas') documentCanvas: any;
   documentImage: any;
   mainImg: string = '';
-  @ViewChild('docImg') docImage: any;
+  @ViewChild('docContainer') docImage: any;
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
@@ -104,7 +104,11 @@ export class DocumentComponent
   }
 
   sendSearchObj(pageSearch: SearchResult) {
-    this.pageSearch.next([pageSearch]);
+    this.colapsSearchStatus = !this.colapsSearchStatus;
+    this.pageSearch.next({
+      pageSearch: [pageSearch],
+      pageNumber: pageSearch.pageNums[0],
+    });
   }
 
   setTransImgPosition(number: number) {
@@ -164,7 +168,7 @@ export class DocumentComponent
 
   ngAfterViewInit() {
     this.defaultDocConfig = { ...this.documentConfig };
-    this.initDrag();
+    // this.initDrag();
     const docContainer = document.getElementById('document-container');
     this.observer = new ResizeObserver((entries: any) => {
       for (const entry of entries) {
@@ -236,7 +240,7 @@ export class DocumentComponent
     const dragEndSub = dragEnd$.subscribe((event) => {
       if (this.docImage.nativeElement) {
         this.docImage.nativeElement.style.cursor = 'grab';
-        this.documentImage.nativeElement.style.removeProperty('user-select');
+        this.docImage.nativeElement.style.removeProperty('user-select');
       }
     });
 

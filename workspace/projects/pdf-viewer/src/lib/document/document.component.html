@@ -60,7 +60,11 @@
     id="trans-img"
     alt=""
   />
-  <div (scroll)="scrollEvent($event, documentImage)" id="document-container">
+  <div
+    #docContainer
+    (scroll)="scrollEvent($event, documentImage)"
+    id="document-container"
+  >
     <!--  <div class="shadow-test"></div> -->
     <div
       class="document-page"
@@ -74,7 +78,7 @@
         [attr.height]="documentConfig.containerHeight + 'px'"
         [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImg"
-        #docImg
+        #documentImage
         [src]="mainImg | secureImg | async"
       />
     </div>

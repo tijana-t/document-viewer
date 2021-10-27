@@ -42,6 +42,7 @@
       id="viewer"
     ></lib-document-actions>
     <lib-search-modal
+      (pageSearch)="emitPageSearch($event)"
       class="search-component"
       (searchTextInDoc)="emitSearchedText($event)"
     >

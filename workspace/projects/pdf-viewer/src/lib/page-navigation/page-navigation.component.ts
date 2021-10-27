@@ -71,6 +71,14 @@ export class PageNavigationComponent
       .pipe(debounceTime(800), distinctUntilChanged())
       .subscribe((res: number) => {
         if (res) {
+          const thumbnail = this.thumbnails.find(
+            (thumb) => thumb.id == res.toString()
+          );
+          if (thumbnail && thumbnail.hasSearchedText) {
+            this.pdfViewerService.activateSearch.next(res);
+          } else {
+            this.pdfViewerService.activateSearch.next(0);
+          }
           this.scrollToPageNumber(res, true);
         }
       });

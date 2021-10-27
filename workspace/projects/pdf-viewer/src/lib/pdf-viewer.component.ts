@@ -8,13 +8,13 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { PdfViewerService } from './pdf-viewer.service';
 import { DocumentActions } from './_config/document-actions.model';
 import { SearchResult } from './_config/document-search.model';
 import { DocumentConfig } from './_config/document.model';
 import { Thumbnail } from './_config/thumbnail.model';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'lib-pdf-viewer',
@@ -72,8 +72,11 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   emitSearchedText(event: any) {
     this.searchDocument.emit(event);
   }
-  emitPageSearch(pageSearch: SearchResult[]) {
-    this.pageSearch.next(pageSearch);
+  emitPageSearch(result: { pageSearch: SearchResult[]; pageNumber: number }) {
+    this.pageSearch.next({
+      pageSearch: result.pageSearch,
+      pageNumber: result.pageNumber,
+    });
   }
 
   triggerTextLayerCreation(event: Event) {
