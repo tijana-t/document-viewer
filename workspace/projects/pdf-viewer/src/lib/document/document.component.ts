@@ -57,6 +57,8 @@ export class DocumentComponent
   searchInit = 0;
   colapsSearchStatus = false;
   searchValueForDoc: string = '';
+  scrollVisibleX: boolean = false;
+
   constructor(
     private pdfViewerService: PdfViewerService,
     private ngZone: NgZone
@@ -75,6 +77,12 @@ export class DocumentComponent
         if (res) {
           this.searchValueForDoc = res;
         }
+      }
+    );
+
+    this.subscriptions = this.pdfViewerService.zoomXStatus.subscribe(
+      (res: boolean) => {
+        this.scrollVisibleX = res;
       }
     );
 
