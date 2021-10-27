@@ -150,15 +150,17 @@ export class DocumentActionsComponent
   }
 
   scrollEvent() {
-    const documentContainer = document.getElementById('document-container');
-    if (documentContainer) {
-      console.log(documentContainer.scrollHeight);
-      if (documentContainer.scrollWidth > documentContainer.clientWidth) {
-        this.pdfViewerService.zoomXStatus.next(true);
-      } else {
-        this.pdfViewerService.zoomXStatus.next(false);
+    setTimeout(() => {
+      const documentContainer = document.getElementById('document-container');
+      if (documentContainer) {
+        console.log(documentContainer.scrollHeight);
+        if (documentContainer.scrollWidth > documentContainer.clientWidth) {
+          this.pdfViewerService.zoomXStatus.next(true);
+        } else {
+          this.pdfViewerService.zoomXStatus.next(false);
+        }
       }
-    }
+    }, 300);
   }
 
   ngOnDestroy() {
