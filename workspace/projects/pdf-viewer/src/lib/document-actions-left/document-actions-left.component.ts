@@ -6,6 +6,8 @@ import {
   OnInit,
   SimpleChanges,
   OnDestroy,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { DocumentComponent } from '../document/document.component';
 import { PdfViewerService } from '../pdf-viewer.service';
@@ -32,6 +34,7 @@ export class DocumentActionsLeftComponent
     informationHelp: '',
     downloadPdfPlain: '',
   };
+  @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
   defaultConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
 
   constructor(private pdfViewerService: PdfViewerService) {}
@@ -51,6 +54,10 @@ export class DocumentActionsLeftComponent
   openModal() {
     this.modalStatus = true;
     this.pdfViewerService.modalStatus.next(this.modalStatus);
+  }
+
+  downloadDocument() {
+    this.downloadDocumentEvent.emit(true);
   }
 
   ngOnChanges(changes: SimpleChanges) {

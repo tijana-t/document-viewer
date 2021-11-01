@@ -24,6 +24,7 @@ import { Thumbnail } from './_config/thumbnail.model';
 export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   @Output('searchDocument') searchDocument = new EventEmitter();
   @Output('pageSearch') pageSearch = new EventEmitter();
+  @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
   @Output('linePosition') linePosition = new EventEmitter();
   @Input('searchResult') searchResult: SearchResult[] = [];
@@ -81,6 +82,10 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
 
   triggerTextLayerCreation(event: Event) {
     this.triggerTextLayer.emit(event);
+  }
+
+  downloadDocument(event: Event) {
+    this.downloadDocumentEvent.emit(event);
   }
 
   ngOnChanges(changes: SimpleChanges) {

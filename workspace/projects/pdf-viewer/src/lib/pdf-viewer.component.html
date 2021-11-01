@@ -48,6 +48,7 @@
     >
     </lib-search-modal>
     <lib-document-actions-left
+      (downloadDocument)="downloadDocument($event)"
       class="document-actions-left-container"
       id="viewer"
       [documentActionsSrc]="documentActionsSrc"
