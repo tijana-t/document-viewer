@@ -110,7 +110,6 @@
 .disable-next-prev:hover {
   text-shadow: none !important;
   cursor: default !important;
-  opacity: 0.7;
 }
 
 .doc-next:hover,
@@ -126,4 +125,7 @@
 :host ::ng-deep .viewer-container:hover .doc-prev {
   opacity: 1;
   margin-right: 10px;
+}
+:host ::ng-deep .viewer-container:hover .disable-next-prev {
+  opacity: 0.6;
 }

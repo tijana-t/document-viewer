@@ -8,7 +8,6 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { PdfViewerService } from './pdf-viewer.service';
 import { DocumentActions } from './_config/document-actions.model';
@@ -23,6 +22,7 @@ import { Thumbnail } from './_config/thumbnail.model';
 })
 export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   @Output('searchDocument') searchDocument = new EventEmitter();
+  @Output('changeDocument') changeDocument = new EventEmitter();
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
@@ -48,12 +48,9 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   @Input('params') params: any;
   @Input('singleDocument') singleDocument: any;
   @Input('inProjects') inProjects: any;
-  private url: string = '';
   subscriptions = new Subscription();
   destroy$ = new Subject();
   ngOnInit() {
-    this.url = this.router.url;
-
     this.subscriptions = this.pdfViewerService.lineStatus.subscribe(
       (status) => {
         if (status) {
@@ -63,10 +60,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
     );
   }
 
-  constructor(
-    private pdfViewerService: PdfViewerService,
-    private router: Router
-  ) {}
+  constructor(private pdfViewerService: PdfViewerService) {}
 
   ngAfterViewInit() {}
 
@@ -114,58 +108,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
     this.subscriptions.unsubscribe();
   }
 
-  clearTextLayer() {
-    const borderElems: any = document.querySelectorAll('.border-intent');
-    if (borderElems)
-      borderElems.forEach((item: Element) => {
-        item.remove();
-      });
-
-    const SpanElems: any = document.querySelectorAll('.gray-border');
-    if (SpanElems)
-      SpanElems.forEach((item: Element) => {
-        item.remove();
-      });
-  }
-
   changeDoc(status: boolean) {
-    this.clearTextLayer();
-    if (!this.inProjects) {
-      if (status) {
-        this.router.navigateByUrl(
-          `/training/models/${this.url.split('/')[3]}/${this.params.modelId}/${
-            this.url.split('/')[5]
-          }/${this.singleDocument.next.id}/${
-            this.singleDocument.next.fileName
-          }/1/`
-        );
-      } else {
-        this.router.navigateByUrl(
-          `/training/models/${this.url.split('/')[3]}/${this.params.modelId}/${
-            this.url.split('/')[5]
-          }/${this.singleDocument.prev.id}/${
-            this.singleDocument.prev.fileName
-          }/1/`
-        );
-      }
-    } else {
-      if (status) {
-        this.router.navigateByUrl(
-          `/projects/viewer/${this.url.split('/')[3]}/${
-            this.url.split('/')[4]
-          }/${this.singleDocument.next.id}/${
-            this.singleDocument.next.fileName
-          }/1/`
-        );
-      } else {
-        this.router.navigateByUrl(
-          `/projects/viewer/${this.url.split('/')[3]}/${
-            this.url.split('/')[4]
-          }/${this.singleDocument.prev.id}/${
-            this.singleDocument.prev.fileName
-          }/1/`
-        );
-      }
-    }
+    this.changeDocument.emit(status);
   }
 }
