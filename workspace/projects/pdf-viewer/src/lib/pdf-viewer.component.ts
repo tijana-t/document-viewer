@@ -109,6 +109,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   changeDoc(status: boolean) {
+    this.pdfViewerService.changeDocSubject.next(true);
     this.changeDocument.emit(status);
   }
 }

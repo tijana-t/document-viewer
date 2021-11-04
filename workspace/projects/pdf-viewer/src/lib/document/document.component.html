@@ -78,12 +78,21 @@
       }"
     >
       <img
+        *ngIf="!changeDocument"
         [attr.height]="documentConfig.containerHeight + 'px'"
         [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImg"
         #documentImage
         [src]="mainImg | secureImg | async"
       />
+      <div
+        *ngIf="changeDocument"
+        class="skeleton"
+        [ngStyle]="{
+          width: documentConfig.containerWidth + 'px',
+          height: documentConfig.containerHeight + 'px'
+        }"
+      ></div>
     </div>
   </div>
 </div>

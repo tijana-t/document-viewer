@@ -58,6 +58,7 @@ export class DocumentComponent
   colapsSearchStatus = false;
   searchValueForDoc: string = '';
   scrollVisibleX: boolean = false;
+  changeDocument: boolean = false;
 
   constructor(
     private pdfViewerService: PdfViewerService,
@@ -69,6 +70,7 @@ export class DocumentComponent
         if (res) {
           this.mainImg = res;
           this.pdfViewerService.fitToPage.next(true);
+          this.pdfViewerService.changeDocSubject.next(false);
         }
       });
 
@@ -83,6 +85,12 @@ export class DocumentComponent
     this.subscriptions = this.pdfViewerService.zoomXStatus.subscribe(
       (res: boolean) => {
         this.scrollVisibleX = res;
+      }
+    );
+
+    this.subscriptions = this.pdfViewerService.changeDocSubject.subscribe(
+      (res: boolean) => {
+        this.changeDocument = res;
       }
     );
 

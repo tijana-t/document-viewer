@@ -15,6 +15,7 @@ export class PdfViewerService {
   searchResultSubject = new BehaviorSubject<SearchResult[]>([]);
   zoomInStarted = new BehaviorSubject<boolean>(false);
   zoomXStatus = new BehaviorSubject<boolean>(false);
+  changeDocSubject = new BehaviorSubject<boolean>(false);
   docConfSubject = new BehaviorSubject<DocumentConfig>({
     containerWidth: 0,
     containerHeight: 0,
