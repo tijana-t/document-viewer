@@ -115,9 +115,7 @@ export class DocumentComponent
       });
   }
 
-  ngOnInit(): void {
-    this.documentImage = document.getElementById('docImg');
-  }
+  ngOnInit(): void {}
 
   sendSearchObj(pageSearch: SearchResult) {
     this.colapsSearchStatus = !this.colapsSearchStatus;
@@ -129,9 +127,10 @@ export class DocumentComponent
 
   setTransImgPosition(number: number) {
     const outerCont = document.getElementById('outer-cont');
+    const documentImage = document.getElementById('docImg');
 
-    if (this.documentImage && outerCont) {
-      const rectObj: DOMRect = this.documentImage.getBoundingClientRect();
+    if (documentImage && outerCont) {
+      const rectObj: DOMRect = documentImage.getBoundingClientRect();
       const rectParent: DOMRect = outerCont.getBoundingClientRect();
 
       this.relativePosition = {
