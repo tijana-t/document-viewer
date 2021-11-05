@@ -165,10 +165,51 @@ export class DocumentComponent
   }
 
   findSearchItemIn(sentence: string) {
-    return sentence.replace(
+    let newTextVal = sentence;
+
+    const indexesPosition = this.getIndicesOf(
       this.searchValueForDoc,
-      '<span class="selected-search">' + this.searchValueForDoc + '</span>'
+      sentence,
+      false
     );
+    const tmpSorted = indexesPosition.sort((a, b) =>
+      a.start < b.start ? 1 : -1
+    );
+    for (const indexObj of tmpSorted) {
+      newTextVal = this.insert(newTextVal, '</span>', indexObj.end);
+      newTextVal = this.insert(
+        newTextVal,
+        `<span class="selected-search">`,
+        indexObj.start
+      );
+    }
+
+    return newTextVal;
+  }
+
+  // get start and end indexes of found words in sentence
+  getIndicesOf(searchStr: string, str: string, caseSensitive: boolean) {
+    let searchStrLen = searchStr.length;
+    if (searchStrLen == 0) {
+      return [];
+    }
+    let startIndex = 0;
+    let index;
+    let indices = [];
+    if (!caseSensitive) {
+      str = str.toLowerCase();
+      searchStr = searchStr.toLowerCase();
+    }
+    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+      indices.push({ start: index, end: index + searchStr.length });
+      startIndex = index + searchStrLen;
+    }
+    return indices;
+  }
+
+  // insert substring at specific position in main string
+  insert(mainString: string, insString: string, pos: number) {
+    return mainString.slice(0, pos) + insString + mainString.slice(pos);
   }
 
   ngOnDestroy(): void {
