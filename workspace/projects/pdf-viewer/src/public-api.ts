@@ -2,8 +2,6 @@
  * Public API Surface of pdf-viewer
  */
 
-import { from } from 'rxjs';
-
 export * from './lib/pdf-viewer.service';
 export * from './lib/pdf-viewer.component';
 export * from './lib/pdf-viewer.module';
