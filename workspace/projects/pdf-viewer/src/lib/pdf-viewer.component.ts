@@ -67,6 +67,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnChanges {
   emitSearchedText(event: any) {
     this.searchDocument.emit(event);
   }
+
   emitPageSearch(result: { pageSearch: SearchResult[]; pageNumber: number }) {
     this.pageSearch.next({
       pageSearch: result.pageSearch,
