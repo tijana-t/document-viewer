@@ -21,7 +21,8 @@
       "@ng-bootstrap/ng-bootstrap": [
         "./node_modules/@ng-bootstrap/ng-bootstrap"
       ]
-    }
+    },
+    "suppressImplicitAnyIndexErrors": true
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

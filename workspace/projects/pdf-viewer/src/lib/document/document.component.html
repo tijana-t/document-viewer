@@ -1,38 +1,98 @@
 <div style="position: relative" id="outer-cont">
+  <!-- search container -->
+  <div class="dropdown-options" *ngIf="noSearchItems">
+    <div>
+      <p class="dropdown-border page-header">NO RESULT FOUND</p>
+    </div>
+  </div>
+  <ng-container
+    *ngIf="groupedByPage && groupedByPage.length > 0 && !noSearchItems"
+  >
+    <div
+      style="padding: 10px"
+      aria-labelledby="searchDocument"
+      class="dropdown-options"
+      [ngClass]="{
+        'colaps-search-box': colapsSearchStatus,
+        'scroll-x': scrollVisibleX
+      }"
+    >
+      <div class="info-search">
+        {{ groupedByPage.length }} search found for "{{ searchValueForDoc }}"
+        <span
+          class="typcn typcn-chevron-left colaps-search"
+          [ngClass]="{ 'colaps-search-rotate': colapsSearchStatus }"
+          (click)="colapsSearch()"
+        ></span>
+      </div>
+      <div
+        *ngFor="
+          let pageResult of groupedByPage;
+          index as index;
+          let last = last
+        "
+      >
+        <p
+          class="dropdown-border page-header"
+          *ngIf="pageResult[0].pageNums[0]"
+        >
+          PAGE: {{ pageResult[0].pageNums[0] }}
+        </p>
+
+        <button
+          class="dropdown-button"
+          (click)="sendSearchObj(item)"
+          *ngFor="let item of pageResult"
+        >
+          <span [innerHTML]="findSearchItemIn(item.text)"> </span>
+        </button>
+      </div>
+    </div>
+  </ng-container>
   <img
-    *ngIf="documentConfig.containerHeight > defaultDocConfig.containerHeight"
     [ngStyle]="{
       height: documentConfig.containerHeight + 'px',
-      width: 'auto',
+      width: documentConfig.containerWidth + 'px',
       position: 'absolute',
       opacity: 0.3,
-      top: imageTopVal,
-      left: imageLeftVal
+      left: imageLeftVal,
+      top: imageTopVal
     }"
-    [src]="documentImg"
+    [src]="mainImg | secureImg | async"
     class="trans-img"
+    id="trans-img"
     alt=""
   />
   <div
+    #docContainer
     (scroll)="scrollEvent($event, documentImage)"
     id="document-container"
-    [ngStyle]="{
-      'max-height': maxContainerHeight + 'px',
-      'max-width': maxContainerWidth + 'px'
-    }"
   >
-    <div class="document-page" id="document-page">
+    <!--  <div class="shadow-test"></div> -->
+    <div
+      class="document-page"
+      id="document-page"
+      [ngStyle]="{
+        width: documentConfig.containerWidth + 'px',
+        height: documentConfig.containerHeight + 'px'
+      }"
+    >
       <img
-        [ngStyle]="{
-          height: documentConfig.containerHeight + 'px',
-          width: documentConfig.containerWidth
-            ? documentConfig.containerWidth + 'px'
-            : 'auto'
-        }"
+        *ngIf="!changeDocument"
+        [attr.height]="documentConfig.containerHeight + 'px'"
+        [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImg"
         #documentImage
-        [src]="documentImg"
+        [src]="mainImg | secureImg | async"
       />
+      <div
+        *ngIf="changeDocument"
+        class="skeleton"
+        [ngStyle]="{
+          width: documentConfig.containerWidth + 'px',
+          height: documentConfig.containerHeight + 'px'
+        }"
+      ></div>
     </div>
   </div>
 </div>

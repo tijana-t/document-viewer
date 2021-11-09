@@ -1,0 +1,43 @@
+<div
+  id="modal-info"
+  class="modal-information"
+  [ngClass]="{ 'modal-box': modalStatus === false }"
+>
+  <div class="modal-header">
+    <h4 id="modal-title" class="modal-title">
+      <span class="typcn typcn-mortar-board"></span> HELP
+    </h4>
+    <button
+      type="button"
+      aria-describedby="modal-title"
+      class="close"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-intro">Walkthrough how to select table</div>
+  <div id="instructions">
+    <video
+      id="my_video_1"
+      class="video-js vjs-default-skin"
+      width="640px"
+      controls
+      autoplay
+      preload="none"
+      poster="assets/video/help-marking.jpg"
+      data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
+    >
+      <source src="assets/video/help-marking.mp4" type="video/mp4" />
+      <source src="assets/video/help-marking.webm" type="video/webm" />
+      <source src="assets/video/help-marking.ogv" type="video/ogv" />
+    </video>
+  </div>
+</div>
+
+<div
+  id="modal-info-back"
+  class="modal-information-back"
+  [ngClass]="{ 'modal-box': modalStatus === false }"
+  (click)="closeModal()"
+></div>

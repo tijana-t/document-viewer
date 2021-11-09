@@ -40,6 +40,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/projects/pdf-viewer-showcase
 
 # System Files
 .DS_Store
