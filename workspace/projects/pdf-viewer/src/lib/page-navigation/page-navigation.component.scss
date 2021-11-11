@@ -2,8 +2,8 @@
 
 // reusable styles
 @mixin track() {
-  border: none;
   height: 4px;
+  border: none;
   background: cv.$main-white;
 }
 
@@ -260,6 +260,7 @@
       top: 50%;
       left: 50%;
       margin: 0;
+      height: 4px !important;
       padding: 0;
       transform: translate(-50%, -50%) rotate(90deg);
       background: transparent;
@@ -325,7 +326,7 @@
 
     /** FF*/
     input[type="range"]::-moz-range-progress {
-      background-color: blue;
+      background-color: cv.$main-yellow;
     }
     input[type="range"]::-moz-range-track {
       background-color: cv.$main-white;

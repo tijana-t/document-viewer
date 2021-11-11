@@ -1,4 +1,8 @@
-<div (wheel)="scrollThumbnail($event, inputRange)" class="navigation-container">
+<div
+  *ngIf="thumbnails && thumbnails.length > 1"
+  (wheel)="scrollThumbnail($event, inputRange)"
+  class="navigation-container"
+>
   <div class="form-group number-input">
     <input
       (keyup)="searchPage(page.value)"
