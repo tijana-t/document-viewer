@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve pdf-viewer-showcase` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve document-viewer-showcase` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
@@ -12,7 +12,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Za nas -- `ng build pdf-viewer --watch=true` ( kako bi pratili promjene iz biblioteke u aplikaciji )
+Za nas -- `ng build document-viewer --watch=true` ( kako bi pratili promjene iz biblioteke u aplikaciji )
 
 ## Running unit tests
 
