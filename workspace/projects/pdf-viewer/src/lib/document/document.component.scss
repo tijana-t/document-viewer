@@ -133,6 +133,7 @@
     font: inherit;
     cursor: pointer;
     outline: inherit;
+    color: cv.$font-main;
     width: 100%;
     border-radius: 4px;
     transition: all 0.2s ease-in;
@@ -147,8 +148,8 @@
     border-bottom: 1px dashed #cdcdcd;
   }
   .dropdown-button:hover {
-    background-color: cv.$main-yellow;
-    color: cv.$font-main;
+    background-color: cv.$ultra-light-gray;
+    color: cv.$main-black;
   }
   .page-header {
     background-color: #f8f8f8;
