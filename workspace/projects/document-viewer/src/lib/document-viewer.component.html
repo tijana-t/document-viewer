@@ -1,8 +1,17 @@
-<div class="viewer-container" id="viewer-container">
+<div
+  class="viewer-container"
+  [ngStyle]="{ 'justify-content': totalPages > 1 ? 'space-between' : 'center' }"
+  id="viewer-container"
+>
   <div id="info-box">
     <div class="col-12 col-sm-12 p-0">
       <div class="model-info p-0">
         <p class="traning-model-name">
+          {{ singleDocument?.file?.originalName }}
+        </p>
+      </div>
+      <div class="align-items-center info-container">
+        <p>
           <span
             [ngClass]="
               this.singleDocument.prev.fileName ? '' : 'disable-next-prev'
@@ -12,7 +21,8 @@
               !this.singleDocument.prev.fileName ? null : changeDoc(false)
             "
           ></span>
-          {{ singleDocument?.file?.originalName }}
+          MODEL: File {{ docModel }} @
+          {{ singleDocument.file.createdAt | date: "MMM d, y HH:mm" }}
           <span
             [ngClass]="
               this.singleDocument.next.fileName ? '' : 'disable-next-prev'
@@ -22,12 +32,6 @@
               !this.singleDocument.next.fileName ? null : changeDoc(true)
             "
           ></span>
-        </p>
-      </div>
-      <div class="align-items-center info-container">
-        <p>
-          MODEL: File {{ docModel }} @
-          {{ singleDocument.file.createdAt | date: "MMM d, y HH:mm" }}
         </p>
       </div>
     </div>

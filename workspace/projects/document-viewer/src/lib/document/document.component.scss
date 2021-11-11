@@ -3,6 +3,7 @@
 #document-container {
   overflow: auto;
   z-index: 0;
+  user-select: none;
   position: relative;
   background: #dbe2e8;
   border: 4px solid cv.$main-white;
