@@ -1,0 +1,137 @@
+@use "./_styles/color-variables" as cv;
+
+.viewer-container {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+
+  .document-actions-container {
+    align-self: center;
+  }
+
+  .search-component {
+    z-index: 10000;
+  }
+}
+
+:host ::ng-deep .viewer-container:hover #search-box {
+  opacity: 1 !important;
+  bottom: 0;
+}
+
+:host
+  ::ng-deep
+  #viewer-container
+  > #doc-box
+  > .document-viewer-container
+  > #outer-cont
+  > .trans-img {
+  opacity: 0 !important;
+}
+
+:host
+  ::ng-deep
+  #viewer-container:hover
+  > #doc-box
+  > .document-viewer-container
+  > #outer-cont
+  > .trans-img {
+  opacity: 0.3 !important;
+}
+
+#search-box {
+  position: absolute;
+  bottom: -8px;
+  width: calc(100% - 262px);
+  align-items: center;
+  margin-left: 56px;
+
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  padding-right: 46px;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.info-container {
+  text-align: center;
+  justify-content: center;
+  font-size: 11px;
+  color: cv.$heavy-gray;
+
+  .doc-next,
+  .doc-prev {
+    font-size: 17px;
+  }
+}
+
+.model-info {
+  font-weight: 500;
+  color: cv.$font-main;
+  margin-bottom: 0px;
+}
+
+.model-info > p {
+  margin: 0;
+}
+
+#info-box {
+  position: absolute;
+  top: 0;
+  margin-left: 56px;
+
+  width: calc(100% - 262px);
+  align-items: center;
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+.document-page-navigation-container {
+  margin-right: 14px;
+}
+
+.doc-prev {
+  cursor: pointer;
+  color: cv.$main-yellow;
+  margin-right: 0px;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.doc-next {
+  cursor: pointer;
+  color: cv.$main-yellow;
+  margin-left: 0px;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+.disable-next-prev:hover {
+  text-shadow: none !important;
+  cursor: default !important;
+}
+
+.doc-next:hover,
+.doc-prev:hover {
+  text-shadow: 0px 2px 3px cv.$light-gray;
+}
+
+:host ::ng-deep .viewer-container:hover .doc-next {
+  opacity: 1;
+  margin-left: 10px;
+}
+
+:host ::ng-deep .viewer-container:hover .doc-prev {
+  opacity: 1;
+  margin-right: 10px;
+}
+:host ::ng-deep .viewer-container:hover .disable-next-prev {
+  opacity: 0.6;
+}

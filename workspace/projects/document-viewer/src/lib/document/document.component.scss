@@ -1,0 +1,220 @@
+@use "../_styles/color-variables" as cv;
+
+#document-container {
+  overflow: auto;
+  z-index: 0;
+  user-select: none;
+  position: relative;
+  background: #dbe2e8;
+  border: 4px solid cv.$main-white;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
+  height: calc(100vh - 150px);
+  padding: 40px;
+  scroll-behavior: smooth;
+
+  .document-page {
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    z-index: 1;
+    position: relative;
+    margin: 0px auto;
+
+    #docImg {
+      pointer-events: auto;
+      -webkit-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
+      display: block;
+      position: absolute;
+      margin: 30px 0;
+      margin: auto;
+      box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px,
+        rgb(0 0 0 / 30%) 0px 30px 60px -30px;
+      background-color: cv.$main-white;
+      z-index: 2;
+    }
+  }
+
+  // search-container style
+}
+
+.shadow-test {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px inset,
+    rgb(0 0 0 / 6%) 0px 2px 4px -1px inset;
+  border-radius: 12px;
+  top: 0;
+  left: 0;
+}
+
+#outer-cont {
+  margin-left: 55px;
+  margin-top: 34px;
+  margin-bottom: 34px;
+  .trans-img {
+    -webkit-transition: height 0.2s ease-in-out;
+    transition: height 0.2s ease-in-out;
+    left: calc(25% - 20px);
+    transform-origin: center top;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .dropdown-options {
+    max-height: 30%;
+    width: calc(100% - 18px);
+    overflow-y: scroll;
+    background-color: cv.$main-white;
+    position: absolute;
+    left: 4px;
+    padding: 0 !important;
+    bottom: 4px;
+    min-height: 0%;
+    z-index: 3;
+    transition: all 0.3s;
+    box-shadow: rgb(50 50 93 / 15%) 0px -50px 60px -20px,
+      rgb(0 0 0 / 20%) 0px -30px 25px -30px;
+  }
+
+  .info-search {
+    margin-bottom: 0;
+    text-align: center;
+    padding: 4px;
+    font-size: 12px;
+    color: #707070;
+    background: cv.$main-white;
+    position: sticky;
+    top: 0px;
+    border-bottom: 1px solid cv.$main-yellow;
+    border-top: 1px solid #dbe2e8;
+    z-index: 9;
+  }
+
+  .scroll-x {
+    bottom: 14px;
+  }
+
+  .colaps-search {
+    color: cv.$font-main;
+    float: right;
+    transform: rotate(270deg);
+    transform-origin: center center;
+    font-size: 16px;
+    margin-right: 4px;
+    margin-top: -2px;
+    transition: all ease-in 0.3s;
+  }
+
+  .colaps-search:hover {
+    color: cv.$main-yellow;
+  }
+
+  .selected-search {
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  .colaps-search-rotate {
+    transform: rotate(90deg);
+  }
+
+  .colaps-search-box {
+    max-height: 27px;
+  }
+
+  .dropdown-button {
+    text-align: left !important;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0 8px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    color: cv.$font-main;
+    width: 100%;
+    border-radius: 4px;
+    transition: all 0.2s ease-in;
+
+    span {
+      font-size: 12px;
+      padding: 8px 0;
+      display: inline-block;
+    }
+  }
+  .dropdown-button:not(:last-child) {
+    border-bottom: 1px dashed #cdcdcd;
+  }
+  .dropdown-button:hover {
+    background-color: cv.$ultra-light-gray;
+    color: cv.$main-black;
+  }
+  .page-header {
+    background-color: #f8f8f8;
+    position: sticky;
+    top: 27px;
+  }
+  .dropdown-border {
+    margin: 0 !important;
+    font-size: 13px;
+    color: cv.$main-yellow;
+    padding: 7px;
+    font-weight: 700;
+    padding: 8px;
+    border: 0.5px solid #dadada;
+    border-radius: 4px;
+  }
+}
+
+.document-actions-container > #outer-cont > .trans-img {
+  opacity: 0;
+}
+
+.document-actions-container:hover > #outer-cont > .trans-img {
+  opacity: 1;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: cv.$font-main;
+  border-radius: 12px;
+  border: 2px solid cv.$bg-color;
+}
+
+.skeleton {
+  padding: 30px;
+  border-radius: 7px;
+  margin-left: auto;
+  margin-right: auto;
+  // box-shadow: 1px 3px 5px -2px #bfb4b4;
+  box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px,
+    rgb(0 0 0 / 30%) 0px 30px 60px -30px;
+  animation: loading 1.1s infinite linear;
+  background: var(--loader-main);
+  background-image: -webkit-linear-gradient(
+    to right,
+    cv.$loader-main 0%,
+    cv.$loader-light 20%,
+    cv.$loader-main 40%,
+    cv.$loader-main 100%
+  );
+  background-image: linear-gradient(
+    to right,
+    cv.$loader-main 0%,
+    cv.$loader-light 20%,
+    cv.$loader-main 40%,
+    cv.$loader-main 100%
+  );
+  background-repeat: no-repeat;
+}
+
+@keyframes loading {
+  0% {
+    background-position: -100px;
+  }
+  100% {
+    background-position: 500px;
+  }
+}

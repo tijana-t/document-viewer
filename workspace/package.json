@@ -8,8 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "lib:build:prod": "ng build pdf-viewer --prod",
-    "lib:build:watch": "ng build pdf-viewer --watch=true"
+    "lib:build:prod": "ng build document-viewer --prod",
+    "lib:build:watch": "ng build document-viewer --watch=true"
   },
   "private": true,
   "dependencies": {

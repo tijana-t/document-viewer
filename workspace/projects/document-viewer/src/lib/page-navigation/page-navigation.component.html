@@ -1,0 +1,91 @@
+<div
+  *ngIf="thumbnails && thumbnails.length > 1"
+  (wheel)="scrollThumbnail($event, inputRange)"
+  class="navigation-container"
+>
+  <div class="form-group number-input">
+    <input
+      (keyup)="searchPage(page.value)"
+      #page="ngModel"
+      type="number"
+      class="form-control"
+      placeholder="#"
+      [(ngModel)]="pageNumber"
+      name="pageNumber"
+      id="pageNumber"
+      pattern="-?[0-9]*(\.[0-9]+)?"
+      max="{{ thumbnails.length - 1 }}"
+      min="1"
+    />
+  </div>
+  <div class="shadow-over-top"></div>
+  <div
+    [ngStyle]="{ height: navigationConfig.containerHeight }"
+    #thumbnailContainer
+    class="thumbnail-container d-inline-flex flex-column align-items-center"
+  >
+    <div
+      *ngFor="let image of thumbnails; index as i"
+      (click)="changePage(i + 1, image)"
+      #thumbnailImage
+      id="img-{{ i + 1 }}"
+      style="position: relative"
+    >
+      <img
+        appLazyLoad
+        [imageObj]="image"
+        [src]="image.src"
+        height="150px"
+        [ngClass]="pageNumber === i + 1 ? 'active-thumbnail' : ''"
+        class="thumbnail"
+        [style]="{ marginBottom: navigationConfig.imageMargin }"
+      />
+      <div class="spinner" *ngIf="!image.show">
+        <div style="display: inline-flex" class="spinner-border" role="loading">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <span
+        class="page-number"
+        [ngClass]="pageNumber === i + 1 ? 'active-page-number' : ''"
+        [ngStyle]="{ bottom: navigationConfig.imageMargin + 'px' }"
+      >
+        {{ i + 1 }}
+      </span>
+      <span class="important-page mark" *ngIf="image.isImportant"></span>
+      <span class="important-page search" *ngIf="image.hasSearchedText"></span>
+    </div>
+  </div>
+  <div class="shadow-over"></div>
+
+  <div class="wrap">
+    <div
+      class="bubble-wrap d-flex align-items-center justify-content-center"
+      #bubbleWrap
+    >
+      <span #bubbleValue id="bubble"></span>
+    </div>
+    <span class="yellow-number value-field min"> 1 </span>
+    <span
+      [ngClass]="
+        inputRange.value == thumbnails.length?.toString()
+          ? 'yellow-number'
+          : 'white-number'
+      "
+      class="value-field max"
+    >
+      {{ thumbnails.length }}
+    </span>
+    <input
+      [ngStyle]="{ width: navigationConfig.containerHeight }"
+      type="range"
+      #inputRange
+      (input)="calculateThumbPosition($event.target?.value)"
+      id="range"
+      min="1"
+      value="1"
+      [max]="thumbnails.length"
+      step="1"
+    />
+  </div>
+</div>
