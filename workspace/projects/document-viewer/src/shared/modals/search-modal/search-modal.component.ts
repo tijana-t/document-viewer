@@ -5,8 +5,8 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { SearchResult } from 'projects/document-viewer/src/lib/_config/document-search.model';
-import { SearchConfig } from 'projects/document-viewer/src/lib/_config/search.model';
+import { SearchResult } from './../../../lib/_config/document-search.model';
+import { SearchConfig } from './../../../lib/_config/search.model';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { DocumentViewerService } from '../../../lib/document-viewer.service';
