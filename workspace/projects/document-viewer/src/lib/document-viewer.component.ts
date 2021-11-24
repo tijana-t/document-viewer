@@ -16,7 +16,7 @@ import { DocumentConfig } from './_config/document.model';
 import { Thumbnail } from './_config/thumbnail.model';
 
 @Component({
-  selector: 'lib-document-viewer',
+  selector: 'ngx-view-document',
   templateUrl: './document-viewer.component.html',
   styleUrls: ['./document-viewer.component.scss'],
 })
