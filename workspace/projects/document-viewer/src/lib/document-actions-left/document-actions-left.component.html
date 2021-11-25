@@ -16,4 +16,18 @@
       alt=""
     />
   </button>
+  <button
+    [ngbTooltip]="!originalDocument ? 'Show original document':''"
+    class="col circle custom-control custom-switch"
+>
+    <input
+    #checkbox
+    id="switchDocument"
+    (change)="showOriginalDocument()"
+    type="checkbox"
+    class="custom-control-input"
+    />
+    <label class="custom-control-label label-checkbox" for="switchDocument"></label>
+</button>
+
 </div>

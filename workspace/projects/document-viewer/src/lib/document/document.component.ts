@@ -94,6 +94,17 @@ export class DocumentComponent
       }
     );
 
+    this.subscriptions = this.docViewerService.showOriginalDoc.pipe(skip(1), takeUntil(this.destroy$)).subscribe(
+      (res: boolean) => {
+        if(res) {
+         this.mainImg = this.mainImg  + '?img=_cleaned_rotated';
+        } else{
+         this.mainImg = this.mainImg.replace("?img=_cleaned_rotated","");
+        } 
+        this.docViewerService.changeDocSubject.next(false);
+      }
+    );
+
     this.subscriptions = this.docViewerService.groupedByPageSubj
       .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe((res: any) => {

@@ -25,6 +25,7 @@ export class DocumentActionsLeftComponent
 {
   modalStatus: boolean = false;
   subscription = new Subscription();
+  originalDocument: boolean = false;
   @Input('document') document: DocumentComponent | undefined;
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
@@ -35,6 +36,7 @@ export class DocumentActionsLeftComponent
     downloadPdfPlain: '',
   };
   @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
+
   defaultConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
 
   constructor(private docViewerService: DocumentViewerService) {}
@@ -58,6 +60,12 @@ export class DocumentActionsLeftComponent
 
   downloadDocument() {
     this.downloadDocumentEvent.emit(true);
+  }
+
+  showOriginalDocument() {
+    this.docViewerService.changeDocSubject.next(true);
+    this.originalDocument = !this.originalDocument;
+    this.docViewerService.showOriginalDoc.next(this.originalDocument);
   }
 
   ngOnChanges(changes: SimpleChanges) {

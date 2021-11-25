@@ -26,6 +26,7 @@ export class DocumentViewerService {
   activateSearch = new BehaviorSubject<number>(0);
   groupedByPageSubj = new BehaviorSubject<any>(null);
   searchValue = new BehaviorSubject<string>('');
+  showOriginalDoc = new BehaviorSubject<boolean>(false);
 
   constructor() {}
 }
