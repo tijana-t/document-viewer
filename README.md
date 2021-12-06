@@ -4,7 +4,7 @@
 
 ### Track live changes (watch): command starts from workspace `ng build document-viewer --watch=true`
 
-### Linking library - `npm link` inside dist folder of a library; `npm link document-viewer` inside project where you want library to to be visible
+### Linking library - `npm link` inside dist folder of a library; `npm link ngx-view-document` inside project where you want library to to be visible
 
 ### Architecture v1
 
