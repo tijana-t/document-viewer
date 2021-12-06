@@ -16,18 +16,18 @@
       alt=""
     />
   </button>
-  <button
-    [ngbTooltip]="!originalDocument ? 'Show original document':''"
-    class="col circle custom-control custom-switch"
->
-    <input
-    #checkbox
-    id="switchDocument"
-    (change)="showOriginalDocument()"
-    type="checkbox"
-    class="custom-control-input"
-    />
-    <label class="custom-control-label label-checkbox" for="switchDocument"></label>
-</button>
 
+  <button class="col circle" (click)="showOriginalDocument()" [ngbTooltip]="!originalDocument ? 'Show original document':''" [ngClass]="{'show-orginal': originalDocument}">
+    <img
+    class="split-icon"
+      width="15px"
+      height="15px"
+      [src]="documentActionsSrc.showOrginalImg"
+      alt=""
+    />
+  </button>
+
+  <div class="range-parent" *ngIf="originalDocument">
+    <input type="range" min="1" max="100" value="50" class="slider-image" id="myRange" [(ngModel)]="mymodel" (input)="changeOrginalImgSize(mymodel)">
+  </div>
 </div>

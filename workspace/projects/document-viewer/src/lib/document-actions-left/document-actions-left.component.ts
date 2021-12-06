@@ -26,6 +26,8 @@ export class DocumentActionsLeftComponent
   modalStatus: boolean = false;
   subscription = new Subscription();
   originalDocument: boolean = false;
+  mymodel=50;
+  widthImage = 0
   @Input('document') document: DocumentComponent | undefined;
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
@@ -53,6 +55,12 @@ export class DocumentActionsLeftComponent
     this.defaultConfig = { ...this.documentConfig };
   }
 
+  changeOrginalImgSize(val:number) {
+    const orgImageParent = document.getElementById('orgImageParent')
+    if(orgImageParent && this.originalDocument){
+      orgImageParent.style.width = ((this.widthImage*val) / 100) + "px";
+    }
+  }
   openModal() {
     this.modalStatus = true;
     this.docViewerService.modalStatus.next(this.modalStatus);
@@ -63,9 +71,22 @@ export class DocumentActionsLeftComponent
   }
 
   showOriginalDocument() {
-    this.docViewerService.changeDocSubject.next(true);
     this.originalDocument = !this.originalDocument;
-    this.docViewerService.showOriginalDoc.next(this.originalDocument);
+    const orgImageFixedSize = document.getElementById('docImgOrginal')
+    const orgImageParent = document.getElementById('orgImageParent')
+    if(orgImageFixedSize){
+      this.widthImage = orgImageFixedSize?.offsetWidth;
+    }
+    if (!this.originalDocument) {      
+      if (orgImageParent) {
+        orgImageParent.style.width = this.widthImage + "px";
+      }
+    }
+    else {
+      if (orgImageParent) {
+        orgImageParent.style.width = this.widthImage/2 + "px";
+      }
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {

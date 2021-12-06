@@ -3,5 +3,6 @@ export type DocumentActions = {
   zoomOutSrc?: string;
   fitToPageSrc?: string;
   informationHelp?: string;
+  showOrginalImg?: string;
   downloadPdfPlain?: string;
 };

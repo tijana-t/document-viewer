@@ -77,13 +77,23 @@
         height: documentConfig.containerHeight + 'px'
       }"
     >
+      <div id="orgImageParent" [style.height]="documentConfig.containerHeight + 'px'" [style.width]="documentConfig.containerWidth + 'px'">
+        <img
+          *ngIf="!changeDocument"
+          [attr.height]="documentConfig.containerHeight + 'px'"
+          [attr.width]="documentConfig.containerWidth + 'px'"
+          id="docImg"
+          #documentImage
+          [src]="mainImg | secureImg | async"
+        />
+      </div>
       <img
         *ngIf="!changeDocument"
         [attr.height]="documentConfig.containerHeight + 'px'"
         [attr.width]="documentConfig.containerWidth + 'px'"
-        id="docImg"
+        id="docImgOrginal"
         #documentImage
-        [src]="mainImg | secureImg | async"
+        [src]="mainImgOrginal | secureImg | async"
       />
       <div
         *ngIf="changeDocument"

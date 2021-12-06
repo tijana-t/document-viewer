@@ -21,18 +21,51 @@
     position: relative;
     margin: 0px auto;
 
-    #docImg {
+    #orgImageParent {
+      overflow: hidden;
+      z-index: 2;
+      height: 800px;
+      pointer-events: auto;
+      transition: all .2s ease-in-out;
+      display: block;
+      position: absolute;
+      margin: 30px 0;
+      margin: auto;
+      background-color: cv.$main-white;
+      border-right: 1px solid #dbdbdb52;
+        
+      #docImg {
+        pointer-events: auto;
+        background-image: url('../assets/page-loader.svg'); 
+        background-repeat: repeat;
+      }
+    }
+
+    
+    #docImgOrginal {
       pointer-events: auto;
       -webkit-transition: all 0.2s ease-in-out;
       transition: all 0.2s ease-in-out;
       display: block;
       position: absolute;
       margin: 30px 0;
-      margin: auto;
       box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px,
-        rgb(0 0 0 / 30%) 0px 30px 60px -30px;
+      rgb(0 0 0 / 30%) 0px 30px 60px -30px;
+      margin: auto;
       background-color: cv.$main-white;
-      z-index: 2;
+      background-image: url('../assets/page-loader.svg'); 
+      background-repeat: repeat;
+      z-index: 1;
+    }
+
+
+    @keyframes gradient-animation {
+      from {
+        left: 0%;
+      }
+      to {
+        left: 100%;
+      }
     }
   }
 

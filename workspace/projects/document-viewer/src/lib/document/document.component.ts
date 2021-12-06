@@ -32,6 +32,7 @@ export class DocumentComponent
   @ViewChild('documentCanvas') documentCanvas: any;
   documentImage: any;
   mainImg: string = '';
+  mainImgOrginal: string = '';
   @ViewChild('docContainer') docImage: any;
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Input('documentConfig') documentConfig: DocumentConfig = {
@@ -68,7 +69,8 @@ export class DocumentComponent
       .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe((res: string) => {
         if (res) {
-          this.mainImg = res;
+          this.mainImg = res + '?img=_cleaned_rotated';
+          this.mainImgOrginal = res;
           this.docViewerService.fitToPage.next(true);
           this.docViewerService.changeDocSubject.next(false);
         }
@@ -96,11 +98,13 @@ export class DocumentComponent
 
     this.subscriptions = this.docViewerService.showOriginalDoc.pipe(skip(1), takeUntil(this.destroy$)).subscribe(
       (res: boolean) => {
-        if(res) {
-         this.mainImg = this.mainImg  + '?img=_cleaned_rotated';
-        } else{
+        /* if(res) {
          this.mainImg = this.mainImg.replace("?img=_cleaned_rotated","");
-        } 
+         console.log('orginal?')
+        } else{
+          console.log('nije orgin')
+         this.mainImg = this.mainImg  + '?img=_cleaned_rotated';
+        }  */
         this.docViewerService.changeDocSubject.next(false);
       }
     );

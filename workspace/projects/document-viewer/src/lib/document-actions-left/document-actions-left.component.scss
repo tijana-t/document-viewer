@@ -27,12 +27,68 @@
   z-index: 9;
 }
 
+.slider-image {
+  -webkit-appearance: none;
+  width: 100px;
+  height: 4px;
+  background: colors.$main-white;
+  outline: none;
+}
+
+.slider-image::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: colors.$main-yellow;
+  border-radius: 50%;
+  cursor: ew-resize;
+  transition: all 0.3s ease-in;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  height: 14px;
+  width: 14px;
+  box-shadow: 0 0px 12px 4px colors.$box-shadow;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  height: 14px;
+  width: 14px;
+  box-shadow: 0 0px 12px 4px colors.$box-shadow;
+}
+
+.slider-image::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: colors.$main-yellow;
+  cursor: ew-resize;
+  transition: all 0.3s ease-in;
+}
+
+.range-parent {
+  position: absolute;
+  z-index: 10;
+  margin-top: -27px;
+  margin-left: 109px;
+}
+
 .circle:hover {
   background: colors.$main-yellow;
 }
 
+.show-orginal {
+  background: colors.$main-yellow;
+}
+
 .circle > img {
-  margin-top: -4px;
+  margin-top: -3px;
+}
+
+
+.split-icon {
+  margin-left: 1px;
 }
 
 /* custom switch button */
