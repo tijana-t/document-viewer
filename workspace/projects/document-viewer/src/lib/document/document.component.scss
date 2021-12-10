@@ -15,8 +15,6 @@
   scroll-behavior: smooth;
 
   .document-page {
-    -webkit-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
     z-index: 1;
     position: relative;
     margin: 0px auto;
@@ -26,7 +24,6 @@
       z-index: 2;
       height: 800px;
       pointer-events: auto;
-      transition: all .2s ease-in-out;
       display: block;
       position: absolute;
       margin: 30px 0;
@@ -44,8 +41,6 @@
     
     #docImgOrginal {
       pointer-events: auto;
-      -webkit-transition: all 0.2s ease-in-out;
-      transition: all 0.2s ease-in-out;
       display: block;
       position: absolute;
       margin: 30px 0;
@@ -88,8 +83,6 @@
   margin-top: 34px;
   margin-bottom: 34px;
   .trans-img {
-    -webkit-transition: height 0.2s ease-in-out;
-    transition: height 0.2s ease-in-out;
     left: calc(25% - 20px);
     transform-origin: center top;
     margin-left: auto;
