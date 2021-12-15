@@ -90,8 +90,8 @@ export class PageNavigationComponent
           this.pageNumber = res.currentPage;
           this.previousPageNum = res.currentPage;
           this.oldPageNumber = res.currentPage;
+          this.docViewerService.pageNumberSubject.next(res.currentPage);
           if (res.pages) this.thumbnails = res.pages;
-
           setTimeout(() => {
             this.scrollToPageNumber(this.pageNumber);
           }, 0);
@@ -137,10 +137,9 @@ export class PageNavigationComponent
   //fires on thumbnail click
   changePage(pageNumber: number, thumbnail: Thumbnail) {
     this.pageNumber = pageNumber;
-
     if (this.pageNumber !== this.oldPageNumber) {
       this.scrollToPageNumber(pageNumber, true);
-
+      this.docViewerService.pageNumberSubject.next(pageNumber);
       this.clearTextLayer();
     }
     this.oldPageNumber = pageNumber;

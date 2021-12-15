@@ -29,17 +29,14 @@ export class DocumentActionsLeftComponent
   mymodel=50;
   widthImage = 0
   @Input('document') document: DocumentComponent | undefined;
-  @Input('documentConfig') documentConfig: DocumentConfig = {
-    containerWidth: 0,
-    containerHeight: 0,
-  };
+  @Input('documentConfig') documentConfig: DocumentConfig = { containerWidth: 0 };
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     informationHelp: '',
     downloadPdfPlain: '',
   };
   @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
 
-  defaultConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
+  defaultConfig: DocumentConfig = { containerWidth: 0 };
 
   constructor(private docViewerService: DocumentViewerService) {}
 
@@ -79,12 +76,12 @@ export class DocumentActionsLeftComponent
     }
     if (!this.originalDocument) {      
       if (orgImageParent) {
-        orgImageParent.style.width = this.widthImage + "px";
+        orgImageParent.style.width = Math.floor(this.widthImage)  + "px";
       }
     }
     else {
       if (orgImageParent) {
-        orgImageParent.style.width = this.widthImage/2 + "px";
+        orgImageParent.style.width = Math.floor(this.widthImage/2)  + "px";
       }
     }
   }

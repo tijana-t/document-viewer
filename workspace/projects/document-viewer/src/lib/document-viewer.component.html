@@ -63,13 +63,13 @@
     <lib-document
       [documentConfig]="documentConfig"
       #document
+      (triggerTextLayer)="triggerTextLayerCreation($event)"
       (pageSearch)="emitPageSearch($event)"
       class="document-viewer-container"
     ></lib-document>
   </div>
 
   <lib-page-navigation
-    (triggerTextLayer)="triggerTextLayerCreation($event)"
     class="document-page-navigation-container"
   ></lib-page-navigation>
 </div>

@@ -43,7 +43,6 @@ export class DocumentViewerComponent
     downloadPdfPlain: '',
   };
   @Input('documentConfig') documentConfig: DocumentConfig = {
-    containerHeight: 0,
     containerWidth: 0,
   };
   @Input('docModel') docModel: string = '';

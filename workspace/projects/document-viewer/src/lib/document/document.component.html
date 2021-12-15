@@ -51,7 +51,6 @@
   </ng-container>
   <img
     [ngStyle]="{
-      height: documentConfig.containerHeight + 'px',
       width: documentConfig.containerWidth + 'px',
       position: 'absolute',
       opacity: 0.3,
@@ -73,23 +72,22 @@
       class="document-page"
       id="document-page"
       [ngStyle]="{
-        width: documentConfig.containerWidth + 'px',
-        height: documentConfig.containerHeight + 'px'
+        width: documentConfig.containerWidth + 'px'
       }"
     >
-      <div id="orgImageParent" [style.height]="documentConfig.containerHeight + 'px'" [style.width]="documentConfig.containerWidth + 'px'">
+      <div id="orgImageParent" [style.width]="documentConfig.containerWidth + 'px'">
         <img
           *ngIf="!changeDocument"
-          [attr.height]="documentConfig.containerHeight + 'px'"
           [attr.width]="documentConfig.containerWidth + 'px'"
           id="docImg"
           #documentImage
           [src]="mainImg | secureImg | async"
+          (load)="onImageLoaded($event)"
+          (error)="imageError($event)" 
         />
       </div>
       <img
         *ngIf="!changeDocument"
-        [attr.height]="documentConfig.containerHeight + 'px'"
         [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImgOrginal"
         #documentImage
@@ -99,8 +97,7 @@
         *ngIf="changeDocument"
         class="skeleton"
         [ngStyle]="{
-          width: documentConfig.containerWidth + 'px',
-          height: documentConfig.containerHeight + 'px'
+          width: documentConfig.containerWidth + 'px'
         }"
       ></div>
     </div>

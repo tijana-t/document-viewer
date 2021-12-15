@@ -22,10 +22,7 @@ export class DocumentActionsComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy
 {
   @Input('document') document: DocumentComponent | undefined;
-  @Input('documentConfig') documentConfig: DocumentConfig = {
-    containerWidth: 0,
-    containerHeight: 0,
-  };
+  @Input('documentConfig') documentConfig: DocumentConfig = { containerWidth: 0 };
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
     zoomOutSrc: '',
@@ -33,7 +30,7 @@ export class DocumentActionsComponent
     informationHelp: '',
     downloadPdfPlain: '',
   };
-  defaultConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
+  defaultConfig: DocumentConfig = { containerWidth: 0};
   zoomInDisabled = false;
   zoomOutDisabled = false;
   destroy$ = new Subject();
@@ -53,7 +50,8 @@ export class DocumentActionsComponent
     this.subscriptions = this.docViewerService.fitToPage.subscribe(
       (res: boolean) => {
         if (res) {
-          this.fitToPage();
+          //this.fitToPage();
+          this.firstDocOpen();
         }
       }
     );
@@ -61,84 +59,102 @@ export class DocumentActionsComponent
 
   ngAfterViewInit() {
     this.defaultConfig = { ...this.documentConfig };
-    this.pageHeight = this.defaultConfig.containerHeight;
     this.pageWidth = this.defaultConfig.containerWidth;
     this.scrollEvent();
   }
 
+  firstDocOpen() {
+    setTimeout(() => {
+      const viewerContainer = document.getElementById('outer-cont');
+      const viewerImg = document.getElementById('docImgOrginal');
+      if (viewerContainer && viewerImg) {
+        this.documentConfig.containerWidth =
+        Math.floor(viewerContainer.offsetWidth - 200);
+        this.docViewerService.docConfSubject.next({
+          containerWidth: Math.floor(viewerContainer.offsetWidth - 200),
+        });        
+      }
+      // text layer
+      const textLayer = document.getElementById('textLayer');
+      if (textLayer) {
+        textLayer.style.transform = 'scale(1)';
+      }
+    }, 300);
+  }
+
   zoomInImg() {
-    if (this.documentConfig.containerHeight > 2200) {
+    if (this.documentConfig.containerWidth > 2200) {
       this.zoomInDisabled = true;
     } else {
-      this.docViewerService.docConfSubject.next({
-        containerHeight: this.ZOOM_STEP * this.documentConfig.containerHeight,
-        containerWidth: this.ZOOM_STEP * this.documentConfig.containerWidth,
-      });
       setTimeout(() => {
-        const textLayer = document.getElementById('textLayer');
-        const zoomLevel =
-          (this.documentConfig.containerHeight * this.ZOOM_STEP) /
-          this.pageHeight;
+        const textLayer = document.getElementById('textLayer');        
         if (textLayer) {
+          const realTextLayerWidth = (textLayer?.style.width).split('px');
+          const zoomLevel =
+          (this.documentConfig.containerWidth * this.ZOOM_STEP) /
+          parseInt(realTextLayerWidth[0]);
           textLayer.style.transform = 'scale(' + zoomLevel + ')';
-        }
-        this.documentConfig.containerHeight =
-          this.ZOOM_STEP * this.documentConfig.containerHeight;
-        this.documentConfig.containerWidth =
-          this.ZOOM_STEP * this.documentConfig.containerWidth;
-        this.scrollEvent();
+          this.documentConfig.containerWidth =
+          Math.floor(this.ZOOM_STEP * this.documentConfig.containerWidth);
+          this.docViewerService.docConfSubject.next({
+            containerWidth: Math.floor(this.ZOOM_STEP * this.documentConfig.containerWidth),
+          });
+          this.scrollEvent();
+        }        
       }, 0);
-
       this.zoomOutDisabled = false;
     }
   }
 
   zoomOutImg() {
-    if (this.documentConfig.containerHeight <= 400) {
+    if (this.documentConfig.containerWidth < 200) {
       this.zoomOutDisabled = true;
     } else {
-      this.docViewerService.docConfSubject.next({
-        containerHeight: this.documentConfig.containerHeight / this.ZOOM_STEP,
-        containerWidth: this.ZOOM_STEP * this.documentConfig.containerWidth,
-      });
       setTimeout(() => {
-        const textLayer = document.getElementById('textLayer');
-        const zoomLevel =
-          this.documentConfig.containerHeight /
-          this.ZOOM_STEP /
-          this.pageHeight;
+        const textLayer = document.getElementById('textLayer');        
         if (textLayer) {
+          const realTextLayerWidth = (textLayer?.style.width).split('px');
+          const zoomLevel =
+          this.documentConfig.containerWidth / this.ZOOM_STEP /
+          parseInt(realTextLayerWidth[0]);
           textLayer.style.transform = 'scale(' + zoomLevel + ')';
-        }
-        this.documentConfig.containerHeight =
-          this.documentConfig.containerHeight / this.ZOOM_STEP;
-        this.documentConfig.containerWidth =
-          this.documentConfig.containerWidth / this.ZOOM_STEP;
-        this.scrollEvent();
+          this.documentConfig.containerWidth =
+          Math.floor(this.documentConfig.containerWidth /this.ZOOM_STEP);
+          this.docViewerService.docConfSubject.next({
+            containerWidth: Math.floor(this.documentConfig.containerWidth /this.ZOOM_STEP),
+          });
+          this.scrollEvent();
+        }        
       }, 0);
-
       this.zoomInDisabled = false;
     }
   }
 
   fitToPage() {
     this.docViewerService.docConfSubject.next({
-      containerHeight: this.pageHeight,
       containerWidth: this.pageWidth,
     });
     setTimeout(() => {
       const textLayer = document.getElementById('textLayer');
+      const docImg = document.getElementById('docImgOrginal');
+      const viewerContainer = document.getElementById('document-container')
+      if (textLayer && viewerContainer && docImg) {
+        // calculate margin: top = 34px and bottom = 34px set in css
+        const SCALE_FACTOR_IMAGE = (viewerContainer.offsetHeight - 2*50)/docImg.offsetHeight;
+        const SCALE_FACTOR_TEXT = (viewerContainer.offsetHeight - 2*50)/textLayer.offsetHeight;
+        if (SCALE_FACTOR_TEXT !== 1) {
+          textLayer.style.transform = 'scale('+ SCALE_FACTOR_TEXT +')';
+          this.documentConfig.containerWidth = docImg.offsetWidth*SCALE_FACTOR_IMAGE;
+        }
+      } else {
+        console.log('Not detected textLayer');
+      }     
+      this.docViewerService.docConfSubject.next({
+        containerWidth: Math.floor(this.documentConfig.containerWidth /this.ZOOM_STEP),
+      });
+      this.scrollEvent();
       this.zoomInDisabled = false;
       this.zoomOutDisabled = false;
-      if (textLayer) {
-        console.log('ima lehjere');
-        textLayer.style.transform = 'scale(1)';
-      } else {
-        console.log('nema lejera');
-      }
-      this.documentConfig.containerHeight = this.pageHeight;
-      this.documentConfig.containerWidth = this.pageWidth;
-      this.scrollEvent();
     }, 0);
   }
 
@@ -153,7 +169,6 @@ export class DocumentActionsComponent
     setTimeout(() => {
       const documentContainer = document.getElementById('document-container');
       if (documentContainer) {
-        console.log(documentContainer.scrollHeight);
         if (documentContainer.scrollWidth > documentContainer.clientWidth) {
           this.docViewerService.zoomXStatus.next(true);
         } else {

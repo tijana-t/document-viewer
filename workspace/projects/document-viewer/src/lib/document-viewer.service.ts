@@ -7,7 +7,7 @@ import { SearchResult } from './_config/document-search.model';
   providedIn: 'root',
 })
 export class DocumentViewerService {
-  pageNumberSubject = new BehaviorSubject<number>(1);
+  pageNumberSubject = new BehaviorSubject<number>(0);
   token = new BehaviorSubject<string>('');
   modalStatus = new BehaviorSubject<boolean>(false);
   lineStatus = new BehaviorSubject<boolean>(false);
@@ -16,10 +16,7 @@ export class DocumentViewerService {
   zoomInStarted = new BehaviorSubject<boolean>(false);
   zoomXStatus = new BehaviorSubject<boolean>(false);
   changeDocSubject = new BehaviorSubject<boolean>(false);
-  docConfSubject = new BehaviorSubject<DocumentConfig>({
-    containerWidth: 0,
-    containerHeight: 0,
-  });
+  docConfSubject = new BehaviorSubject<DocumentConfig>({containerWidth: 0});
   pageInfo = new BehaviorSubject<any>({});
   mainImg = new BehaviorSubject<string>('');
   importantPages = new BehaviorSubject<number[]>([0]);

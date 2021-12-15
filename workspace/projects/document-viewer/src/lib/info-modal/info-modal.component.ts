@@ -24,15 +24,12 @@ export class InfoModalComponent
   modalStatus: boolean = false;
   subscription = new Subscription();
   @Input('document') document: DocumentComponent | undefined;
-  @Input('documentConfig') documentConfig: DocumentConfig = {
-    containerWidth: 0,
-    containerHeight: 0,
-  };
+  @Input('documentConfig') documentConfig: DocumentConfig = { containerWidth: 0 };
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     informationHelp: '',
     downloadPdfPlain: '',
   };
-  defaultConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
+  defaultConfig: DocumentConfig = { containerWidth: 0};
 
   constructor(private docViewerService: DocumentViewerService) {}
 

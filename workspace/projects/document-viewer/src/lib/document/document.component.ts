@@ -35,12 +35,10 @@ export class DocumentComponent
   mainImgOrginal: string = '';
   @ViewChild('docContainer') docImage: any;
   @Output('pageSearch') pageSearch = new EventEmitter();
-  @Input('documentConfig') documentConfig: DocumentConfig = {
-    containerWidth: 0,
-    containerHeight: 0,
-  };
+  @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
+  @Input('documentConfig') documentConfig: DocumentConfig = { containerWidth: 0 };
   thumbnails: Thumbnail[] = [{ id: '', src: '' }];
-  defaultDocConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
+  defaultDocConfig: DocumentConfig = { containerWidth: 0 };
   imageTopVal = '50%';
   imageLeftVal = '50%';
   maxContainerHeight = 0;
@@ -69,6 +67,10 @@ export class DocumentComponent
       .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe((res: string) => {
         if (res) {
+          this.docViewerService.docConfSubject.next({
+            containerWidth: 0,
+          });
+          this.documentConfig.containerWidth = 0;
           this.mainImg = res + '?img=_cleaned_rotated';
           this.mainImgOrginal = res;
           this.docViewerService.fitToPage.next(true);
@@ -98,16 +100,17 @@ export class DocumentComponent
 
     this.subscriptions = this.docViewerService.showOriginalDoc.pipe(skip(1), takeUntil(this.destroy$)).subscribe(
       (res: boolean) => {
-        /* if(res) {
-         this.mainImg = this.mainImg.replace("?img=_cleaned_rotated","");
-         console.log('orginal?')
-        } else{
-          console.log('nije orgin')
-         this.mainImg = this.mainImg  + '?img=_cleaned_rotated';
-        }  */
         this.docViewerService.changeDocSubject.next(false);
       }
     );
+
+    this.docViewerService.pageNumberSubject
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((page: any) => {
+      if (page) {
+        this.pageNumber = page;
+      }
+    });
 
     this.subscriptions = this.docViewerService.groupedByPageSubj
       .pipe(skip(1), takeUntil(this.destroy$))
@@ -121,7 +124,7 @@ export class DocumentComponent
             this.noSearchItems = true;
             setTimeout(() => {
               this.noSearchItems = false;
-            }, 3000);
+            }, 0);
           }
         } else {
           this.groupedByPage = [];
@@ -138,6 +141,23 @@ export class DocumentComponent
       pageSearch: [pageSearch],
       pageNumber: pageSearch.pageNums[0],
     });
+  }
+
+  imageError(event: Event) {
+    console.log('EROR: ', event)
+  }
+
+  onImageLoaded(event: any){
+    if (event && event.target) {
+      const outerCont = document.getElementById('docImg');
+      if (outerCont?.offsetHeight !== 0 && outerCont?.offsetWidth !== 0) {
+        this.triggerTextLayer.emit({pageNumber: this.pageNumber, pageChange: true});
+      }
+    }
+  }
+
+  triggerTextLayerCreation(event: Event) {
+    //this.triggerTextLayer.emit(event);
   }
 
   setTransImgPosition(number: number) {
