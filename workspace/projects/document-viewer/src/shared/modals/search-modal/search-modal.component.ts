@@ -52,7 +52,13 @@ export class SearchModalComponent implements OnInit, OnDestroy {
       this.searchSubject
         .pipe(debounceTime(800), distinctUntilChanged())
         .subscribe((res: any) => {
-          this.searchTextInDoc.emit(res);
+          console.log('trazii')
+          if (res.length > 2) {
+            this.searchTextInDoc.emit(res);
+          }
+          else {
+            this.cleanSearch();
+          }
         })
     );
 
@@ -103,17 +109,16 @@ export class SearchModalComponent implements OnInit, OnDestroy {
     this.groupedByPage = [];
     this.docViewerService.groupedByPageSubj.next(null);
     this.docViewerService.importantPages.next([]);
+    this.searchLoader = false;
     this.searchTextInDoc.emit(null);
   }
 
   searchTextInDocument(event: string) {
-    if (event === '' && event.length < 3) {
-      this.cleanSearch();
-    } else {
+    console.log('rijec', event)
       this.searchLoader = true;
       this.searchSubject.next(event);
       this.docViewerService.searchValue.next(event);
-    }
+
   }
 
   ngOnDestroy() {
