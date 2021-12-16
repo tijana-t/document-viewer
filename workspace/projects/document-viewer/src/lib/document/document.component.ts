@@ -149,8 +149,7 @@ export class DocumentComponent
 
   onImageLoaded(event: any){
     if (event && event.target) {
-      const outerCont = document.getElementById('docImg');
-      if (outerCont?.offsetHeight !== 0 && outerCont?.offsetWidth !== 0) {
+      if (event.path[0].naturalHeight !== 1 && event.path[0].naturalWidth !== 1) {
         this.triggerTextLayer.emit({pageNumber: this.pageNumber, pageChange: true});
       }
     }

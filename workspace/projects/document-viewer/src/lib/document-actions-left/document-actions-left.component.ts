@@ -58,6 +58,7 @@ export class DocumentActionsLeftComponent
       orgImageParent.style.width = ((this.widthImage*val) / 100) + "px";
     }
   }
+
   openModal() {
     this.modalStatus = true;
     this.docViewerService.modalStatus.next(this.modalStatus);
@@ -70,7 +71,8 @@ export class DocumentActionsLeftComponent
   showOriginalDocument() {
     this.originalDocument = !this.originalDocument;
     const orgImageFixedSize = document.getElementById('docImgOrginal')
-    const orgImageParent = document.getElementById('orgImageParent')
+    const orgImageParent = document.getElementById('orgImageParent');
+    console.log('opet pokazi')
     if(orgImageFixedSize){
       this.widthImage = orgImageFixedSize?.offsetWidth;
     }
