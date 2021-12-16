@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DocumentConfig } from '../public-api';
+import { DocumentConfig, ShowDocumentConfig } from '../public-api';
 import { SearchResult } from './_config/document-search.model';
 
 @Injectable({
@@ -16,14 +16,18 @@ export class DocumentViewerService {
   zoomInStarted = new BehaviorSubject<boolean>(false);
   zoomXStatus = new BehaviorSubject<boolean>(false);
   changeDocSubject = new BehaviorSubject<boolean>(false);
-  docConfSubject = new BehaviorSubject<DocumentConfig>({containerWidth: 0});
+  docConfSubject = new BehaviorSubject<DocumentConfig>({ containerWidth: 0 });
   pageInfo = new BehaviorSubject<any>({});
   mainImg = new BehaviorSubject<string>('');
   importantPages = new BehaviorSubject<number[]>([0]);
   activateSearch = new BehaviorSubject<number>(0);
   groupedByPageSubj = new BehaviorSubject<any>(null);
   searchValue = new BehaviorSubject<string>('');
-  showOriginalDoc = new BehaviorSubject<boolean>(false);
+  triggerSyncOrginal = new BehaviorSubject<boolean>(false);
+  showOriginalDoc = new BehaviorSubject<ShowDocumentConfig>({
+    showOrginal: false,
+    viewPercent: 50,
+  });
 
   constructor() {}
 }

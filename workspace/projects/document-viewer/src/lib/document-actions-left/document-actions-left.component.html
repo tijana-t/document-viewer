@@ -17,9 +17,16 @@
     />
   </button>
 
-  <button class="col circle" (click)="showOriginalDocument()" [ngbTooltip]="!originalDocument ? 'Show original document':''" [ngClass]="{'show-orginal': originalDocument}">
+  <button
+    class="col circle"
+    (click)="showOriginalDocument()"
+    [ngbTooltip]="
+      !showOrginalConfig.showOrginal ? 'Show original document' : ''
+    "
+    [ngClass]="{ 'show-orginal': showOrginalConfig.showOrginal }"
+  >
     <img
-    class="split-icon"
+      class="split-icon"
       width="15px"
       height="15px"
       [src]="documentActionsSrc.showOrginalImg"
@@ -27,7 +34,16 @@
     />
   </button>
 
-  <div class="range-parent" *ngIf="originalDocument">
-    <input type="range" min="1" max="100" value="50" class="slider-image" id="myRange" [(ngModel)]="mymodel" (input)="changeOrginalImgSize(mymodel)">
+  <div class="range-parent" *ngIf="showOrginalConfig.showOrginal">
+    <input
+      type="range"
+      min="1"
+      max="100"
+      value="50"
+      class="slider-image"
+      id="orginal-range"
+      [(ngModel)]="showOrginalConfig.viewPercent"
+      (input)="changeOrginalImgSize()"
+    />
   </div>
 </div>

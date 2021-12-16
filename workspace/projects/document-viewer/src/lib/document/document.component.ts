@@ -16,7 +16,7 @@ import { fromEvent, Subject, Subscription } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
 import { DocumentViewerService } from '../document-viewer.service';
 import { SearchResult } from '../_config/document-search.model';
-import { DocumentConfig } from '../_config/document.model';
+import { DocumentConfig, ShowDocumentConfig } from '../_config/document.model';
 import { Thumbnail } from '../_config/thumbnail.model';
 
 declare var ResizeObserver: any;
@@ -36,7 +36,9 @@ export class DocumentComponent
   @ViewChild('docContainer') docImage: any;
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
-  @Input('documentConfig') documentConfig: DocumentConfig = { containerWidth: 0 };
+  @Input('documentConfig') documentConfig: DocumentConfig = {
+    containerWidth: 0,
+  };
   thumbnails: Thumbnail[] = [{ id: '', src: '' }];
   defaultDocConfig: DocumentConfig = { containerWidth: 0 };
   imageTopVal = '50%';
@@ -98,19 +100,19 @@ export class DocumentComponent
       }
     );
 
-    this.subscriptions = this.docViewerService.showOriginalDoc.pipe(skip(1), takeUntil(this.destroy$)).subscribe(
-      (res: boolean) => {
+    this.subscriptions = this.docViewerService.showOriginalDoc
+      .pipe(skip(1), takeUntil(this.destroy$))
+      .subscribe((res: ShowDocumentConfig) => {
         this.docViewerService.changeDocSubject.next(false);
-      }
-    );
+      });
 
     this.docViewerService.pageNumberSubject
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((page: any) => {
-      if (page) {
-        this.pageNumber = page;
-      }
-    });
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((page: any) => {
+        if (page) {
+          this.pageNumber = page;
+        }
+      });
 
     this.subscriptions = this.docViewerService.groupedByPageSubj
       .pipe(skip(1), takeUntil(this.destroy$))
@@ -144,13 +146,16 @@ export class DocumentComponent
   }
 
   imageError(event: Event) {
-    console.log('EROR: ', event)
+    console.log('EROR: ', event);
   }
 
-  onImageLoaded(event: any){
+  onImageLoaded(event: any) {
     if (event && event.target) {
-      if (event.path[0].naturalHeight !== 1 && event.path[0].naturalWidth !== 1) {
-        this.triggerTextLayer.emit({pageNumber: this.pageNumber, pageChange: true});
+      if (
+        event.path[0].naturalHeight !== 1 &&
+        event.path[0].naturalWidth !== 1
+      ) {
+        this.triggerTextLayer.emit({ pageNumber: this.pageNumber });
       }
     }
   }

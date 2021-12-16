@@ -12,7 +12,7 @@ import {
 import { DocumentComponent } from '../document/document.component';
 import { DocumentViewerService } from '../document-viewer.service';
 import { DocumentActions } from '../_config/document-actions.model';
-import { DocumentConfig } from '../_config/document.model';
+import { DocumentConfig, ShowDocumentConfig } from '../_config/document.model';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -25,38 +25,41 @@ export class DocumentActionsLeftComponent
 {
   modalStatus: boolean = false;
   subscription = new Subscription();
-  originalDocument: boolean = false;
-  mymodel=50;
-  widthImage = 0
+  showOrginalConfig: ShowDocumentConfig = {
+    showOrginal: false,
+    viewPercent: 50,
+  };
   @Input('document') document: DocumentComponent | undefined;
-  @Input('documentConfig') documentConfig: DocumentConfig = { containerWidth: 0 };
+  @Input('documentConfig') documentConfig: DocumentConfig = {
+    containerWidth: 0,
+  };
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     informationHelp: '',
     downloadPdfPlain: '',
   };
   @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
-
   defaultConfig: DocumentConfig = { containerWidth: 0 };
-
   constructor(private docViewerService: DocumentViewerService) {}
 
   ngOnInit(): void {
     this.subscription = this.docViewerService.modalStatus.subscribe(
-      (status) => {
+      (status: boolean) => {
         this.modalStatus = status;
+      }
+    );
+
+    this.subscription = this.docViewerService.docConfSubject.subscribe(
+      (res: DocumentConfig) => {
+        this.defaultConfig = res;
+        if (this.showOrginalConfig.showOrginal) {
+          this.changeOrginalImgSize();
+        }
       }
     );
   }
 
   ngAfterViewInit() {
     this.defaultConfig = { ...this.documentConfig };
-  }
-
-  changeOrginalImgSize(val:number) {
-    const orgImageParent = document.getElementById('orgImageParent')
-    if(orgImageParent && this.originalDocument){
-      orgImageParent.style.width = ((this.widthImage*val) / 100) + "px";
-    }
   }
 
   openModal() {
@@ -69,22 +72,31 @@ export class DocumentActionsLeftComponent
   }
 
   showOriginalDocument() {
-    this.originalDocument = !this.originalDocument;
-    const orgImageFixedSize = document.getElementById('docImgOrginal')
+    this.showOrginalConfig.showOrginal = !this.showOrginalConfig.showOrginal;
     const orgImageParent = document.getElementById('orgImageParent');
-    console.log('opet pokazi')
-    if(orgImageFixedSize){
-      this.widthImage = orgImageFixedSize?.offsetWidth;
-    }
-    if (!this.originalDocument) {      
+    this.docViewerService.showOriginalDoc.next(this.showOrginalConfig);
+
+    if (!this.showOrginalConfig.showOrginal) {
       if (orgImageParent) {
-        orgImageParent.style.width = Math.floor(this.widthImage)  + "px";
+        orgImageParent.style.width =
+          Math.floor(this.defaultConfig.containerWidth) + 'px';
+      }
+    } else {
+      if (orgImageParent) {
+        orgImageParent.style.width =
+          Math.floor(this.defaultConfig.containerWidth / 2) + 'px';
       }
     }
-    else {
-      if (orgImageParent) {
-        orgImageParent.style.width = Math.floor(this.widthImage/2)  + "px";
-      }
+  }
+
+  changeOrginalImgSize() {
+    const orgImageParent = document.getElementById('orgImageParent');
+    if (orgImageParent && this.showOrginalConfig.showOrginal) {
+      orgImageParent.style.width =
+        (this.defaultConfig.containerWidth *
+          this.showOrginalConfig.viewPercent) /
+          100 +
+        'px';
     }
   }
 

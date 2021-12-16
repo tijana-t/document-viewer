@@ -52,11 +52,9 @@ export class SearchModalComponent implements OnInit, OnDestroy {
       this.searchSubject
         .pipe(debounceTime(800), distinctUntilChanged())
         .subscribe((res: any) => {
-          console.log('trazii')
           if (res.length > 2) {
             this.searchTextInDoc.emit(res);
-          }
-          else {
+          } else {
             this.cleanSearch();
           }
         })
@@ -114,11 +112,9 @@ export class SearchModalComponent implements OnInit, OnDestroy {
   }
 
   searchTextInDocument(event: string) {
-    console.log('rijec', event)
-      this.searchLoader = true;
-      this.searchSubject.next(event);
-      this.docViewerService.searchValue.next(event);
-
+    this.searchLoader = true;
+    this.searchSubject.next(event);
+    this.docViewerService.searchValue.next(event);
   }
 
   ngOnDestroy() {
