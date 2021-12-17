@@ -28,6 +28,7 @@ export class DocumentViewerService {
     showOrginal: false,
     viewPercent: 50,
   });
+  pageChange = new BehaviorSubject<boolean>(true);
 
   constructor() {}
 }

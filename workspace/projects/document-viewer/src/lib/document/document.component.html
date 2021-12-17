@@ -17,12 +17,11 @@
         'scroll-x': scrollVisibleX
       }"
     >
-      <div class="info-search">
+      <div (click)="colapsSearch()" class="info-search">
         {{ groupedByPage.length }} search found for "{{ searchValueForDoc }}"
         <span
           class="typcn typcn-chevron-left colaps-search"
           [ngClass]="{ 'colaps-search-rotate': colapsSearchStatus }"
-          (click)="colapsSearch()"
         ></span>
       </div>
       <div

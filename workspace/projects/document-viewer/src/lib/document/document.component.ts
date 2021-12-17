@@ -60,6 +60,7 @@ export class DocumentComponent
   searchValueForDoc: string = '';
   scrollVisibleX: boolean = false;
   changeDocument: boolean = false;
+  isChangePage: boolean = true;
 
   constructor(
     private docViewerService: DocumentViewerService,
@@ -106,6 +107,12 @@ export class DocumentComponent
         this.docViewerService.changeDocSubject.next(false);
       });
 
+    this.docViewerService.pageChange
+    .pipe(skip(1), takeUntil(this.destroy$))
+    .subscribe((res: boolean) => {
+        this.isChangePage = res;
+    });
+
     this.docViewerService.pageNumberSubject
       .pipe(takeUntil(this.destroy$))
       .subscribe((page: any) => {
@@ -149,13 +156,10 @@ export class DocumentComponent
     console.log('EROR: ', event);
   }
 
-  onImageLoaded(event: any) {
+  onImageLoaded(event: any){
     if (event && event.target) {
-      if (
-        event.path[0].naturalHeight !== 1 &&
-        event.path[0].naturalWidth !== 1
-      ) {
-        this.triggerTextLayer.emit({ pageNumber: this.pageNumber });
+      if (event.path[0].naturalHeight !== 1 && event.path[0].naturalWidth !== 1) {
+        this.triggerTextLayer.emit({pageNumber: this.pageNumber, pageChange: this.isChangePage});
       }
     }
   }
@@ -164,7 +168,7 @@ export class DocumentComponent
     //this.triggerTextLayer.emit(event);
   }
 
-  setTransImgPosition(number: number) {
+  setTransImgPosition(initalSetting?: boolean) {
     const outerCont = document.getElementById('outer-cont');
     const documentImage = document.getElementById('docImg');
 
@@ -184,7 +188,7 @@ export class DocumentComponent
         this.imageTopVal = this.relativePosition.top + 'px';
       });
     }
-    this.docViewerService.lineStatus.next(true);
+    if(!initalSetting) this.docViewerService.lineStatus.next(true);
   }
 
   scrollToCenter() {
@@ -276,7 +280,7 @@ export class DocumentComponent
           }
         }
         this.scrollToCenter();
-        this.setTransImgPosition(2);
+        this.setTransImgPosition(true);
       }
     });
 
@@ -285,7 +289,7 @@ export class DocumentComponent
   }
 
   scrollEvent(event: Event, documentImage: any) {
-    this.setTransImgPosition(4);
+    this.setTransImgPosition();
   }
 
   initDrag() {
@@ -341,7 +345,7 @@ export class DocumentComponent
 
     this.subscriptions.add(dragStartSub);
     this.subscriptions.add(dragEndSub);
-    this.setTransImgPosition(5);
+    this.setTransImgPosition();
   }
 
   colapsSearch() {
@@ -354,6 +358,6 @@ export class DocumentComponent
       this.noSearchItems = false;
       this.documentConfig = changes['documentConfig'].currentValue;
     }
-    this.setTransImgPosition(6);
+    this.setTransImgPosition();
   }
 }

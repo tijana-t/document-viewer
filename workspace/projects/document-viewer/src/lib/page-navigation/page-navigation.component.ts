@@ -79,7 +79,8 @@ export class PageNavigationComponent
           } else {
             this.docViewerService.activateSearch.next(0);
           }
-          this.scrollToPageNumber(res, true);
+          this.docViewerService.pageChange.next(true);
+          this.scrollToPageNumber(res);
         }
       });
 
@@ -93,7 +94,8 @@ export class PageNavigationComponent
           this.docViewerService.pageNumberSubject.next(res.currentPage);
           if (res.pages) this.thumbnails = res.pages;
           setTimeout(() => {
-            this.scrollToPageNumber(this.pageNumber);
+          this.docViewerService.pageChange.next(false);
+          this.scrollToPageNumber(this.pageNumber);
           }, 0);
         }
       });
@@ -115,7 +117,7 @@ export class PageNavigationComponent
   }
 
   //scrolls thumbnail container and updates thumb position
-  scrollToPageNumber(pageNumber: number, isChangePage?: boolean) {
+  scrollToPageNumber(pageNumber: number) {
     const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
     this.thumbnailContainer?.nativeElement.scrollTo({
       top: offsetTop,
@@ -131,14 +133,15 @@ export class PageNavigationComponent
       'img'
     );
     this.docViewerService.mainImg.next(mainImg);
-    this.triggerTextLayer.emit({ pageNumber, pageChange: isChangePage });
+    // this.triggerTextLayer.emit({ pageNumber });
   }
 
   //fires on thumbnail click
   changePage(pageNumber: number, thumbnail: Thumbnail) {
     this.pageNumber = pageNumber;
     if (this.pageNumber !== this.oldPageNumber) {
-      this.scrollToPageNumber(pageNumber, true);
+      this.docViewerService.pageChange.next(true);
+      this.scrollToPageNumber(pageNumber);
       this.docViewerService.pageNumberSubject.next(pageNumber);
       this.clearTextLayer();
     }
