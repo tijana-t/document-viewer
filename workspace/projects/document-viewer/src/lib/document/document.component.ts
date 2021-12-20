@@ -75,7 +75,7 @@ export class DocumentComponent
             containerWidth: 0,
           });
           this.documentConfig.containerWidth = 0;
-          this.mainImg = res + `&img=_cleaned_rotated`;
+          this.mainImg = res + `?img=_cleaned_rotated`;
           this.mainImgOrginal = res;
           this.docViewerService.fitToPage.next(true);
           this.docViewerService.changeDocSubject.next(false);
