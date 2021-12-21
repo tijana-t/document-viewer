@@ -39,6 +39,7 @@ export class DocumentComponent
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
   };
+  @Input('createdAt') createdAt = '';
   thumbnails: Thumbnail[] = [{ id: '', src: '' }];
   defaultDocConfig: DocumentConfig = { containerWidth: 0 };
   imageTopVal = '50%';
@@ -74,7 +75,7 @@ export class DocumentComponent
             containerWidth: 0,
           });
           this.documentConfig.containerWidth = 0;
-          this.mainImg = res + '?img=_cleaned_rotated';
+          this.mainImg = res + `?img=_cleaned_rotated`;
           this.mainImgOrginal = res;
           this.docViewerService.fitToPage.next(true);
           this.docViewerService.changeDocSubject.next(false);
@@ -357,6 +358,9 @@ export class DocumentComponent
       this.groupedByPage = [];
       this.noSearchItems = false;
       this.documentConfig = changes['documentConfig'].currentValue;
+    }
+    if (changes['createdAt'] && changes['createdAt'].currentValue) {
+      this.createdAt = changes['createdAt'].currentValue;
     }
     this.setTransImgPosition();
   }

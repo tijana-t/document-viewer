@@ -49,6 +49,7 @@ export class PageNavigationComponent
   timeout: any = null;
   subscriptions = new Subscription();
   importantPages: number[] = [0];
+  isChangePage: boolean = false;
 
   constructor(private docViewerService: DocumentViewerService) {
     this.subscriptions.add(
@@ -79,6 +80,7 @@ export class PageNavigationComponent
           } else {
             this.docViewerService.activateSearch.next(0);
           }
+          this.isChangePage = true;
           this.docViewerService.pageChange.next(true);
           this.scrollToPageNumber(res);
         }
@@ -94,6 +96,7 @@ export class PageNavigationComponent
           this.docViewerService.pageNumberSubject.next(res.currentPage);
           if (res.pages) this.thumbnails = res.pages;
           setTimeout(() => {
+          this.isChangePage = false;
           this.docViewerService.pageChange.next(false);
           this.scrollToPageNumber(this.pageNumber);
           }, 0);
@@ -103,6 +106,8 @@ export class PageNavigationComponent
 
   ngAfterViewInit() {}
   searchPage(pageNumber: number) {
+    this.clearTextLayer()
+    this.docViewerService.pageNumberSubject.next(pageNumber)
     if (
       pageNumber >= this.thumbnails.length &&
       this.thumbnails.length - 1 > 0
@@ -133,16 +138,17 @@ export class PageNavigationComponent
       'img'
     );
     this.docViewerService.mainImg.next(mainImg);
-    // this.triggerTextLayer.emit({ pageNumber });
+    // this.triggerTextLayer.emit({pageNumber: this.pageNumber, pageChange: this.isChangePage});
   }
 
   //fires on thumbnail click
   changePage(pageNumber: number, thumbnail: Thumbnail) {
     this.pageNumber = pageNumber;
     if (this.pageNumber !== this.oldPageNumber) {
+      this.docViewerService.pageNumberSubject.next(pageNumber);
+      this.isChangePage = true;
       this.docViewerService.pageChange.next(true);
       this.scrollToPageNumber(pageNumber);
-      this.docViewerService.pageNumberSubject.next(pageNumber);
       this.clearTextLayer();
     }
     this.oldPageNumber = pageNumber;
