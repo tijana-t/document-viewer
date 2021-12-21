@@ -170,8 +170,18 @@ export class DocumentActionsComponent
 
   scrollEvent() {
     setTimeout(() => {
+      this.docViewerService.lineStatus.next(true);
+    }, 20);
+    setTimeout(() => {
       const documentContainer = document.getElementById('document-container');
+
       if (documentContainer) {
+        console.log(
+          'documentContainer.scrollWidth',
+          documentContainer.scrollWidth,
+          'documentContainer.clientWidth',
+          documentContainer.clientWidth
+        );
         if (documentContainer.scrollWidth > documentContainer.clientWidth) {
           this.docViewerService.zoomXStatus.next(true);
         } else {

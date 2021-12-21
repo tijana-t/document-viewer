@@ -82,7 +82,7 @@
           #documentImage
           [src]="mainImg | secureImg | async"
           (load)="onImageLoaded($event)"
-          (error)="imageError($event)" 
+          (error)="imageError($event)"
         />
       </div>
       <img
