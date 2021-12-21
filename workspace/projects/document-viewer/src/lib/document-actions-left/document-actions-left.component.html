@@ -18,6 +18,7 @@
   </button>
 
   <button
+    *ngIf="scanned"
     class="col circle"
     (click)="showOriginalDocument()"
     [ngbTooltip]="

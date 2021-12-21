@@ -37,6 +37,7 @@ export class DocumentActionsLeftComponent
     informationHelp: '',
     downloadPdfPlain: '',
   };
+  @Input('scanned') scanned: boolean = false;
   @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
   defaultConfig: DocumentConfig = { containerWidth: 0 };
   constructor(private docViewerService: DocumentViewerService) {}
@@ -109,6 +110,9 @@ export class DocumentActionsLeftComponent
       changes['documentActionsSrc'].currentValue
     ) {
       this.documentActionsSrc = changes['documentActionsSrc'].currentValue;
+    }
+    if (changes['scanned'] && changes['scanned'].currentValue) {
+      this.scanned = changes['scanned'].currentValue;
     }
   }
 

@@ -76,7 +76,7 @@
     >
       <div id="orgImageParent">
         <img
-          *ngIf="!changeDocument"
+          *ngIf="!changeDocument && scanned"
           [attr.width]="documentConfig.containerWidth + 'px'"
           id="docImg"
           #documentImage
@@ -86,10 +86,18 @@
         />
       </div>
       <img
-        *ngIf="!changeDocument"
+        *ngIf="!changeDocument && scanned"
         [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImgOrginal"
         #documentImage
+        [src]="mainImgOrginal | secureImg | async"
+      />
+      <img
+        *ngIf="!changeDocument && !scanned"
+        [attr.width]="documentConfig.containerWidth + 'px'"
+        id="docImgOrginal"
+        #documentImage
+        (load)="onImageLoaded($event)"
         [src]="mainImgOrginal | secureImg | async"
       />
       <div
