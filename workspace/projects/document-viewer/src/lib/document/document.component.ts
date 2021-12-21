@@ -39,7 +39,7 @@ export class DocumentComponent
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
   };
-  @Input('scanned') scanned: boolean = false;
+  @Input('editable') editable: string = '';
   @Input('createdAt') createdAt = '';
   thumbnails: Thumbnail[] = [{ id: '', src: '' }];
   defaultDocConfig: DocumentConfig = { containerWidth: 0 };
@@ -369,8 +369,9 @@ export class DocumentComponent
     if (changes['createdAt'] && changes['createdAt'].currentValue) {
       this.createdAt = changes['createdAt'].currentValue;
     }
-    if (changes['scanned'] && changes['scanned'].currentValue) {
-      this.scanned = changes['scanned'].currentValue;
+    if (changes['editable'] && changes['editable'].currentValue) {
+      this.editable = changes['editable'].currentValue;
+      console.log('editable', this.editable);
     }
     this.setTransImgPosition();
   }

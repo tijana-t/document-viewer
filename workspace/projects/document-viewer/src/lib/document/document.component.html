@@ -76,7 +76,7 @@
     >
       <div id="orgImageParent">
         <img
-          *ngIf="!changeDocument && scanned"
+          *ngIf="!changeDocument && editable !== '61b9dc6985f5c6d42b5309f8'"
           [attr.width]="documentConfig.containerWidth + 'px'"
           id="docImg"
           #documentImage
@@ -86,14 +86,14 @@
         />
       </div>
       <img
-        *ngIf="!changeDocument && scanned"
+        *ngIf="!changeDocument && editable !== '61b9dc6985f5c6d42b5309f8'"
         [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImgOrginal"
         #documentImage
         [src]="mainImgOrginal | secureImg | async"
       />
       <img
-        *ngIf="!changeDocument && !scanned"
+        *ngIf="!changeDocument && editable == '61b9dc6985f5c6d42b5309f8'"
         [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImgOrginal"
         #documentImage
