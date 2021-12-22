@@ -39,7 +39,7 @@ export class DocumentComponent
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
   };
-  @Input('editable') editable: string = '';
+  @Input('editable') editable: boolean = false;
   @Input('createdAt') createdAt = '';
   thumbnails: Thumbnail[] = [{ id: '', src: '' }];
   defaultDocConfig: DocumentConfig = { containerWidth: 0 };
@@ -179,7 +179,12 @@ export class DocumentComponent
 
   setTransImgPosition(initalSetting?: boolean) {
     const outerCont = document.getElementById('outer-cont');
-    const documentImage = document.getElementById('docImg');
+    let documentImage;
+    if(!this.editable) {
+      documentImage = document.getElementById('docImg');
+    }else {
+      documentImage = document.getElementById('docImgOrginal');
+    }
 
     if (documentImage && outerCont) {
       const rectObj: DOMRect = documentImage.getBoundingClientRect();
@@ -370,9 +375,14 @@ export class DocumentComponent
     if (changes['createdAt'] && changes['createdAt'].currentValue) {
       this.createdAt = changes['createdAt'].currentValue;
     }
-    if (changes['editable'] && changes['editable'].currentValue) {
-      this.editable = changes['editable'].currentValue;
-      console.log('editable', this.editable);
+    if (changes['editable']) {
+      if(changes['editable'].currentValue == false) {
+        this.editable = false;
+      } else {
+        this.editable = true;
+      }
+
+
     }
     this.setTransImgPosition();
   }

@@ -18,8 +18,8 @@
   </button>
 
   <button
-    *ngIf="editable !== '61b9dc6985f5c6d42b5309f8'"
     class="col circle"
+    *ngIf="!editable"
     (click)="showOriginalDocument()"
     [ngbTooltip]="
       !showOrginalConfig.showOrginal ? 'Show original document' : ''

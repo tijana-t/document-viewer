@@ -48,7 +48,20 @@
       </div>
     </div>
   </ng-container>
-  <img
+  <img *ngIf="editable"
+    [ngStyle]="{
+      width: documentConfig.containerWidth + 'px',
+      position: 'absolute',
+      opacity: 0.3,
+      left: imageLeftVal,
+      top: imageTopVal
+    }"
+    [src]="mainImgOrginal | secureImg | async"
+    class="trans-img"
+    id="trans-img"
+    alt=""
+  />
+  <img *ngIf="editable == false "
     [ngStyle]="{
       width: documentConfig.containerWidth + 'px',
       position: 'absolute',
@@ -76,7 +89,7 @@
     >
       <div id="orgImageParent">
         <img
-          *ngIf="!changeDocument && editable !== '61b9dc6985f5c6d42b5309f8'"
+          *ngIf="!changeDocument && editable == false"
           [attr.width]="documentConfig.containerWidth + 'px'"
           id="docImg"
           #documentImage
@@ -85,20 +98,13 @@
         />
       </div>
       <img
-        *ngIf="!changeDocument && editable !== '61b9dc6985f5c6d42b5309f8'"
-        [attr.width]="documentConfig.containerWidth + 'px'"
-        id="docImgOrginal"
-        (load)="onImageLoaded($event)"
-        #documentImage
-        [src]="mainImgOrginal | secureImg | async"
-      />
-      <img
-        *ngIf="!changeDocument && editable == '61b9dc6985f5c6d42b5309f8'"
+        *ngIf="!changeDocument"
         [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImgOrginal"
         #documentImage
-        (load)="onImageLoaded($event)"
         [src]="mainImgOrginal | secureImg | async"
+        (load)="onImageLoaded($event)"
+        (error)="imageError($event)"
       />
       <div
         *ngIf="changeDocument"

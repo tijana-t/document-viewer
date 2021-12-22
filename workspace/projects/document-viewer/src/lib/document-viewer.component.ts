@@ -35,7 +35,6 @@ export class DocumentViewerComponent
   @Input('pageInfo') pageInfo: any;
   @Input('thumbnails') thumbnails: Thumbnail[] = [{ id: '', src: '' }];
   @Input('totalPages') totalPages: number = 0;
-  @Input('editable') editable: string = '';
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
     zoomOutSrc: '',
@@ -50,6 +49,7 @@ export class DocumentViewerComponent
   @Input('params') params: any;
   @Input('singleDocument') singleDocument: any;
   @Input('inProjects') inProjects: any;
+  @Input('editable') editable: boolean = false;
   subscriptions = new Subscription();
   destroy$ = new Subject();
   ngOnInit() {
@@ -103,9 +103,9 @@ export class DocumentViewerComponent
     if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
       this.singleDocument = changes['singleDocument'].currentValue;
     }
-    // if (changes['editable'] && changes['editable'].currentValue) {
-    //   this.editable = changes['editable'].currentValue;
-    // }
+    if (changes['editable']) {
+      this.editable = changes['editable'].currentValue;
+    }
   }
 
   ngOnDestroy(): void {
