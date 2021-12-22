@@ -37,6 +37,7 @@ export class DocumentActionsLeftComponent
     informationHelp: '',
     downloadPdfPlain: '',
   };
+  @Input('editable') editable: string = '';
   @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
   defaultConfig: DocumentConfig = { containerWidth: 0 };
   constructor(private docViewerService: DocumentViewerService) {}
@@ -109,6 +110,10 @@ export class DocumentActionsLeftComponent
       changes['documentActionsSrc'].currentValue
     ) {
       this.documentActionsSrc = changes['documentActionsSrc'].currentValue;
+    }
+    if (changes['editable'] && changes['editable'].currentValue) {
+      this.editable = changes['editable'].currentValue;
+      console.log('actions', this.editable);
     }
   }
 

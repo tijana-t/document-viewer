@@ -52,6 +52,7 @@
     >
     </lib-search-modal>
     <lib-document-actions-left
+      [editable]="singleDocument?.file?.modelContainer"
       (downloadDocument)="downloadDocument($event)"
       class="document-actions-left-container"
       id="viewer"
@@ -61,6 +62,7 @@
 
   <div class="d-flex align-items-center flex-column" id="doc-box">
     <lib-document
+      [editable]="singleDocument?.file?.modelContainer"
       [documentConfig]="documentConfig"
       #document
       (triggerTextLayer)="triggerTextLayerCreation($event)"

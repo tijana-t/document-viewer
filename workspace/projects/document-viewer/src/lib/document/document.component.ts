@@ -39,6 +39,7 @@ export class DocumentComponent
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
   };
+  @Input('editable') editable: string = '';
   @Input('createdAt') createdAt = '';
   thumbnails: Thumbnail[] = [{ id: '', src: '' }];
   defaultDocConfig: DocumentConfig = { containerWidth: 0 };
@@ -75,7 +76,7 @@ export class DocumentComponent
             containerWidth: 0,
           });
           this.documentConfig.containerWidth = 0;
-          this.mainImg = res + `?img=_cleaned_rotated`;
+          this.mainImg = res + '&img=_cleaned_rotated';
           this.mainImgOrginal = res;
           this.docViewerService.fitToPage.next(true);
           this.docViewerService.changeDocSubject.next(false);
@@ -368,6 +369,10 @@ export class DocumentComponent
     }
     if (changes['createdAt'] && changes['createdAt'].currentValue) {
       this.createdAt = changes['createdAt'].currentValue;
+    }
+    if (changes['editable'] && changes['editable'].currentValue) {
+      this.editable = changes['editable'].currentValue;
+      console.log('editable', this.editable);
     }
     this.setTransImgPosition();
   }
