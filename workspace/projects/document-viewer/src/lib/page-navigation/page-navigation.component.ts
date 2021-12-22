@@ -69,20 +69,27 @@ export class PageNavigationComponent
   ngOnInit(): void {
     //wait small amount of time before another request is called
     this.results$ = this.searchSubject
-      .pipe(debounceTime(800), distinctUntilChanged())
+      .pipe(debounceTime(800))
       .subscribe((res: number) => {
-        if (res) {
-          const thumbnail = this.thumbnails.find(
-            (thumb) => thumb.id == res.toString()
-          );
-          if (thumbnail && thumbnail.hasSearchedText) {
-            this.docViewerService.activateSearch.next(res);
-          } else {
-            this.docViewerService.activateSearch.next(0);
+        if (Number.isInteger(res)) {
+          if (this.pageNumber !== this.oldPageNumber) {
+            if (this.pageNumber > this.thumbnails.length) {
+              this.pageNumber = this.thumbnails.length;
+              if (this.pageNumber !== this.oldPageNumber) {
+                this.triggerPageChange(this.pageNumber);
+              }
+            } else if (this.pageNumber < 1) {
+              this.pageNumber = 1;
+              if (this.pageNumber !== this.oldPageNumber) {
+                this.triggerPageChange(this.pageNumber);
+              }
+            } else {
+              this.triggerPageChange(this.pageNumber);
+            }
           }
-          this.isChangePage = true;
-          this.docViewerService.pageChange.next(true);
-          this.scrollToPageNumber(res);
+        } else {
+          // not a number
+          this.pageNumber = this.oldPageNumber;
         }
       });
 
@@ -96,9 +103,9 @@ export class PageNavigationComponent
           this.docViewerService.pageNumberSubject.next(res.currentPage);
           if (res.pages) this.thumbnails = res.pages;
           setTimeout(() => {
-          this.isChangePage = false;
-          this.docViewerService.pageChange.next(false);
-          this.scrollToPageNumber(this.pageNumber);
+            this.isChangePage = false;
+            this.docViewerService.pageChange.next(false);
+            this.scrollToPageNumber(this.pageNumber);
           }, 0);
         }
       });
@@ -106,19 +113,26 @@ export class PageNavigationComponent
 
   ngAfterViewInit() {}
   searchPage(pageNumber: number) {
-    this.clearTextLayer()
-    this.docViewerService.pageNumberSubject.next(pageNumber)
-    if (
-      pageNumber >= this.thumbnails.length &&
-      this.thumbnails.length - 1 > 0
-    ) {
-      this.pageNumber = this.thumbnails.length;
-    } else if (pageNumber < 1) {
-      this.pageNumber = 1;
-    } else {
-      this.pageNumber = pageNumber;
+    this.searchSubject.next(pageNumber);
+  }
+
+  triggerPageChange(res: number) {
+    if (res) {
+      this.clearTextLayer();
+      const thumbnail = this.thumbnails.find(
+        (thumb) => thumb.id == res.toString()
+      );
+      if (thumbnail && thumbnail.hasSearchedText) {
+        this.docViewerService.activateSearch.next(res);
+      } else {
+        this.docViewerService.activateSearch.next(0);
+      }
+      this.isChangePage = true;
+      this.docViewerService.pageNumberSubject.next(res);
+      this.docViewerService.pageChange.next(true);
+      this.scrollToPageNumber(res);
+      this.oldPageNumber = res;
     }
-    this.searchSubject.next(this.pageNumber);
   }
 
   //scrolls thumbnail container and updates thumb position

@@ -109,10 +109,10 @@ export class DocumentComponent
       });
 
     this.docViewerService.pageChange
-    .pipe(skip(1), takeUntil(this.destroy$))
-    .subscribe((res: boolean) => {
+      .pipe(skip(1), takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
         this.isChangePage = res;
-    });
+      });
 
     this.docViewerService.pageNumberSubject
       .pipe(takeUntil(this.destroy$))
@@ -157,10 +157,17 @@ export class DocumentComponent
     console.log('EROR: ', event);
   }
 
-  onImageLoaded(event: any){
+  onImageLoaded(event: any) {
     if (event && event.target) {
-      if (event.path[0].naturalHeight !== 1 && event.path[0].naturalWidth !== 1) {
-        this.triggerTextLayer.emit({pageNumber: this.pageNumber, pageChange: this.isChangePage});
+      if (
+        (event.path[0].naturalHeight !== 1 &&
+          event.path[0].naturalWidth !== 1) ||
+        (event.path[0].naturalHeight !== 0 && event.path[0].naturalWidth !== 0)
+      ) {
+        this.triggerTextLayer.emit({
+          pageNumber: this.pageNumber,
+          pageChange: this.isChangePage,
+        });
       }
     }
   }
@@ -189,7 +196,7 @@ export class DocumentComponent
         this.imageTopVal = this.relativePosition.top + 'px';
       });
     }
-    if(!initalSetting) this.docViewerService.lineStatus.next(true);
+    if (!initalSetting) this.docViewerService.lineStatus.next(true);
   }
 
   scrollToCenter() {
