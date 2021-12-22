@@ -159,11 +159,11 @@ export class DocumentComponent
   }
 
   onImageLoaded(event: any) {
+    console.log(event.path[0].naturalHeight, event.path[0].naturalWidth);
     if (event && event.target) {
       if (
-        (event.path[0].naturalHeight !== 1 &&
-          event.path[0].naturalWidth !== 1) ||
-        (event.path[0].naturalHeight !== 0 && event.path[0].naturalWidth !== 0)
+        event.path[0].naturalHeight !== 1 &&
+        event.path[0].naturalWidth !== 1
       ) {
         this.triggerTextLayer.emit({
           pageNumber: this.pageNumber,
