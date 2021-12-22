@@ -19,7 +19,7 @@ import { SearchResult } from '../_config/document-search.model';
 import { DocumentConfig, ShowDocumentConfig } from '../_config/document.model';
 import { Thumbnail } from '../_config/thumbnail.model';
 
-declare var ResizeObserver: any;
+declare var ResizeObserver: new (arg0: (entries: any) => void) => any;
 @Component({
   selector: 'lib-document',
   templateUrl: './document.component.html',
@@ -180,9 +180,9 @@ export class DocumentComponent
   setTransImgPosition(initalSetting?: boolean) {
     const outerCont = document.getElementById('outer-cont');
     let documentImage;
-    if(!this.editable) {
+    if (!this.editable) {
       documentImage = document.getElementById('docImg');
-    }else {
+    } else {
       documentImage = document.getElementById('docImgOrginal');
     }
 
@@ -376,13 +376,11 @@ export class DocumentComponent
       this.createdAt = changes['createdAt'].currentValue;
     }
     if (changes['editable']) {
-      if(changes['editable'].currentValue == false) {
+      if (changes['editable'].currentValue == false) {
         this.editable = false;
       } else {
         this.editable = true;
       }
-
-
     }
     this.setTransImgPosition();
   }
