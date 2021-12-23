@@ -272,7 +272,7 @@ export class DocumentComponent
   ngOnDestroy(): void {
     this.groupedByPage = [];
     this.noSearchItems = false;
-    this.destroy$.next();
+    this.destroy$.next(null);
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
     this.observer.unobserve(document.querySelector('#container-right'));

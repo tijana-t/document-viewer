@@ -109,7 +109,7 @@ export class DocumentViewerComponent
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(null);
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
   }
