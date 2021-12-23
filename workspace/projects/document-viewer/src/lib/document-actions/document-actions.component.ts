@@ -186,7 +186,7 @@ export class DocumentActionsComponent
   }
 
   ngOnDestroy() {
-    this.destroy$.next();
+    this.destroy$.next(null);
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
   }

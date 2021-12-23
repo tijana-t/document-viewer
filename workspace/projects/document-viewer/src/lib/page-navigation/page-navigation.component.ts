@@ -269,7 +269,7 @@ export class PageNavigationComponent
 
   ngOnDestroy(): void {
     this.results$.unsubscribe();
-    this.destroy$.next();
+    this.destroy$.next(null);
     this.destroy$.complete();
   }
 }
