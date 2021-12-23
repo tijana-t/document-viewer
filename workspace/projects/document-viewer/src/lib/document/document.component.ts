@@ -286,15 +286,18 @@ export class DocumentComponent
   ngAfterViewInit() {
     this.defaultDocConfig = { ...this.documentConfig };
     // this.initDrag();
-    const docContainer = document.getElementById('document-container');
+    const docContainer = document.querySelector('#document-container')!;
     this.observer = new ResizeObserver((entries: any) => {
       for (const entry of entries) {
         if (entry.target.id === 'container-right') {
           const widthSet = Math.floor(
             entries[0].contentRect.width - 60 - 200
           ).toString();
-          if (docContainer) {
-            docContainer.style.width = widthSet + 'px';
+
+          let container = docContainer as HTMLElement;
+          console.log({container})
+          if (container) {
+            container.style.width = widthSet + 'px';
           }
         }
         this.scrollToCenter();
