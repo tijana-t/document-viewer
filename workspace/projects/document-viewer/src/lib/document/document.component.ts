@@ -276,39 +276,44 @@ export class DocumentComponent
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
     
-    const contRight: Element = document.querySelector('#container-right')!;
-    const docPage: Element = document.querySelector('#document-page')!;
+    // const contRight: Element = document.querySelector('#container-right')!;
+    // const docPage: Element = document.querySelector('#document-page')!;
 
-    this.observer.unobserve(contRight);
-    this.observer.unobserve(docPage);
+    // this.observer.unobserve(contRight);
+    // this.observer.unobserve(docPage);
   }
 
   ngAfterViewInit() {
     this.defaultDocConfig = { ...this.documentConfig };
     // this.initDrag();
-    const docContainer = document.querySelector('#document-container')!;
-    this.observer = new ResizeObserver((entries: any) => {
-      for (const entry of entries) {
-        if (entry.target.id === 'container-right') {
-          const widthSet = Math.floor(
-            entries[0].contentRect.width - 60 - 200
-          ).toString();
+    const docContainer = document.getElementById('document-container');
+    if(docContainer) {
+      docContainer.style.width = '1258px';
+    }
+    // const docContainer = document.querySelector('#document-container')!;
+    // this.observer = new ResizeObserver((entries: any) => {
+    //   for (const entry of entries) {
+    //     if (entry.target.id === 'container-right') {
+    //       const widthSet = Math.floor(
+    //         entries[0].contentRect.width - 60 - 200
+    //       ).toString();
 
-          let container = docContainer as HTMLElement;
-          console.log({container})
-          if (container) {
-            container.style.width = widthSet + 'px';
-          }
-        }
-        this.scrollToCenter();
-        this.setTransImgPosition(true);
-      }
-    });
+    //       let container = docContainer as HTMLElement;
+    //       console.log({container})
+    //       if (container) {
+    //         console.log({widthSet})
+    //         container.style.width = widthSet + 'px';
+    //       }
+    //     }
+    //     this.scrollToCenter();
+    //     this.setTransImgPosition(true);
+    //   }
+    // });
 
-      const contRight: Element = document.querySelector('#container-right')!;
-      const docPage: Element = document.querySelector('#document-page')!;
-      this.observer.observe(contRight);
-      this.observer.observe(docPage);
+    //   const contRight: Element = document.querySelector('#container-right')!;
+    //   const docPage: Element = document.querySelector('#document-page')!;
+    //   this.observer.observe(contRight);
+    //   this.observer.observe(docPage);
 
   }
 
