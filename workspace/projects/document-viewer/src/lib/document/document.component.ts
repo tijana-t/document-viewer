@@ -275,8 +275,12 @@ export class DocumentComponent
     this.destroy$.next(null);
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
-    this.observer.unobserve(document.querySelector('#container-right'));
-    this.observer.unobserve(document.querySelector('#document-page'));
+    
+    const contRight: Element = document.querySelector('#container-right')!;
+    const docPage: Element = document.querySelector('#document-page')!;
+
+    this.observer.unobserve(contRight);
+    this.observer.unobserve(docPage);
   }
 
   ngAfterViewInit() {
@@ -298,8 +302,11 @@ export class DocumentComponent
       }
     });
 
-    this.observer.observe(document.querySelector('#container-right'));
-    this.observer.observe(document.querySelector('#document-page'));
+      const contRight: Element = document.querySelector('#container-right')!;
+      const docPage: Element = document.querySelector('#document-page')!;
+      this.observer.observe(contRight);
+      this.observer.observe(docPage);
+
   }
 
   scrollEvent(event: Event, documentImage: any) {
