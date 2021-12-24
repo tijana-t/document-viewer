@@ -52,7 +52,7 @@
     >
     </lib-search-modal>
     <lib-document-actions-left
-      [editable]="editable"
+      [editable]="documentConfig?.editable"
       (downloadDocument)="downloadDocument($event)"
       class="document-actions-left-container"
       id="viewer"
@@ -62,7 +62,7 @@
 
   <div class="d-flex align-items-center flex-column" id="doc-box">
     <lib-document
-      [editable]="editable"
+      (naturalDimensions)="emitImgNaturalDimension($event)"
       [documentConfig]="documentConfig"
       #document
       (triggerTextLayer)="triggerTextLayerCreation($event)"
@@ -72,6 +72,7 @@
   </div>
 
   <lib-page-navigation
+    (triggerTextLayer)="triggerTextLayerCreation($event)"
     class="document-page-navigation-container"
   ></lib-page-navigation>
 </div>

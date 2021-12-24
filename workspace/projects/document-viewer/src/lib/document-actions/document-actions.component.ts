@@ -32,7 +32,7 @@ export class DocumentActionsComponent
     informationHelp: '',
     downloadPdfPlain: '',
   };
-  defaultConfig: DocumentConfig = { containerWidth: 0 };
+  defaultConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
   zoomInDisabled = false;
   zoomOutDisabled = false;
   destroy$ = new Subject();
@@ -53,13 +53,6 @@ export class DocumentActionsComponent
   ngOnInit(): void {
     this.documentPage = document.getElementById('document-page');
     this.transImg = document.getElementById('trans-img');
-    this.subscriptions = this.docViewerService.fitToPage.subscribe(
-      (res: boolean) => {
-        if (res) {
-          this.firstDocOpen();
-        }
-      }
-    );
   }
 
   ngAfterViewInit() {
@@ -68,25 +61,6 @@ export class DocumentActionsComponent
     this.scrollEvent();
   }
 
-  firstDocOpen() {
-    setTimeout(() => {
-      const viewerContainer = document.getElementById('outer-cont');
-      const viewerImg = document.getElementById('docImgOrginal');
-      if (viewerContainer && viewerImg) {
-        this.documentConfig.containerWidth = Math.floor(
-          viewerContainer.offsetWidth - 200
-        );
-        this.docViewerService.docConfSubject.next({
-          containerWidth: Math.floor(viewerContainer.offsetWidth - 200),
-        });
-      }
-      // text layer
-      const textLayer = document.getElementById('textLayer');
-      if (textLayer) {
-        textLayer.style.transform = 'scale(1)';
-      }
-    }, 300);
-  }
 
   zoomInImg() {
     if (this.documentConfig.containerWidth > 2200) {

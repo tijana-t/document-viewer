@@ -19,7 +19,7 @@
 
   <button
     class="col circle"
-    *ngIf="!editable"
+    *ngIf="editable == false"
     (click)="showOriginalDocument()"
     [ngbTooltip]="
       !showOrginalConfig.showOrginal ? 'Show original document' : ''

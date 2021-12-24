@@ -37,7 +37,7 @@ export class DocumentActionsLeftComponent
     informationHelp: '',
     downloadPdfPlain: '',
   };
-  @Input('editable') editable: boolean = false;
+  @Input('editable') editable: any = null;
   @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
   defaultConfig: DocumentConfig = { containerWidth: 0 };
   constructor(private docViewerService: DocumentViewerService) {}

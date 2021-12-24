@@ -39,8 +39,8 @@ export class DocumentComponent
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
   };
-  @Input('editable') editable: boolean = false;
   @Input('createdAt') createdAt = '';
+  @Output('naturalDimensions') naturalDimensions = new EventEmitter();
   thumbnails: Thumbnail[] = [{ id: '', src: '' }];
   defaultDocConfig: DocumentConfig = { containerWidth: 0 };
   imageTopVal = '50%';
@@ -165,22 +165,16 @@ export class DocumentComponent
         event.path[0].naturalHeight !== 1 &&
         event.path[0].naturalWidth !== 1
       ) {
-        this.triggerTextLayer.emit({
-          pageNumber: this.pageNumber,
-          pageChange: this.isChangePage,
-        });
+          this.naturalDimensions.emit({imgWidth: event.path[0].naturalWidth, imgHeight: event.path[0].naturalHeight});
       }
     }
   }
 
-  triggerTextLayerCreation(event: Event) {
-    //this.triggerTextLayer.emit(event);
-  }
 
   setTransImgPosition(initalSetting?: boolean) {
     const outerCont = document.getElementById('outer-cont');
     let documentImage;
-    if (!this.editable) {
+    if (this.documentConfig.editable == false) {
       documentImage = document.getElementById('docImg');
     } else {
       documentImage = document.getElementById('docImgOrginal');
@@ -284,8 +278,11 @@ export class DocumentComponent
     const contRight: Element = document.querySelector('#container-right')!;
     const docPage: Element = document.querySelector('#document-page')!;
 
-    this.observer.unobserve(contRight);
-    this.observer.unobserve(docPage);
+    if(contRight && docPage)
+    {
+      this.observer.unobserve(contRight);
+      this.observer.unobserve(docPage);
+    }
   }
 
   ngAfterViewInit() {
@@ -313,8 +310,11 @@ export class DocumentComponent
 
       const contRight: Element = document.querySelector('#container-right')!;
       const docPage: Element = document.querySelector('#document-page')!;
-      this.observer.observe(contRight);
-      this.observer.observe(docPage);
+      if(contRight && docPage) {
+        this.observer.observe(contRight);
+        this.observer.observe(docPage);
+      }
+
 
   }
 
@@ -390,13 +390,6 @@ export class DocumentComponent
     }
     if (changes['createdAt'] && changes['createdAt'].currentValue) {
       this.createdAt = changes['createdAt'].currentValue;
-    }
-    if (changes['editable']) {
-      if (changes['editable'].currentValue == false) {
-        this.editable = false;
-      } else {
-        this.editable = true;
-      }
     }
     this.setTransImgPosition();
   }

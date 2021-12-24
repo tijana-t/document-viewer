@@ -130,13 +130,13 @@ export class PageNavigationComponent
       this.isChangePage = true;
       this.docViewerService.pageNumberSubject.next(res);
       this.docViewerService.pageChange.next(true);
-      this.scrollToPageNumber(res);
+      this.scrollToPageNumber(res, true);
       this.oldPageNumber = res;
     }
   }
 
   //scrolls thumbnail container and updates thumb position
-  scrollToPageNumber(pageNumber: number) {
+  scrollToPageNumber(pageNumber: number, isChangePage?: boolean) {
     const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
     this.thumbnailContainer?.nativeElement.scrollTo({
       top: offsetTop,
@@ -152,17 +152,18 @@ export class PageNavigationComponent
       'img'
     );
     this.docViewerService.mainImg.next(mainImg);
-    // this.triggerTextLayer.emit({pageNumber: this.pageNumber, pageChange: this.isChangePage});
+    this.triggerTextLayer.emit({pageNumber: this.pageNumber, pageChange: isChangePage});
   }
 
   //fires on thumbnail click
   changePage(pageNumber: number, thumbnail: Thumbnail) {
+
     this.pageNumber = pageNumber;
     if (this.pageNumber !== this.oldPageNumber) {
       this.docViewerService.pageNumberSubject.next(pageNumber);
       this.isChangePage = true;
       this.docViewerService.pageChange.next(true);
-      this.scrollToPageNumber(pageNumber);
+      this.scrollToPageNumber(pageNumber, true);
       this.clearTextLayer();
     }
     this.oldPageNumber = pageNumber;
