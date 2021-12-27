@@ -48,7 +48,8 @@
       </div>
     </div>
   </ng-container>
-  <img *ngIf="editable"
+  <img
+    *ngIf="documentConfig.editable"
     [ngStyle]="{
       width: documentConfig.containerWidth + 'px',
       position: 'absolute',
@@ -61,7 +62,7 @@
     id="trans-img"
     alt=""
   />
-  <img *ngIf="editable == false "
+  <img *ngIf="documentConfig.editable == false"
     [ngStyle]="{
       width: documentConfig.containerWidth + 'px',
       position: 'absolute',
@@ -89,7 +90,7 @@
     >
       <div id="orgImageParent">
         <img
-          *ngIf="!changeDocument && editable == false"
+          *ngIf="!changeDocument && documentConfig.editable == false"
           [attr.width]="documentConfig.containerWidth + 'px'"
           id="docImg"
           #documentImage
@@ -106,13 +107,6 @@
         (load)="onImageLoaded($event)"
         (error)="imageError($event)"
       />
-      <div
-        *ngIf="changeDocument"
-        class="skeleton"
-        [ngStyle]="{
-          width: documentConfig.containerWidth + 'px'
-        }"
-      ></div>
     </div>
   </div>
 </div>

@@ -49,15 +49,13 @@ export class DocumentViewerComponent
   @Input('params') params: any;
   @Input('singleDocument') singleDocument: any;
   @Input('inProjects') inProjects: any;
-  @Input('editable') editable: boolean = false;
+  @Output('naturalDimensions') naturalDimensions = new EventEmitter();
   subscriptions = new Subscription();
   destroy$ = new Subject();
   ngOnInit() {
     this.subscriptions = this.docViewerService.lineStatus.subscribe(
       (status) => {
-        if (status) {
           this.linePosition.emit();
-        }
       }
     );
   }
@@ -68,6 +66,10 @@ export class DocumentViewerComponent
 
   emitSearchedText(event: any) {
     this.searchDocument.emit(event);
+  }
+
+  emitImgNaturalDimension($event: any) {
+    this.naturalDimensions.emit($event);
   }
 
   emitPageSearch(result: { pageSearch: SearchResult[]; pageNumber: number }) {
@@ -102,9 +104,6 @@ export class DocumentViewerComponent
     }
     if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
       this.singleDocument = changes['singleDocument'].currentValue;
-    }
-    if (changes['editable']) {
-      this.editable = changes['editable'].currentValue;
     }
   }
 
