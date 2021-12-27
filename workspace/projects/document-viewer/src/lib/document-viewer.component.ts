@@ -93,6 +93,7 @@ export class DocumentViewerComponent
     }
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
+      this.docViewerService.docConfSubject.next(this.documentConfig)
     }
     if (changes['searchResult'] && changes['searchResult'].currentValue) {
       this.docViewerService.searchResultSubject.next(
