@@ -159,17 +159,18 @@ export class DocumentComponent
   }
 
   onImageLoaded(event: any) {
-    console.log(event.path[0].naturalHeight, event.path[0].naturalWidth);
     if (event && event.target) {
       if (
         event.path[0].naturalHeight !== 1 &&
         event.path[0].naturalWidth !== 1
       ) {
-          this.naturalDimensions.emit({imgWidth: event.path[0].naturalWidth, imgHeight: event.path[0].naturalHeight});
+        this.naturalDimensions.emit({
+          imgWidth: event.path[0].naturalWidth,
+          imgHeight: event.path[0].naturalHeight,
+        });
       }
     }
   }
-
 
   setTransImgPosition(initalSetting?: boolean) {
     const outerCont = document.getElementById('outer-cont');
@@ -196,12 +197,12 @@ export class DocumentComponent
         this.imageTopVal = this.relativePosition.top + 'px';
       });
     }
-    // if(this.isChangePage) {
-    //   this.docViewerService.lineStatus.next(false);
-    // }else {
-    //   this.docViewerService.lineStatus.next(true);
-    // }
-    this.docViewerService.lineStatus.next(true)
+    if (this.isChangePage) {
+      this.docViewerService.lineStatus.next(false);
+    } else {
+      this.docViewerService.lineStatus.next(true);
+    }
+    //this.docViewerService.lineStatus.next(true)
   }
 
   scrollToCenter() {
@@ -274,12 +275,11 @@ export class DocumentComponent
     this.destroy$.next(null);
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
-    
+
     const contRight: Element = document.querySelector('#container-right')!;
     const docPage: Element = document.querySelector('#document-page')!;
 
-    if(contRight && docPage)
-    {
+    if (contRight && docPage) {
       this.observer.unobserve(contRight);
       this.observer.unobserve(docPage);
     }
@@ -297,9 +297,7 @@ export class DocumentComponent
           ).toString();
 
           let container = docContainer as HTMLElement;
-          console.log({container})
           if (container) {
-            console.log({widthSet})
             container.style.width = widthSet + 'px';
           }
         }
@@ -308,14 +306,12 @@ export class DocumentComponent
       }
     });
 
-      const contRight: Element = document.querySelector('#container-right')!;
-      const docPage: Element = document.querySelector('#document-page')!;
-      if(contRight && docPage) {
-        this.observer.observe(contRight);
-        this.observer.observe(docPage);
-      }
-
-
+    const contRight: Element = document.querySelector('#container-right')!;
+    const docPage: Element = document.querySelector('#document-page')!;
+    if (contRight && docPage) {
+      this.observer.observe(contRight);
+      this.observer.observe(docPage);
+    }
   }
 
   scrollEvent(event: Event, documentImage: any) {

@@ -175,6 +175,7 @@ export class PageNavigationComponent
   }
 
   clearTextLayer() {
+    this.docViewerService.lineStatus.next(false);
     const borderElems: any = document.querySelectorAll('.border-intent');
     if (borderElems)
       borderElems.forEach((item: Element) => {
