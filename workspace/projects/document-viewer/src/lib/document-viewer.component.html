@@ -21,7 +21,7 @@
               !this.singleDocument.prev.fileName ? null : changeDoc(false)
             "
           ></span>
-          MODEL: File {{ docModel }} @
+          MODEL: {{ docModel }} @
           {{ singleDocument.file.createdAt | date: "MMM d, y HH:mm" }}
           <span
             [ngClass]="
