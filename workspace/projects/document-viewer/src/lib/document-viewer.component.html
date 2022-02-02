@@ -6,7 +6,10 @@
   <div id="info-box">
     <div class="col-12 col-sm-12 p-0">
       <div class="model-info p-0">
-        <p class="traning-model-name">
+        <p [ngClass]="{
+          'red-flag': documentConfig?.flag == 'red',
+          'green-flag': documentConfig?.flag == 'green'
+        }" class="traning-model-name ">
           {{ singleDocument?.file?.originalName }}
         </p>
       </div>

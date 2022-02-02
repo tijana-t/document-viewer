@@ -50,7 +50,7 @@ export class SearchModalComponent implements OnInit, OnDestroy {
     //wait small amount of time before another request is called
     this.subscriptions.add(
       this.searchSubject
-        .pipe(debounceTime(800), distinctUntilChanged())
+        .pipe(debounceTime(800))
         .subscribe((res: any) => {
           if (res.length > 2) {
             this.searchTextInDoc.emit(res);
@@ -115,6 +115,13 @@ export class SearchModalComponent implements OnInit, OnDestroy {
     this.searchLoader = true;
     this.searchSubject.next(event);
     this.docViewerService.searchValue.next(event);
+  }
+  detectEnter(event: KeyboardEvent) {
+    if(event.key == 'Enter' && this.searchDocument !== '') {
+      this.searchLoader = true;
+      this.searchSubject.next(this.searchDocument);
+      this.docViewerService.searchValue.next(this.searchDocument);
+    }
   }
 
   ngOnDestroy() {

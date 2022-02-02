@@ -59,6 +59,7 @@
       (click)="cleanSearch()"
     ></span>
     <input
+      (keyup)="detectEnter($event)"
       type="text"
       class="form-control"
       [(ngModel)]="searchDocument"

@@ -73,6 +73,13 @@
   font-weight: 500;
   color: cv.$font-main;
   margin-bottom: 0px;
+
+  .red-flag {
+    color: cv.$main-red;
+  }
+  .green-flag{
+    color: cv.$main-green;
+  }
 }
 
 .model-info > p {
