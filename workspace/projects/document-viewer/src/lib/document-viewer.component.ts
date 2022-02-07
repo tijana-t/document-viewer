@@ -50,6 +50,7 @@ export class DocumentViewerComponent
   @Input('singleDocument') singleDocument: any;
   @Input('inProjects') inProjects: any;
   @Output('naturalDimensions') naturalDimensions = new EventEmitter();
+  @Output('showDebugger') showDebugger = new EventEmitter();
   subscriptions = new Subscription();
   destroy$ = new Subject();
   ngOnInit() {
@@ -57,6 +58,10 @@ export class DocumentViewerComponent
       (status) => {
           this.linePosition.emit();
       }
+    );
+
+    this.subscriptions = this.docViewerService.showDebugger.subscribe((res)=> 
+      this.showDebugger.next(res)
     );
   }
 

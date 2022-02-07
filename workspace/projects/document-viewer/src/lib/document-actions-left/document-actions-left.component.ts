@@ -40,6 +40,7 @@ export class DocumentActionsLeftComponent
   @Input('editable') editable: any = null;
   @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
   defaultConfig: DocumentConfig = { containerWidth: 0 };
+  showDebugger = false;
   constructor(private docViewerService: DocumentViewerService) {}
 
   ngOnInit(): void {
@@ -57,6 +58,10 @@ export class DocumentActionsLeftComponent
         }
       }
     );
+  }
+  openDebugger() {
+    this.showDebugger = !this.showDebugger;
+    this.docViewerService.showDebugger.next(this.showDebugger);
   }
 
   ngAfterViewInit() {

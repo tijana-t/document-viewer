@@ -3,6 +3,7 @@ export type DocumentConfig = {
   containerHeight?: any;
   editable?: boolean;
   flag?: string;
+  debugMode?: boolean
 };
 
 export type ShowDocumentConfig = {
