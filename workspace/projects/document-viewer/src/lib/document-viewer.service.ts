@@ -29,6 +29,7 @@ export class DocumentViewerService {
     viewPercent: 50,
   });
   pageChange = new BehaviorSubject<boolean>(true);
+  showDebugger = new BehaviorSubject<boolean>(false);
 
   constructor() {}
 }

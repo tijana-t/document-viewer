@@ -63,6 +63,7 @@ export class DocumentComponent
   scrollVisibleX: boolean = false;
   changeDocument: boolean = false;
   isChangePage: boolean = true;
+  showDebugger: boolean = false;
 
   constructor(
     private docViewerService: DocumentViewerService,
@@ -90,6 +91,12 @@ export class DocumentComponent
         }
       }
     );
+
+    this.subscriptions = this.docViewerService.showDebugger.subscribe(
+      (res: boolean) => {
+        this.showDebugger = res;
+      }
+    )
 
     this.subscriptions = this.docViewerService.zoomXStatus.subscribe(
       (res: boolean) => {
