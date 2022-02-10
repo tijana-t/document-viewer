@@ -80,7 +80,7 @@ export class DocumentViewerComponent
       }
     );
 
-    this.subscriptions = this.docViewerService.showDebugger.subscribe((res)=> 
+    this.subscriptions = this.docViewerService.showDebugger.subscribe((res) =>
       this.showDebugger.next(res)
     );
   }
@@ -177,6 +177,7 @@ export class DocumentViewerComponent
     }
     if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
       this.singleDocument = changes['singleDocument'].currentValue;
+      this.collapsStatus = false;
     }
     if (changes['docModel']) {
       this.docModel = changes['docModel'].currentValue;
