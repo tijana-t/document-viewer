@@ -5,15 +5,132 @@
 >
   <div id="info-box">
     <div class="col-12 col-sm-12 p-0">
-      <div class="model-info p-0">
-        <p [ngClass]="{
-          'red-flag': documentConfig?.flag == 'red',
-          'green-flag': documentConfig?.flag == 'green'
-        }" class="traning-model-name ">
-          {{ singleDocument?.file?.originalName }}
-        </p>
+      <div class="d-flex justify-content-center" *ngIf="docModel">
+        <ng-template #orgDocInfo>
+          <div class="sub-doc-info">
+            <div *ngIf="collapsStatus">
+              {{ singleDocument?.file?.originalName }}
+            </div>
+            <span class="file-type-sub file-type">
+              <span
+                class="kat-sub-sent"
+                *ngIf="
+                  singleDocument?.file?.sent &&
+                  (docModel.modelContainerId === '61091c067e9ae6f8779d131c' ||
+                    docModel.modelContainerId === '60e448112eaba436d16da8d9' ||
+                    docModel.modelContainerId === '61dbe46ea61675eb2f95c632' ||
+                    docModel.modelContainerId === '61dc181da61675eb2f98401b')
+                "
+              ></span>
+              <span
+                class="kat-sub-not-sent"
+                *ngIf="
+                  !singleDocument?.file?.sent &&
+                  (docModel.modelContainerId === '61091c067e9ae6f8779d131c' ||
+                    docModel.modelContainerId === '60e448112eaba436d16da8d9' ||
+                    docModel.modelContainerId === '61dbe46ea61675eb2f95c632' ||
+                    docModel.modelContainerId === '61dc181da61675eb2f98401b')
+                "
+              ></span>
+              <span class="sub-date">{{
+                singleDocument?.file?.createdAt | date: "dd/MM/yy"
+              }}</span>
+            </span>
+            <div class="sub-dco-type">
+              {{ getFileTypeForHipotekarnaSub(singleDocument?.data) }}
+            </div>
+          </div>
+        </ng-template>
+        <div class="model-info p-0 parent-ellipsis" [ngbTooltip]="orgDocInfo">
+          <p
+            [ngClass]="{
+              'red-flag': documentConfig?.flag == 'red',
+              'green-flag': documentConfig?.flag == 'green'
+            }"
+            class="traning-model-name text-ellipsis"
+            (click)="collapsSubDocs()"
+          >
+            {{ singleDocument?.file?.originalName }}
+          </p>
+        </div>
+        <span
+          *ngIf="singleDocument.file.matchingDocs.length > 0 && !collapsStatus"
+          class="sub-doc-num"
+          >DOCS: {{ singleDocument.file.matchingDocs.length }}</span
+        >
+        <div
+          *ngFor="
+            let matchingDoc of singleDocument.file.matchingDocs;
+            let i = index
+          "
+          class="parent-ellipsis"
+        >
+          <div
+            *ngIf="matchingDoc.collaps"
+            [@inOutAnimation]
+            class="collaps-box"
+          >
+            <div id="pointer"></div>
+            <div class="sub-doc text-ellipsis" [ngbTooltip]="redFlagTemplate">
+              <ng-template #redFlagTemplate>
+                <div class="sub-doc-info">
+                  <div *ngIf="matchingDoc.collaps">
+                    {{ matchingDoc.originalName }}
+                  </div>
+                  <span class="file-type-sub file-type">
+                    <span
+                      class="kat-sub-sent"
+                      *ngIf="
+                        matchingDoc.jobStatus == 'completed' &&
+                        matchingDoc.sent &&
+                        (docModel.modelContainerId ===
+                          '61091c067e9ae6f8779d131c' ||
+                          docModel.modelContainerId ===
+                            '60e448112eaba436d16da8d9' ||
+                          docModel.modelContainerId ===
+                            '61dbe46ea61675eb2f95c632' ||
+                          docModel.modelContainerId ===
+                            '61dc181da61675eb2f98401b')
+                      "
+                    ></span>
+                    <span
+                      class="kat-sub-not-sent"
+                      *ngIf="
+                        matchingDoc.jobStatus == 'completed' &&
+                        !matchingDoc.sent &&
+                        (docModel.modelContainerId ===
+                          '61091c067e9ae6f8779d131c' ||
+                          docModel.modelContainerId ===
+                            '60e448112eaba436d16da8d9' ||
+                          docModel.modelContainerId ===
+                            '61dbe46ea61675eb2f95c632' ||
+                          docModel.modelContainerId ===
+                            '61dc181da61675eb2f98401b')
+                      "
+                    ></span>
+                    <span class="sub-date">{{
+                      matchingDoc.createdAt | date: "dd/MM/yy"
+                    }}</span>
+                  </span>
+                  <div class="sub-dco-type">
+                    {{ getFileTypeForHipotekarnaSub(matchingDoc?.data) }}
+                  </div>
+                </div>
+              </ng-template>
+
+              <a
+                [ngClass]="{
+                  'file-ready': matchingDoc.checked
+                }"
+                href=""
+                class="sub-doc-name"
+                >{{ matchingDoc.originalName }}</a
+              >
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="align-items-center info-container">
+      <div class="align-items-center info-container" *ngIf="docModel">
         <p>
           <span
             [ngClass]="
@@ -24,7 +141,7 @@
               !this.singleDocument.prev.fileName ? null : changeDoc(false)
             "
           ></span>
-          MODEL: {{ docModel }} @
+          MODEL: {{ docModel.modelName }} - {{ docModel.modelVersion }} @
           {{ singleDocument.file.createdAt | date: "MMM d, y HH:mm" }}
           <span
             [ngClass]="
