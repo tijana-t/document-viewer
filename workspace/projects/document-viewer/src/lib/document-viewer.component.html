@@ -37,7 +37,7 @@
               }}</span>
             </span>
             <div class="sub-dco-type">
-              {{ getFileTypeForHipotekarnaSub(singleDocument?.data) }}
+              {{ singleDocument?.file.type }}
             </div>
           </div>
         </ng-template>
@@ -113,16 +113,16 @@
                     }}</span>
                   </span>
                   <div class="sub-dco-type">
-                    {{ getFileTypeForHipotekarnaSub(matchingDoc?.data) }}
+                    {{ matchingDoc?.type }}
                   </div>
                 </div>
               </ng-template>
 
               <a
+              (click)="openMatchingDoc(matchingDoc)"
                 [ngClass]="{
                   'file-ready': matchingDoc.checked
                 }"
-                href=""
                 class="sub-doc-name"
                 >{{ matchingDoc.originalName }}</a
               >

@@ -133,32 +133,6 @@ export class DocumentViewerComponent
     this.collapsStatus = !this.collapsStatus;
   }
 
-  getFileTypeForHipotekarnaSub(data: any) {
-    if (
-      (this.docModel.modelContainerId === '60e448112eaba436d16da8d9' ||
-        this.docModel.modelContainerId === '61091c067e9ae6f8779d131c' ||
-        this.docModel.modelContainerId === '61dbe46ea61675eb2f95c632' ||
-        this.docModel.modelContainerId === '61dc181da61675eb2f98401b') &&
-      data.length !== 0 &&
-      data[0].groupsList[0].intents.length !== 0 &&
-      data[0].groupsList[0].intents[0].intentsList.length !== 0 &&
-      data[0].groupsList[0].intents[0].intentsList[0].entities.length !== 0 &&
-      data[0].groupsList[0].intents[0].intentsList[0].entities[0].entitiesList
-        .length !== 0
-    ) {
-      const entValue =
-        data[0].groupsList[0].intents[0].intentsList[0].entities[0]
-          .entitiesList[0].value;
-      if (entValue !== '') {
-        return entValue;
-      } else {
-        return 'N/A';
-      }
-    } else {
-      return 'N/A';
-    }
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pageInfo'] && changes['pageInfo'].currentValue) {
       this.docViewerService.pageInfo.next(changes['pageInfo'].currentValue);
@@ -177,10 +151,45 @@ export class DocumentViewerComponent
     }
     if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
       this.singleDocument = changes['singleDocument'].currentValue;
+      this.getFileTypeForHipotekarna(this.singleDocument.file, this.singleDocument.data)
       this.collapsStatus = false;
     }
     if (changes['docModel']) {
       this.docModel = changes['docModel'].currentValue;
+    }
+  }
+
+  getFileTypeForHipotekarna(file: any, data: any) {
+    if (
+      (file.modelContainer === '60e448112eaba436d16da8d9' ||
+        file.modelContainer === '61091c067e9ae6f8779d131c' ||
+        file.modelContainer === '61dbe46ea61675eb2f95c632' ||
+        file.modelContainer === '61dc181da61675eb2f98401b') &&
+      data &&
+      data.length !== 0 &&
+      data[0].groupsList[0].intents.length !== 0 &&
+      data[0].groupsList[0].intents[0].intentsList.length !== 0 &&
+      data[0].groupsList[0].intents[0].intentsList[0].entities.length !== 0 &&
+      data[0].groupsList[0].intents[0].intentsList[0].entities[0].entitiesList.length !==
+        0 &&
+      (data[0].groupsList[0].intents[0].intentsList[0].entities[0].entityId ===
+        '61693fb93185442be424dce0' ||
+        data[0].groupsList[0].intents[0].intentsList[0].entities[0].entityId ===
+          '616942f7c5a9882da0a4446b')
+    ) {
+      const entValue =
+        data[0].groupsList[0].intents[0].intentsList[0].entities[0].entitiesList[0].value;
+      if (entValue !== '') {
+        file.type = entValue;
+      } else {
+        file.type = 'N/A';
+      }
+    }
+    //check type for matchingDocs
+    if (file.matchingDocs && file.matchingDocs.length !== 0) {
+      for(const matchDoc of file.matchingDocs) {
+        this.getFileTypeForHipotekarna(matchDoc, matchDoc.data);
+      }
     }
   }
 
@@ -190,8 +199,13 @@ export class DocumentViewerComponent
     this.subscriptions.unsubscribe();
   }
 
+  openMatchingDoc(matchingDoc: any) {
+    this.docViewerService.changeDocSubject.next(true);
+    this.changeDocument.emit({ matchingDoc});
+  }
+
   changeDoc(status: boolean) {
     this.docViewerService.changeDocSubject.next(true);
-    this.changeDocument.emit(status);
+    this.changeDocument.emit({status, matchingDoc: null});
   }
 }
