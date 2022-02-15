@@ -54,13 +54,13 @@
           </p>
         </div>
         <span
-          *ngIf="singleDocument.file.matchingDocs.length > 0 && !collapsStatus"
+          *ngIf="singleDocument.file?.matchingDocs?.length > 0 && !collapsStatus"
           class="sub-doc-num"
-          >DOCS: {{ singleDocument.file.matchingDocs.length }}</span
+          >DOCS: {{ singleDocument.file?.matchingDocs?.length }}</span
         >
         <div
           *ngFor="
-            let matchingDoc of singleDocument.file.matchingDocs;
+            let matchingDoc of singleDocument.file?.matchingDocs;
             let i = index
           "
           class="parent-ellipsis"

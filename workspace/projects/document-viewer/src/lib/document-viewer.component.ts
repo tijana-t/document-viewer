@@ -186,7 +186,7 @@ export class DocumentViewerComponent
       }
     }
     //check type for matchingDocs
-    if (file.matchingDocs && file.matchingDocs.length !== 0) {
+    if (file && file.matchingDocs && file.matchingDocs.length !== 0) {
       for(const matchDoc of file.matchingDocs) {
         this.getFileTypeForHipotekarna(matchDoc, matchDoc.data);
       }
