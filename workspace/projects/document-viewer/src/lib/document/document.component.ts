@@ -18,6 +18,9 @@ import { DocumentViewerService } from '../document-viewer.service';
 import { SearchResult } from '../_config/document-search.model';
 import { DocumentConfig, ShowDocumentConfig } from '../_config/document.model';
 import { Thumbnail } from '../_config/thumbnail.model';
+import { environment } from '../_environments/environment';
+import { Integrations } from '@sentry/tracing';
+import * as Sentry from '@sentry/angular';
 
 declare var ResizeObserver: new (arg0: (entries: any) => void) => any;
 @Component({
@@ -69,9 +72,46 @@ export class DocumentComponent
     private docViewerService: DocumentViewerService,
     private ngZone: NgZone
   ) {
+    //initialize sentry
+    //sentry for production
+    if (environment.production) {
+      Sentry.init({
+        dsn: 'https://b7b6b615b90b489c9ee665fe7a1841eb@o1092278.ingest.sentry.io/6212951',
+        integrations: [
+          new Integrations.BrowserTracing({
+            tracingOrigins: [
+              'https://demo-v3.uhurasolutions.com/',
+              'https://apidemo-v3.uhurasolutions.com/',
+            ],
+            routingInstrumentation: Sentry.routingInstrumentation,
+          }),
+        ],
+        defaultIntegrations: false,
+        tracesSampleRate: 1.0,
+        environment: 'production',
+        release: '3.0.2',
+      });
+    } else {
+      console.log('development');
+      //sentry for development
+      Sentry.init({
+        dsn: 'https://b7b6b615b90b489c9ee665fe7a1841eb@o1092278.ingest.sentry.io/6212951',
+        integrations: [
+          new Integrations.BrowserTracing({
+            tracingOrigins: ['localhost:4200', 'localhost:3333'],
+            routingInstrumentation: Sentry.routingInstrumentation,
+          }),
+        ],
+        defaultIntegrations: false,
+        tracesSampleRate: 1.0,
+        environment: 'development',
+        release: '3.0.2',
+      });
+    }
+
     this.subscriptions = this.docViewerService.mainImg
       .pipe(skip(1), takeUntil(this.destroy$))
-      .subscribe((res: string) => {
+      .subscribe((res: any) => {
         if (res) {
           this.docViewerService.docConfSubject.next({
             containerWidth: 0,
@@ -96,7 +136,7 @@ export class DocumentComponent
       (res: boolean) => {
         this.showDebugger = res;
       }
-    )
+    );
 
     this.subscriptions = this.docViewerService.zoomXStatus.subscribe(
       (res: boolean) => {

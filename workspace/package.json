@@ -33,6 +33,8 @@
     "@linnenschmidt/build-ng-packagr": "^9.0.0",
     "@ng-bootstrap/ng-bootstrap": "^9.1.0",
     "@ngneat/cashew": "^1.3.2",
+    "@sentry/angular": "^6.17.9",
+    "@sentry/tracing": "^6.17.9",
     "@types/jasmine": "~3.6.0",
     "bootstrap": "^4.6.0",
     "codelyzer": "^6.0.0",

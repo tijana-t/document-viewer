@@ -17,7 +17,13 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/document-viewer/tsconfig.lib.prod.json"
+              "tsConfig": "projects/document-viewer/tsconfig.lib.prod.json",
+              "fileReplacements":[
+                {
+                  "replace": "projects/document-viewer/src/lib/_environments/environment.ts",
+                  "with": "projects/document-viewer/src/lib/_environments/environment.prod.ts"
+                }
+              ]
             }
           }
         },
@@ -81,7 +87,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
