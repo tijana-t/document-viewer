@@ -66,7 +66,6 @@
             "main": "projects/document-viewer-showcase/src/main.ts",
             "polyfills": "projects/document-viewer-showcase/src/polyfills.ts",
             "tsConfig": "projects/document-viewer-showcase/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "projects/document-viewer-showcase/src/favicon.ico",
               "projects/document-viewer-showcase/src/assets"
@@ -75,7 +74,13 @@
               "projects/document-viewer-showcase/src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -87,7 +92,6 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -105,7 +109,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
