@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   NgZone,
   OnChanges,
@@ -22,7 +23,6 @@ import { environment } from '../_environments/environment';
 import { Integrations } from '@sentry/tracing';
 import * as Sentry from '@sentry/angular';
 
-declare var ResizeObserver: new (arg0: (entries: any) => void) => any;
 @Component({
   selector: 'lib-document',
   templateUrl: './document.component.html',
@@ -191,6 +191,11 @@ export class DocumentComponent
       });
   }
 
+  @HostListener('window:resize', ['$event'])
+    onResize() {
+      this.calculateContainerWidth()
+    }
+
   ngOnInit(): void {}
 
   sendSearchObj(pageSearch: SearchResult) {
@@ -207,7 +212,7 @@ export class DocumentComponent
 
   onImageLoaded(event: any) {
     if (event && event.target) {
-      if (
+      if (event.path && 
         event.path[0].naturalHeight !== 1 &&
         event.path[0].naturalWidth !== 1
       ) {
@@ -322,42 +327,28 @@ export class DocumentComponent
     this.destroy$.next(null);
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
-
-    const contRight: Element = document.querySelector('#container-right')!;
-    const docPage: Element = document.querySelector('#document-page')!;
-
-    if (contRight && docPage) {
-      this.observer.unobserve(contRight);
-      this.observer.unobserve(docPage);
-    }
   }
 
   ngAfterViewInit() {
     this.defaultDocConfig = { ...this.documentConfig };
-    // this.initDrag();
+    this.calculateContainerWidth();
+     
+  }
+
+  calculateContainerWidth() {
     const docContainer = document.querySelector('#document-container')!;
-    this.observer = new ResizeObserver((entries: any) => {
-      for (const entry of entries) {
-        if (entry.target.id === 'container-right') {
-          const widthSet = Math.floor(
-            entries[0].contentRect.width - 60 - 200
-          ).toString();
+    const containerRight = document.querySelector('#container-right');
+    if(containerRight) {
+      const widthSet = Math.floor(
+        containerRight.clientWidth - 60 - 200
+      ).toString();
 
-          let container = docContainer as HTMLElement;
-          if (container) {
-            container.style.width = widthSet + 'px';
-          }
-        }
-        this.scrollToCenter();
-        this.setTransImgPosition(true);
+      let container = docContainer as HTMLElement;
+      if (container) {
+        container.style.width = widthSet + 'px';
       }
-    });
-
-    const contRight: Element = document.querySelector('#container-right')!;
-    const docPage: Element = document.querySelector('#document-page')!;
-    if (contRight && docPage) {
-      this.observer.observe(contRight);
-      this.observer.observe(docPage);
+      this.scrollToCenter();
+      this.setTransImgPosition(true);
     }
   }
 
