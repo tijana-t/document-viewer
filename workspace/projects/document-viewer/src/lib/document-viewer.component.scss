@@ -92,6 +92,9 @@
 .file-ready {
   color: cv.$main-green;
 }
+.file-not-ready{
+  color: cv.$main-red;
+}
 
 .sub-doc-information {
   text-overflow: ellipsis;
