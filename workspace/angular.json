@@ -17,13 +17,7 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/document-viewer/tsconfig.lib.prod.json",
-              "fileReplacements":[
-                {
-                  "replace": "projects/document-viewer/src/lib/_environments/environment.ts",
-                  "with": "projects/document-viewer/src/lib/_environments/environment.prod.ts"
-                }
-              ]
+              "tsConfig": "projects/document-viewer/tsconfig.lib.prod.json"
             }
           }
         },
