@@ -62,7 +62,8 @@
     id="trans-img"
     alt=""
   />
-  <img *ngIf="documentConfig.editable == false"
+  <img
+    *ngIf="documentConfig.editable == false"
     [ngStyle]="{
       width: documentConfig.containerWidth + 'px',
       position: 'absolute',
@@ -100,17 +101,32 @@
       </div>
 
       <div *ngIf="showDebugger">
-        <canvas id="myCanvas1" style="border: 1px solid #9dff00; position: absolute; z-index: 1"></canvas>
-        <canvas id="myCanvas2" style="border: 1px solid #d3d3d3; z-index: 2; position: absolute"></canvas>
-        <canvas id="myCanvas3" style="border: 1px solid #9dff00; position: absolute; z-index: 3"></canvas>
-        <canvas id="myCanvas4" style="border: 1px solid #9dff00; position: absolute; z-index: 4"></canvas>
+        <canvas
+          id="myCanvas1"
+          style="border: 1px solid #9dff00; position: absolute; z-index: 2"
+        ></canvas>
+        <canvas
+          id="myCanvas2"
+          style="border: 1px solid #d3d3d3; position: absolute; z-index: 3"
+        ></canvas>
+        <canvas
+          id="myCanvas3"
+          style="border: 1px solid #9dff00; position: absolute; z-index: 4"
+        ></canvas>
+        <canvas
+          id="myCanvas4"
+          style="border: 1px solid #9dff00; position: absolute; z-index: 5"
+        ></canvas>
         <canvas
           id="myCanvas5"
-          style="border: 1px solid #9dff00; position: absolute; z-index: 5; opacity: 0.3"
+          style="
+            border: 1px solid #9dff00;
+            position: absolute;
+            z-index: 5;
+            opacity: 0.3;
+          "
         ></canvas>
       </div>
-
-
 
       <img
         *ngIf="!changeDocument"
@@ -121,6 +137,6 @@
         (load)="onImageLoaded($event)"
         (error)="imageError($event)"
       />
-    </div>    
+    </div>
   </div>
 </div>
