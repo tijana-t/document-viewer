@@ -100,7 +100,11 @@
         />
       </div>
 
-      <div *ngIf="showDebugger">
+      <div
+        [ngStyle]="{
+          visibility: documentConfig.showCanvas ? 'visible' : 'hidden'
+        }"
+      >
         <canvas
           id="myCanvas1"
           style="border: 1px solid #9dff00; position: absolute; z-index: 2"

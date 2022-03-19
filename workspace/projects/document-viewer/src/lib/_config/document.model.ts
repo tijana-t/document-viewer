@@ -4,6 +4,7 @@ export type DocumentConfig = {
   editable?: boolean;
   flag?: string;
   debugMode?: boolean;
+  showCanvas?: boolean;
 };
 
 export type ShowDocumentConfig = {
