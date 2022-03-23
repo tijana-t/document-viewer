@@ -50,6 +50,8 @@ export class PageNavigationComponent
   subscriptions = new Subscription();
   importantPages: number[] = [0];
   isChangePage: boolean = false;
+  originalImgExtension?: string;
+  mainImgExtension?: string;
 
   constructor(private docViewerService: DocumentViewerService) {
     this.subscriptions.add(
@@ -95,20 +97,34 @@ export class PageNavigationComponent
 
     this.docViewerService.pageInfo
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res: any) => {
-        if (res) {
-          this.pageNumber = res.currentPage;
-          this.previousPageNum = res.currentPage;
-          this.oldPageNumber = res.currentPage;
-          this.docViewerService.pageNumberSubject.next(res.currentPage);
-          if (res.pages) this.thumbnails = res.pages;
-          setTimeout(() => {
-            this.isChangePage = false;
-            this.docViewerService.pageChange.next(false);
-            this.scrollToPageNumber(this.pageNumber);
-          }, 0);
+      .subscribe(
+        (res: {
+          pages: [{ src?: string; id: string; isImportant?: boolean }];
+          currentPage: number;
+          originalImgExtension?: string;
+          mainImgExtension?: string;
+        }) => {
+          if (res) {
+            this.pageNumber = res.currentPage;
+            this.previousPageNum = res.currentPage;
+            this.oldPageNumber = res.currentPage;
+
+            if (res.originalImgExtension) {
+              this.originalImgExtension = res.originalImgExtension;
+            }
+            if (res.mainImgExtension) {
+              this.mainImgExtension = res.mainImgExtension;
+            }
+            this.docViewerService.pageNumberSubject.next(res.currentPage);
+            if (res.pages) this.thumbnails = res.pages;
+            setTimeout(() => {
+              this.isChangePage = false;
+              this.docViewerService.pageChange.next(false);
+              this.scrollToPageNumber(this.pageNumber);
+            }, 0);
+          }
         }
-      });
+      );
   }
 
   ngAfterViewInit() {}
@@ -151,13 +167,19 @@ export class PageNavigationComponent
       'thumb',
       'img'
     );
-    this.docViewerService.mainImg.next(mainImg);
-    this.triggerTextLayer.emit({pageNumber: this.pageNumber, pageChange: isChangePage});
+    this.docViewerService.mainImgInfo.next({
+      mainImg,
+      originalImgExtension: this.originalImgExtension,
+      mainImgExtension: this.mainImgExtension,
+    });
+    this.triggerTextLayer.emit({
+      pageNumber: this.pageNumber,
+      pageChange: isChangePage,
+    });
   }
 
   //fires on thumbnail click
   changePage(pageNumber: number, thumbnail: Thumbnail) {
-
     this.pageNumber = pageNumber;
     if (this.pageNumber !== this.oldPageNumber) {
       this.docViewerService.pageNumberSubject.next(pageNumber);
@@ -187,6 +209,15 @@ export class PageNavigationComponent
       SpanElems.forEach((item: Element) => {
         item.remove();
       });
+
+    const detectronElems: any = document.querySelectorAll(
+      '.detectron-container'
+    );
+    if (detectronElems) {
+      detectronElems.forEach((item: Element) => {
+        item.remove();
+      });
+    }
   }
 
   // fires on wheel event

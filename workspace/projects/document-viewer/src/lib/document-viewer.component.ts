@@ -151,7 +151,10 @@ export class DocumentViewerComponent
     }
     if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
       this.singleDocument = changes['singleDocument'].currentValue;
-      this.getFileTypeForHipotekarna(this.singleDocument.file, this.singleDocument.data)
+      this.getFileTypeForHipotekarna(
+        this.singleDocument.file,
+        this.singleDocument.data
+      );
       this.collapsStatus = false;
     }
     if (changes['docModel']) {
@@ -170,15 +173,16 @@ export class DocumentViewerComponent
       data[0].groupsList[0].intents.length !== 0 &&
       data[0].groupsList[0].intents[0].intentsList.length !== 0 &&
       data[0].groupsList[0].intents[0].intentsList[0].entities.length !== 0 &&
-      data[0].groupsList[0].intents[0].intentsList[0].entities[0].entitiesList.length !==
-        0 &&
+      data[0].groupsList[0].intents[0].intentsList[0].entities[0].entitiesList
+        .length !== 0 &&
       (data[0].groupsList[0].intents[0].intentsList[0].entities[0].entityId ===
         '61693fb93185442be424dce0' ||
         data[0].groupsList[0].intents[0].intentsList[0].entities[0].entityId ===
           '616942f7c5a9882da0a4446b')
     ) {
       const entValue =
-        data[0].groupsList[0].intents[0].intentsList[0].entities[0].entitiesList[0].value;
+        data[0].groupsList[0].intents[0].intentsList[0].entities[0]
+          .entitiesList[0].value;
       if (entValue !== '') {
         file.type = entValue;
       } else {
@@ -187,7 +191,7 @@ export class DocumentViewerComponent
     }
     //check type for matchingDocs
     if (file && file.matchingDocs && file.matchingDocs.length !== 0) {
-      for(const matchDoc of file.matchingDocs) {
+      for (const matchDoc of file.matchingDocs) {
         this.getFileTypeForHipotekarna(matchDoc, matchDoc.data);
       }
     }
@@ -201,11 +205,11 @@ export class DocumentViewerComponent
 
   openMatchingDoc(matchingDoc: any) {
     this.docViewerService.changeDocSubject.next(true);
-    this.changeDocument.emit({ matchingDoc});
+    this.changeDocument.emit({ matchingDoc });
   }
 
   changeDoc(status: boolean) {
     this.docViewerService.changeDocSubject.next(true);
-    this.changeDocument.emit({status, matchingDoc: null});
+    this.changeDocument.emit({ status, matchingDoc: null });
   }
 }

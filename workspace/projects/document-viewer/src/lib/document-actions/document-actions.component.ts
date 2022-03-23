@@ -61,7 +61,6 @@ export class DocumentActionsComponent
     this.scrollEvent();
   }
 
-
   zoomInImg() {
     if (this.documentConfig.containerWidth > 2200) {
       this.zoomInDisabled = true;

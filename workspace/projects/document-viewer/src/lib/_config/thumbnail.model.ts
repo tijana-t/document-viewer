@@ -1,6 +1,6 @@
 export type Thumbnail = {
   id: string;
-  src: any;
+  src?: any;
   show?: boolean;
   isImportant?: boolean;
   hasSearchedText?: boolean;

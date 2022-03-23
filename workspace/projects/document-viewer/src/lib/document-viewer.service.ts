@@ -18,7 +18,11 @@ export class DocumentViewerService {
   changeDocSubject = new BehaviorSubject<boolean>(false);
   docConfSubject = new BehaviorSubject<DocumentConfig>({ containerWidth: 0 });
   pageInfo = new BehaviorSubject<any>({});
-  mainImg = new BehaviorSubject<string>('');
+  mainImgInfo = new BehaviorSubject<{
+    mainImg: string;
+    originalImgExtension?: string;
+    mainImgExtension?: string;
+  }>({ mainImg: '' });
   importantPages = new BehaviorSubject<number[]>([0]);
   activateSearch = new BehaviorSubject<number>(0);
   groupedByPageSubj = new BehaviorSubject<any>(null);

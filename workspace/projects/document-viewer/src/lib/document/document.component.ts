@@ -109,20 +109,37 @@ export class DocumentComponent
       });
     }
 
-    this.subscriptions = this.docViewerService.mainImg
+    this.subscriptions = this.docViewerService.mainImgInfo
       .pipe(skip(1), takeUntil(this.destroy$))
-      .subscribe((res: any) => {
-        if (res) {
-          this.docViewerService.docConfSubject.next({
-            containerWidth: 0,
-          });
-          this.documentConfig.containerWidth = 0;
-          this.mainImg = res + '&img=_cleaned_rotated';
-          this.mainImgOrginal = res;
-          this.docViewerService.fitToPage.next(true);
-          this.docViewerService.changeDocSubject.next(false);
+      .subscribe(
+        (res: {
+          mainImg: string;
+          originalImgExtension?: string;
+          mainImgExtension?: string;
+        }) => {
+          if (res) {
+            this.docViewerService.docConfSubject.next({
+              containerWidth: 0,
+            });
+            this.documentConfig.containerWidth = 0;
+            //main img url
+            if (res.mainImgExtension && res.mainImg) {
+              this.mainImg = res.mainImg + '&img=' + res.mainImgExtension;
+            } else {
+              this.mainImg = res.mainImg + '&img=_cleaned_rotated';
+            }
+            //original img
+            if (res.originalImgExtension && res.mainImg) {
+              this.mainImgOrginal =
+                res.mainImg + '&img=' + res.originalImgExtension;
+            } else {
+              this.mainImgOrginal = res.mainImg;
+            }
+            this.docViewerService.fitToPage.next(true);
+            this.docViewerService.changeDocSubject.next(false);
+          }
         }
-      });
+      );
 
     this.subscriptions = this.docViewerService.searchValue.subscribe(
       (res: string) => {
@@ -192,9 +209,9 @@ export class DocumentComponent
   }
 
   @HostListener('window:resize', ['$event'])
-    onResize() {
-      this.calculateContainerWidth()
-    }
+  onResize() {
+    this.calculateContainerWidth();
+  }
 
   ngOnInit(): void {}
 
@@ -212,7 +229,8 @@ export class DocumentComponent
 
   onImageLoaded(event: any) {
     if (event && event.target) {
-      if (event.path && 
+      if (
+        event.path &&
         event.path[0].naturalHeight !== 1 &&
         event.path[0].naturalWidth !== 1
       ) {
@@ -332,13 +350,12 @@ export class DocumentComponent
   ngAfterViewInit() {
     this.defaultDocConfig = { ...this.documentConfig };
     this.calculateContainerWidth();
-     
   }
 
   calculateContainerWidth() {
     const docContainer = document.querySelector('#document-container')!;
     const containerRight = document.querySelector('#container-right');
-    if(containerRight) {
+    if (containerRight) {
       const widthSet = Math.floor(
         containerRight.clientWidth - 60 - 200
       ).toString();
@@ -425,6 +442,8 @@ export class DocumentComponent
     if (changes['createdAt'] && changes['createdAt'].currentValue) {
       this.createdAt = changes['createdAt'].currentValue;
     }
-    this.setTransImgPosition();
+    setTimeout(() => {
+      this.setTransImgPosition();
+    }, 0);
   }
 }
