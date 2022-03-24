@@ -3,13 +3,13 @@
 input[type="text"]:focus {
   outline: 0 !important;
   box-shadow: none;
-  border: 1px solid cv.$main-yellow;
+  border: 1px solid var(--main-yellow);
 }
 input[type="text"] {
   height: 30px;
   border-radius: 5px;
   text-align: center;
-  border: 1px solid cv.$main-white;
+  border: 1px solid var(--main-white);
 }
 
 .search-loader > svg {
@@ -21,13 +21,13 @@ input[type="text"] {
 
 @keyframes loaderSearch {
   0% {
-    fill: cv.$main-yellow;
+    fill: var(--main-yellow);
   }
   50% {
-    fill: cv.$font-main;
+    fill: var(--font-main);
   }
   100% {
-    fill: cv.$main-yellow;
+    fill: var(--main-yellow);
   }
 }
 
@@ -55,11 +55,11 @@ input[type="text"] {
 .search-icon > svg {
   height: 16px;
   margin-top: -3px;
-  fill: cv.$light-gray;
+  fill: var(--light-gray);
 }
 
 .close-search {
-  color: cv.$font-main;
+  color: var(--font-main);
   position: absolute;
   top: 3px;
   z-index: 9999999;
@@ -70,7 +70,7 @@ input[type="text"] {
 }
 
 .close-search:hover {
-  color: cv.$main-yellow;
+  color: var(--main-yellow);
 }
 
 .search-container {

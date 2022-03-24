@@ -4,7 +4,7 @@
 @mixin track() {
   height: 4px;
   border: none;
-  background: cv.$main-white;
+  background: var(--main-white);
 }
 
 @mixin thumb() {
@@ -12,18 +12,18 @@
   border: none;
   width: 10px;
   border-radius: 50%;
-  background: cv.$main-yellow;
+  background: var(--main-yellow);
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -3px;
   transition: all 0.2s ease-in-out;
-  box-shadow: cv.$box-shadow 0px 1px 4px;
+  box-shadow: var(--box-shadow) 0px 1px 4px;
 }
 .navigation-container:hover > .wrap > #range::-webkit-slider-thumb {
   height: 14px;
   width: 14px;
   margin-top: -5px;
-  box-shadow: 0 0px 12px 4px cv.$box-shadow;
+  box-shadow: 0 0px 12px 4px var(--box-shadow);
 }
 
 #range::-webkit-slider-thumb {
@@ -31,12 +31,12 @@
   border: none;
   width: 10px;
   border-radius: 50%;
-  background: cv.$main-yellow;
+  background: var(--main-yellow);
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -3px;
   transition: all 0.2s ease-in-out;
-  box-shadow: cv.$box-shadow 0px 1px 4px;
+  box-shadow: var(--box-shadow) 0px 1px 4px;
 }
 
 // search style
@@ -54,7 +54,7 @@
   input[type="number"]:focus {
     outline: 0 !important;
     box-shadow: none;
-    border: 1px solid cv.$main-yellow;
+    border: 1px solid var(--main-yellow);
   }
 
   /* Chrome, Safari, Edge, Opera */
@@ -112,19 +112,19 @@
       border: 1px solid #fff;
       transition: all 0.2s ease;
       cursor: pointer;
-      background: cv.$main-white;
-      -webkit-box-shadow: 0px 0px 16px 1px cv.$box-shadow;
-      -moz-box-shadow: 0px 0px 16px 1px cv.$box-shadow;
-      box-shadow: 0px 0px 16px 1px cv.$box-shadow;
+      background: var(--main-white);
+      -webkit-box-shadow: 0px 0px 16px 1px var(--box-shadow);
+      -moz-box-shadow: 0px 0px 16px 1px var(--box-shadow);
+      box-shadow: 0px 0px 16px 1px var(--box-shadow);
     }
 
     .active-thumbnail {
-      border: 1px solid cv.$main-yellow;
+      border: 1px solid var(--main-yellow);
     }
 
     // absolute elements style (pageNum, circle)
     .page-number {
-      color: cv.$light-gray;
+      color: var(--light-gray);
       right: calc(50% - 5px);
       position: absolute;
       text-align: center;
@@ -132,7 +132,7 @@
       font-size: 10px;
     }
     .active-page-number {
-      color: cv.$main-yellow !important;
+      color: var(--main-yellow) !important;
       font-weight: 800;
     }
     .important-page {
@@ -143,7 +143,7 @@
       height: 8px;
     }
     .mark {
-      background-color: cv.$main-green;
+      background-color: var(--main-green);
       top: 6px;
     }
     .search {
@@ -166,7 +166,7 @@
       margin: auto;
     }
     .spinner-border {
-      color: cv.$font-main !important;
+      color: var(--font-main) !important;
       width: 20px !important;
       height: 20px !important;
       opacity: 0.8;
@@ -187,15 +187,15 @@
       z-index: 1000;
       line-height: 24px;
       text-align: center;
-      background: cv.$main-white !important;
+      background: var(--main-white) !important;
       font-size: 12px;
       position: absolute;
       border-radius: 50%;
-      box-shadow: 0px 0px 16px 12px cv.$box-shadow;
+      box-shadow: 0px 0px 16px 12px var(--box-shadow);
       transition: all 0.5s ease;
 
       span#bubble {
-        color: cv.$font-main;
+        color: var(--font-main);
         font-weight: 700;
         transform: rotate(90deg);
         user-select: none;
@@ -206,7 +206,7 @@
       position: absolute;
       width: 0;
       height: 0;
-      border-top: 10px solid cv.$main-white;
+      border-top: 10px solid var(--main-white);
       border-left: 9px solid transparent;
       border-right: 9px solid transparent;
       top: 92%;
@@ -226,17 +226,17 @@
       padding-right: 4px;
       position: absolute;
       left: 50%;
-      box-shadow: 0 0px 12px cv.$box-shadow;
+      box-shadow: 0 0px 12px var(--box-shadow);
       transform: translate(-50%, -50%);
     }
 
     .yellow-number {
-      background-color: cv.$font-main;
-      color: cv.$main-white;
+      background-color: var(--font-main);
+      color: var(--main-white);
     }
     .white-number {
-      background-color: cv.$font-main;
-      color: cv.$main-white;
+      background-color: var(--font-main);
+      color: var(--main-white);
     }
 
     .value-field.min {
@@ -303,7 +303,7 @@
     //   input[type="range"]::-webkit-slider-runnable-track {
     //     width: 750px;
     //     -webkit-appearance: none;
-    //     color: cv.$main-yellow;
+    //     color: var(--main-yellow);
     //     margin-top: -1px;
     //   }
     // }
@@ -327,17 +327,17 @@
 
     /** FF*/
     input[type="range"]::-moz-range-progress {
-      background-color: cv.$main-yellow;
+      background-color: var(--main-yellow);
     }
     input[type="range"]::-moz-range-track {
-      background-color: cv.$main-white;
+      background-color: var(--main-white);
     }
     /* IE*/
     input[type="range"]::-ms-fill-lower {
       background-color: red;
     }
     input[type="range"]::-ms-fill-upper {
-      background-color: cv.$main-white;
+      background-color: var(--main-white);
     }
   }
 }

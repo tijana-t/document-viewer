@@ -1,33 +1,70 @@
-$bg-color: #eff3f8;
-$main-yellow: #fac317;
-$main-white: #ffffff;
-$main-red: #ff0000;
-$main-blue: #0f83ff;
-$main-green: #1cd082;
-$main-black: #000;
-$font-main: #3f4a52;
-$button-color: #212529;
-$button-border: #f8f9fa;
+:root {
+  --bg-color: #eff3f8;
+  --main-yellow: #fac317;
+  --main-white: #ffffff;
+  --main-red: #ff0000;
+  --main-blue: #0f83ff;
+  --main-green: #1cd082;
+  --main-black: #000;
+  --font-main: #464646;
+  --button-color: #212529;
+  --button-border: #f8f9fa;
 
-/* gray */
-$ultra-light-gray: #efefef;
-$light-gray: #a7a7a7;
-$heavy-gray: #6f6f6f;
-$table-header-gray: #f7f7f7;
-$table-border: #ded8d8;
+  /* gray */
+  --ultra-light-gray: #efefef;
+  --light-gray: #a7a7a7;
+  --heavy-gray: #6f6f6f;
+  --table-header-gray: #f7f7f7;
+  --table-border: #ded8d8;
+  --table-border2: #e7e9ed;
 
-/* border gray */
-$border-gray: #d8dde5;
-$border-gray-lightblue: #e0eeff;
+  /* border gray */
+  --border-gray: #d8dde5;
+  --border-gray-lightblue: #e0eeff;
 
-/* box shadows */
-$light-box-shadow: rgba(214, 214, 214, 1);
-$box-shadow: rgba(50, 50, 93, 0.1);
-$box-shadow2: rgba(0, 0, 0, 0.14);
+  /* box shadows */
+  --box-shadow: rgba(50, 50, 93, 0.1);
+  --box-shadow2: rgba(0, 0, 0, 0.14);
 
-/* input and form control style */
-$input-bc: #fff;
-$input-selection-color: #212529;
+  /* input and form control style */
+  --input-bc: #fff;
+  --input-selection-color: #212529;
+  --loader-main: #dedfe1;
+  --loader-light: #f2f3f5;
+}
 
-$loader-main: #dedfe1;
-$loader-light: #f2f3f5;
+[data-theme="dark"] {
+  --bg-color: rgb(30, 33, 34);
+  --main-yellow: #fac317;
+  --main-white: rgb(24, 26, 27);
+  --main-red: #ff0000;
+  --main-blue: #0f83ff;
+  --main-green: #1cd082;
+  --main-black: rgb(186, 180, 171);
+  --font-main: rgb(239 237 230);
+  --button-color: rgb(186, 180, 171);
+  --button-border: #50565c;
+
+  /* gray */
+  --ultra-light-gray: #333333;
+  --light-gray: #2b2b2b;
+  --heavy-gray: #f5f5f5;
+  --table-header-gray: #202020;
+  --table-border: #4a4a4a;
+
+  /* border gray */
+  --border-gray: #666666;
+  --border-gray-lightblue: #52585f;
+
+  /* box shadows */
+  --box-shadow: rgba(50, 50, 93, 0.1);
+  --box-shadow2: rgba(0, 0, 0, 0.14);
+
+  /* input and form control style */
+  --input-bc: #26292b;
+  --input-selection-color: #eeeff0;
+
+  /* loader colors */
+  --loader-main: #3c3636;
+  --loader-light: #484141;
+}

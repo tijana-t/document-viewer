@@ -49,7 +49,7 @@
   width: 12px;
   height: 8px;
   position: relative;
-  background: cv.$main-yellow;
+  background: var(--main-yellow);
   left: 5px;
   top: 7px;
 }
@@ -60,7 +60,7 @@
   bottom: 0;
   width: 0;
   height: 0;
-  border-left: 4px solid cv.$bg-color;
+  border-left: 4px solid var(--bg-color);
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
 }
@@ -71,7 +71,7 @@
   width: 0;
   height: 0;
   right: -4px;
-  border-left: 4px solid cv.$main-yellow;
+  border-left: 4px solid var(--main-yellow);
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
 }
@@ -90,10 +90,10 @@
 }
 
 .file-ready {
-  color: cv.$main-green;
+  color: var(--main-green);
 }
-.file-not-ready{
-  color: cv.$main-red;
+.file-not-ready {
+  color: var(--main-red);
 }
 
 .sub-doc-information {
@@ -113,7 +113,7 @@
 }
 
 .collaps-box {
-  background-color: cv.$bg-color;
+  background-color: var(--bg-color);
 }
 
 .sub-doc-num {
@@ -125,7 +125,7 @@
 }
 
 a {
-  color: cv.$heavy-gray;
+  color: var(--heavy-gray);
   /* border-bottom: 1px solid cv(--main-yellow); */
   /* box-shadow: inset 0 -1px 0 #a7a7a7; */
   transition: all 0.25s ease-in-out;
@@ -134,7 +134,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: cv.$main-yellow;
+  color: var(--main-yellow);
 }
 
 :host ::ng-deep .viewer-container:hover #search-box {
@@ -184,7 +184,7 @@ a:hover {
   text-align: center;
   justify-content: center;
   font-size: 11px;
-  color: cv.$heavy-gray;
+  color: var(--heavy-gray);
 
   .doc-next,
   .doc-prev {
@@ -194,14 +194,14 @@ a:hover {
 
 .model-info {
   font-weight: 500;
-  color: cv.$font-main;
+  color: var(--font-main);
   margin-bottom: 0px;
 
   .red-flag {
-    color: cv.$main-red;
+    color: var(--main-red);
   }
   .green-flag {
-    color: cv.$main-green;
+    color: var(--main-green);
   }
 }
 
@@ -230,7 +230,7 @@ a:hover {
 
 .doc-prev {
   cursor: pointer;
-  color: cv.$main-yellow;
+  color: var(--main-yellow);
   margin-right: 0px;
   transition: all 0.2s ease;
   opacity: 0;
@@ -238,7 +238,7 @@ a:hover {
 
 .doc-next {
   cursor: pointer;
-  color: cv.$main-yellow;
+  color: var(--main-yellow);
   margin-left: 0px;
   transition: all 0.2s ease;
   opacity: 0;
@@ -250,7 +250,7 @@ a:hover {
 
 .doc-next:hover,
 .doc-prev:hover {
-  text-shadow: 0px 2px 3px cv.$light-gray;
+  text-shadow: 0px 2px 3px var(--light-gray);
 }
 
 :host ::ng-deep .viewer-container:hover .doc-next {

@@ -5,8 +5,8 @@
   z-index: 0;
   user-select: none;
   position: relative;
-  background: #dbe2e8;
-  border: 4px solid cv.$main-white;
+  background: var(--bg-color);
+  border: 4px solid var(--main-white);
   width: 100%;
   border-radius: 12px;
   box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
@@ -27,31 +27,29 @@
       position: absolute;
       margin: 30px 0;
       margin: auto;
-      background-color: cv.$main-white;
+      background-color: var(--main-white);
       border-right: 1px solid #dbdbdb52;
-        
+
       #docImg {
         pointer-events: auto;
-        background-image: url('../assets/page-loader.svg'); 
+        background-image: url("../assets/page-loader.svg");
         background-repeat: repeat;
       }
     }
 
-    
     #docImgOrginal {
       pointer-events: auto;
       display: block;
       position: absolute;
       margin: 30px 0;
       box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px,
-      rgb(0 0 0 / 30%) 0px 30px 60px -30px;
+        rgb(0 0 0 / 30%) 0px 30px 60px -30px;
       margin: auto;
-      background-color: cv.$main-white;
-      background-image: url('../assets/page-loader.svg'); 
+      background-color: var(--main-white);
+      background-image: url("../assets/page-loader.svg");
       background-repeat: repeat;
       z-index: 1;
     }
-
 
     @keyframes gradient-animation {
       from {
@@ -92,7 +90,7 @@
     max-height: 30%;
     width: calc(100% - 18px);
     overflow-y: scroll;
-    background-color: cv.$main-white;
+    background-color: var(--main-white);
     position: absolute;
     left: 4px;
     padding: 0 !important;
@@ -110,10 +108,10 @@
     padding: 4px;
     font-size: 12px;
     color: #707070;
-    background: cv.$main-white;
+    background: var(--main-white);
     position: sticky;
     top: 0px;
-    border-bottom: 1px solid cv.$main-yellow;
+    border-bottom: 1px solid var(--main-yellow);
     border-top: 1px solid #dbe2e8;
     z-index: 9;
   }
@@ -123,7 +121,7 @@
   }
 
   .colaps-search {
-    color: cv.$font-main;
+    color: var(--font-main);
     float: right;
     transform: rotate(270deg);
     transform-origin: center center;
@@ -134,7 +132,7 @@
   }
 
   .colaps-search:hover {
-    color: cv.$main-yellow;
+    color: var(--main-yellow);
   }
 
   .selected-search {
@@ -159,7 +157,7 @@
     font: inherit;
     cursor: pointer;
     outline: inherit;
-    color: cv.$font-main;
+    color: var(--font-main);
     width: 100%;
     border-radius: 4px;
     transition: all 0.2s ease-in;
@@ -174,8 +172,8 @@
     border-bottom: 1px dashed #cdcdcd;
   }
   .dropdown-button:hover {
-    background-color: cv.$ultra-light-gray;
-    color: cv.$main-black;
+    background-color: var(--ultra-light-gray);
+    color: var(--main-black);
   }
   .page-header {
     background-color: #f8f8f8;
@@ -185,7 +183,7 @@
   .dropdown-border {
     margin: 0 !important;
     font-size: 13px;
-    color: cv.$main-yellow;
+    color: var(--main-yellow);
     padding: 7px;
     font-weight: 700;
     padding: 8px;
@@ -203,9 +201,9 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: cv.$font-main;
+  background-color: var(--font-main);
   border-radius: 12px;
-  border: 2px solid cv.$bg-color;
+  border: 2px solid var(--bg-color);
 }
 
 .skeleton {
@@ -220,17 +218,17 @@
   background: var(--loader-main);
   background-image: -webkit-linear-gradient(
     to right,
-    cv.$loader-main 0%,
-    cv.$loader-light 20%,
-    cv.$loader-main 40%,
-    cv.$loader-main 100%
+    var(--loader-main) 0%,
+    var(--loader-light) 20%,
+    var(--loader-main) 40%,
+    var(--loader-main) 100%
   );
   background-image: linear-gradient(
     to right,
-    cv.$loader-main 0%,
-    cv.$loader-light 20%,
-    cv.$loader-main 40%,
-    cv.$loader-main 100%
+    var(--loader-main) 0%,
+    var(--loader-light) 20%,
+    var(--loader-main) 40%,
+    var(--loader-main) 100%
   );
   background-repeat: no-repeat;
 }
