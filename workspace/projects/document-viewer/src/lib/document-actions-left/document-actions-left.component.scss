@@ -13,8 +13,8 @@
 }
 
 .circle {
-  background: colors.$main-white;
-  border: 1px solid colors.$main-white;
+  background: var(--main-white);
+  border: 1px solid var(--main-white);
   border-radius: 5px;
   height: 30px;
   width: 30px;
@@ -31,7 +31,7 @@
   -webkit-appearance: none;
   width: 100px;
   height: 4px;
-  background: colors.$main-white;
+  background: var(--main-white);
   outline: none;
 }
 
@@ -40,7 +40,7 @@
   appearance: none;
   width: 10px;
   height: 10px;
-  background: colors.$main-yellow;
+  background: var(--main-yellow);
   border-radius: 50%;
   cursor: ew-resize;
   transition: all 0.3s ease-in;
@@ -49,20 +49,20 @@
 input[type="range"]::-webkit-slider-thumb:hover {
   height: 14px;
   width: 14px;
-  box-shadow: 0 0px 12px 4px colors.$box-shadow;
+  box-shadow: 0 0px 12px 4px var(--box-shadow);
 }
 
 input[type="range"]::-moz-range-thumb:hover {
   height: 14px;
   width: 14px;
-  box-shadow: 0 0px 12px 4px colors.$box-shadow;
+  box-shadow: 0 0px 12px 4px var(--box-shadow);
 }
 
 .slider-image::-moz-range-thumb {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: colors.$main-yellow;
+  background: var(--main-yellow);
   cursor: ew-resize;
   transition: all 0.3s ease-in;
 }
@@ -75,29 +75,27 @@ input[type="range"]::-moz-range-thumb:hover {
 }
 
 .circle:hover {
-  background: colors.$main-yellow;
+  background: var(--main-yellow);
 }
 
 .show-debugger {
-  background: colors.$main-yellow;
-
+  background: var(--main-yellow);
 }
 
 .show-orginal {
-  background: colors.$main-yellow;
+  background: var(--main-yellow);
 }
 
 .circle > img {
   margin-top: -3px;
 }
 
-
 .split-icon {
   margin-left: 1px;
 }
 
 /* custom switch button */
-label[for='c3'] hr {
+label[for="c3"] hr {
   font-size: 20px; /* use this value to scale the switch */
   margin-bottom: 0.5em;
   width: 13px;
@@ -121,9 +119,9 @@ label[for='c3'] hr {
 }
 
 .custom-control-input:checked ~ .custom-control-label::before {
-  border-color: colors.$main-yellow;
-  background-color: colors.$main-yellow;
-  border: 1px solid colors.$main-white;
+  border-color: var(--main-yellow);
+  background-color: var(--main-yellow);
+  border: 1px solid var(--main-white);
 }
 
 .menu-collapse > .custom-switch > .icon-sun > svg {
@@ -139,7 +137,6 @@ label[for='c3'] hr {
 .menu-collapse > .custom-switch > .icon-moon > svg {
   margin-top: -4px;
 }
-
 
 .label-checkbox {
   margin-left: 36px;
@@ -159,4 +156,3 @@ label[for='c3'] hr {
   width: 27px;
   height: 16px;
 }
-

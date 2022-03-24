@@ -12,8 +12,8 @@
 }
 
 .circle {
-  background: colors.$main-white;
-  border: 1px solid colors.$main-white;
+  background: var(--main-white);
+  border: 1px solid var(--main-white);
   border-radius: 5px;
   height: 30px;
   width: 30px;
@@ -27,7 +27,7 @@
 }
 
 .circle:hover {
-  background: colors.$main-yellow;
+  background: var(--main-yellow);
 }
 
 .circle > img {
