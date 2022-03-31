@@ -28,7 +28,7 @@ export class DocumentActionsComponent
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
     zoomOutSrc: '',
-    fitToPageSrc: '',
+    fitToPageSrc: '../../assets/icons/zoom-in.svg' || '',
     informationHelp: '',
     downloadPdfPlain: '',
   };

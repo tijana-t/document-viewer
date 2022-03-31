@@ -72,7 +72,7 @@
 
 .shadow-over {
   background: #eff3f8;
-  background: linear-gradient(0deg, #eff3f8, #eff3f800);
+  background: linear-gradient(0deg, var(--shadow-nav), #eff3f800);
   position: absolute;
   bottom: 0;
   left: 0;
@@ -81,7 +81,7 @@
 }
 .shadow-over-top {
   background: #eff3f8;
-  background: linear-gradient(180deg, #eff3f8, #eff3f800);
+  background: linear-gradient(180deg, var(--shadow-nav), #eff3f800);
   position: absolute;
   top: 0;
   left: 0;
