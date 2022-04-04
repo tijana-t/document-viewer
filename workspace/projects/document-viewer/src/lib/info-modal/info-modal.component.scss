@@ -22,9 +22,11 @@
   margin-left: 5px;
   margin-bottom: 0 !important;
   padding: 0px 0px;
-  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+  box-shadow: var(--border-light) 0px 8px 24px;
   transition: all 0.2s ease-in-out;
   z-index: 9;
+  border-color: var(--button-border) !important;
+  color: var(--font-main);
 }
 
 .circle:hover {

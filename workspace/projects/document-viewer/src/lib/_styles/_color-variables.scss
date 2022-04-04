@@ -31,6 +31,8 @@
   --input-selection-color: #212529;
   --loader-main: #dedfe1;
   --loader-light: #f2f3f5;
+  --bg-viewer: #eff3f8;
+  --shadow-nav: #161616;
 }
 
 [data-theme="dark"] {
@@ -67,4 +69,6 @@
   /* loader colors */
   --loader-main: #3c3636;
   --loader-light: #484141;
+  --bg-viewer: #323232;
+  --shadow-nav: #161616;
 }
