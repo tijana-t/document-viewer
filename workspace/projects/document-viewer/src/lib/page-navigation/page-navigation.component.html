@@ -26,7 +26,7 @@
   >
     <div
       *ngFor="let image of thumbnails; index as i"
-      (click)="changePage(i + 1, image)"
+      (click)="changePage(i + 1, true, image)"
       #thumbnailImage
       id="img-{{ i + 1 }}"
       style="position: relative"

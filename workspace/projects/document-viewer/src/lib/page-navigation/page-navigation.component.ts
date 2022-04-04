@@ -52,6 +52,7 @@ export class PageNavigationComponent
   isChangePage: boolean = false;
   originalImgExtension?: string;
   mainImgExtension?: string;
+  changeActivated: boolean = false;
 
   constructor(private docViewerService: DocumentViewerService) {
     this.subscriptions.add(
@@ -117,11 +118,16 @@ export class PageNavigationComponent
             }
             this.docViewerService.pageNumberSubject.next(res.currentPage);
             if (res.pages) this.thumbnails = res.pages;
-            setTimeout(() => {
-              this.isChangePage = false;
-              this.docViewerService.pageChange.next(false);
-              this.scrollToPageNumber(this.pageNumber);
-            }, 0);
+            //do not call, because textLayer is activated already from changePage()
+            if (!this.changeActivated) {
+              setTimeout(() => {
+                this.isChangePage = false;
+                this.docViewerService.pageChange.next(false);
+                this.scrollToPageNumber(this.pageNumber);
+              }, 0);
+            }
+
+            this.changeActivated = false;
           }
         }
       );
@@ -179,7 +185,12 @@ export class PageNavigationComponent
   }
 
   //fires on thumbnail click
-  changePage(pageNumber: number, thumbnail: Thumbnail) {
+  changePage(
+    pageNumber: number,
+    changeActivation: boolean,
+    thumbnail: Thumbnail
+  ) {
+    this.changeActivated = changeActivation;
     this.pageNumber = pageNumber;
     if (this.pageNumber !== this.oldPageNumber) {
       this.docViewerService.pageNumberSubject.next(pageNumber);
@@ -189,6 +200,7 @@ export class PageNavigationComponent
       this.clearTextLayer();
     }
     this.oldPageNumber = pageNumber;
+    this.changeActivated = false;
     if (thumbnail.hasSearchedText) {
       this.docViewerService.activateSearch.next(pageNumber);
     } else {

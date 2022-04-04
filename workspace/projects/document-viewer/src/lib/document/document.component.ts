@@ -194,6 +194,7 @@ export class DocumentComponent
           if (res.length > 0) {
             this.groupedByPage = res;
             this.noSearchItems = false;
+            this.colapsSearchStatus = false;
           } else if (res.length === 0 && this.searchInit > 0) {
             this.groupedByPage = [];
             this.noSearchItems = true;
@@ -217,7 +218,7 @@ export class DocumentComponent
 
   sendSearchObj(pageSearch: SearchResult) {
     this.colapsSearchStatus = !this.colapsSearchStatus;
-    this.pageSearch.next({
+    this.pageSearch.emit({
       pageSearch: [pageSearch],
       pageNumber: pageSearch.pageNums[0],
     });
@@ -435,8 +436,8 @@ export class DocumentComponent
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
-      this.groupedByPage = [];
-      this.noSearchItems = false;
+      //if search is opened, collapse it
+      this.colapsSearchStatus = true;
       this.documentConfig = changes['documentConfig'].currentValue;
     }
     if (changes['createdAt'] && changes['createdAt'].currentValue) {

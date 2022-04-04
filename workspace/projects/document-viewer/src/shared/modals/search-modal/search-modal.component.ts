@@ -49,15 +49,13 @@ export class SearchModalComponent implements OnInit, OnDestroy {
 
     //wait small amount of time before another request is called
     this.subscriptions.add(
-      this.searchSubject
-        .pipe(debounceTime(800))
-        .subscribe((res: any) => {
-          if (res.length > 2) {
-            this.searchTextInDoc.emit(res);
-          } else {
-            this.cleanSearch();
-          }
-        })
+      this.searchSubject.pipe(debounceTime(800)).subscribe((res: any) => {
+        if (res.length > 2) {
+          this.searchTextInDoc.emit(res);
+        } else {
+          this.cleanSearch();
+        }
+      })
     );
 
     this.subscriptions.add(
@@ -117,7 +115,7 @@ export class SearchModalComponent implements OnInit, OnDestroy {
     this.docViewerService.searchValue.next(event);
   }
   detectEnter(event: KeyboardEvent) {
-    if(event.key == 'Enter' && this.searchDocument !== '') {
+    if (event.key == 'Enter' && this.searchDocument !== '') {
       this.searchLoader = true;
       this.searchSubject.next(this.searchDocument);
       this.docViewerService.searchValue.next(this.searchDocument);

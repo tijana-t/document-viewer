@@ -5,49 +5,40 @@
       <p class="dropdown-border page-header">NO RESULT FOUND</p>
     </div>
   </div>
-  <ng-container
+  <div
+    class="search-container"
     *ngIf="groupedByPage && groupedByPage.length > 0 && !noSearchItems"
+    style="padding: 10px"
+    aria-labelledby="searchDocument"
+    class="dropdown-options"
+    [ngClass]="{
+      'colaps-search-box': colapsSearchStatus,
+      'scroll-x': scrollVisibleX
+    }"
   >
-    <div
-      style="padding: 10px"
-      aria-labelledby="searchDocument"
-      class="dropdown-options"
-      [ngClass]="{
-        'colaps-search-box': colapsSearchStatus,
-        'scroll-x': scrollVisibleX
-      }"
-    >
-      <div (click)="colapsSearch()" class="info-search">
-        {{ groupedByPage.length }} search found for "{{ searchValueForDoc }}"
-        <span
-          class="typcn typcn-chevron-left colaps-search"
-          [ngClass]="{ 'colaps-search-rotate': colapsSearchStatus }"
-        ></span>
-      </div>
-      <div
-        *ngFor="
-          let pageResult of groupedByPage;
-          index as index;
-          let last = last
-        "
-      >
-        <p
-          class="dropdown-border page-header"
-          *ngIf="pageResult[0].pageNums[0]"
-        >
-          PAGE: {{ pageResult[0].pageNums[0] }}
-        </p>
-
-        <button
-          class="dropdown-button"
-          (click)="sendSearchObj(item)"
-          *ngFor="let item of pageResult"
-        >
-          <span [innerHTML]="findSearchItemIn(item.text)"> </span>
-        </button>
-      </div>
+    <div (click)="colapsSearch()" class="info-search">
+      {{ groupedByPage.length }} search found for "{{ searchValueForDoc }}"
+      <span
+        class="typcn typcn-chevron-left colaps-search"
+        [ngClass]="{ 'colaps-search-rotate': colapsSearchStatus }"
+      ></span>
     </div>
-  </ng-container>
+    <div
+      *ngFor="let pageResult of groupedByPage; index as index; let last = last"
+    >
+      <p class="dropdown-border page-header" *ngIf="pageResult[0].pageNums[0]">
+        PAGE: {{ pageResult[0].pageNums[0] }}
+      </p>
+
+      <button
+        class="dropdown-button"
+        (click)="sendSearchObj(item)"
+        *ngFor="let item of pageResult"
+      >
+        <span [innerHTML]="findSearchItemIn(item.text)"> </span>
+      </button>
+    </div>
+  </div>
   <img
     *ngIf="documentConfig.editable"
     [ngStyle]="{
