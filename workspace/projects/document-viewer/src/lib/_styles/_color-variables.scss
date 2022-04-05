@@ -33,6 +33,14 @@
   --loader-light: #f2f3f5;
   --bg-viewer: #eff3f8;
   --shadow-nav: #161616;
+
+  /* border-radius vars */
+  --border-radius-circle: 50%;
+  --border-radius-rounded: 15px;
+  --border-right-rounded: 0px 15px 15px 0px;
+  --border-left-rounded: 15px 0px 0px 15px;
+  --circle-icon-height: 35px;
+  --circle-icon-width: 35px;
 }
 
 [data-theme="dark"] {

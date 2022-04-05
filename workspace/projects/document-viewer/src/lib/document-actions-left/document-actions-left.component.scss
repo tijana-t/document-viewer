@@ -15,9 +15,9 @@
 .circle {
   background: var(--main-white);
   border: 1px solid var(--main-white);
-  border-radius: 5px;
-  height: 30px;
-  width: 30px;
+  border-radius: var(--border-radius-circle);
+  height: var(--circle-icon-height);
+  width: var(--circle-icon-width);
   align-items: center;
   margin-left: 5px;
   margin-bottom: 0 !important;

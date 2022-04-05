@@ -52,13 +52,9 @@
     class="col circle"
     *ngIf="defaultConfig?.debugMode"
     (click)="openDebugger()"
-    [ngbTooltip]="!showDebugger ?
-     'Show debugger': 'Hide debugger'
-    "
+    [ngbTooltip]="!showDebugger ? 'Show debugger' : 'Hide debugger'"
     [ngClass]="{ 'show-debugger': showDebugger }"
   >
-  <span
-  class="typcn typcn-cog-outline"
-></span>
+    <span class="typcn typcn-cog-outline"></span>
   </button>
 </div>
