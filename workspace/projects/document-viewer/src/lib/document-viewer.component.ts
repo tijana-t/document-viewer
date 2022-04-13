@@ -164,10 +164,7 @@ export class DocumentViewerComponent
 
   getFileTypeForHipotekarna(file: any, data: any) {
     if (
-      (file.modelContainer === '60e448112eaba436d16da8d9' ||
-        file.modelContainer === '61091c067e9ae6f8779d131c' ||
-        file.modelContainer === '61dbe46ea61675eb2f95c632' ||
-        file.modelContainer === '61dc181da61675eb2f98401b') &&
+      file.isModelContainerRjesenje &&
       data &&
       data.length !== 0 &&
       data[0].groupsList[0].intents.length !== 0 &&

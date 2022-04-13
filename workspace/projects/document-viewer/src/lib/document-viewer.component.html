@@ -16,20 +16,14 @@
                 class="kat-sub-sent"
                 *ngIf="
                   singleDocument?.file?.sent &&
-                  (docModel.modelContainerId === '61091c067e9ae6f8779d131c' ||
-                    docModel.modelContainerId === '60e448112eaba436d16da8d9' ||
-                    docModel.modelContainerId === '61dbe46ea61675eb2f95c632' ||
-                    docModel.modelContainerId === '61dc181da61675eb2f98401b')
+                  docModel.isModelContainerRjesenje
                 "
               ></span>
               <span
                 class="kat-sub-not-sent"
                 *ngIf="
                   !singleDocument?.file?.sent &&
-                  (docModel.modelContainerId === '61091c067e9ae6f8779d131c' ||
-                    docModel.modelContainerId === '60e448112eaba436d16da8d9' ||
-                    docModel.modelContainerId === '61dbe46ea61675eb2f95c632' ||
-                    docModel.modelContainerId === '61dc181da61675eb2f98401b')
+                  docModel.isModelContainerRjesenje
                 "
               ></span>
               <span class="sub-date">{{
@@ -54,7 +48,9 @@
           </p>
         </div>
         <span
-          *ngIf="singleDocument.file?.matchingDocs?.length > 0 && !collapsStatus"
+          *ngIf="
+            singleDocument.file?.matchingDocs?.length > 0 && !collapsStatus
+          "
           class="sub-doc-num"
           >DOCS: {{ singleDocument.file?.matchingDocs?.length }}</span
         >
@@ -83,14 +79,7 @@
                       *ngIf="
                         matchingDoc.jobStatus == 'completed' &&
                         matchingDoc.sent &&
-                        (docModel.modelContainerId ===
-                          '61091c067e9ae6f8779d131c' ||
-                          docModel.modelContainerId ===
-                            '60e448112eaba436d16da8d9' ||
-                          docModel.modelContainerId ===
-                            '61dbe46ea61675eb2f95c632' ||
-                          docModel.modelContainerId ===
-                            '61dc181da61675eb2f98401b')
+                        docModel.isModelContainerRjesenje
                       "
                     ></span>
                     <span
@@ -98,14 +87,7 @@
                       *ngIf="
                         matchingDoc.jobStatus == 'completed' &&
                         !matchingDoc.sent &&
-                        (docModel.modelContainerId ===
-                          '61091c067e9ae6f8779d131c' ||
-                          docModel.modelContainerId ===
-                            '60e448112eaba436d16da8d9' ||
-                          docModel.modelContainerId ===
-                            '61dbe46ea61675eb2f95c632' ||
-                          docModel.modelContainerId ===
-                            '61dc181da61675eb2f98401b')
+                        docModel.isModelContainerRjesenje
                       "
                     ></span>
                     <span class="sub-date">{{
@@ -118,16 +100,16 @@
                 </div>
               </ng-template>
               <a
-              (click)="openMatchingDoc(matchingDoc)"
+                (click)="openMatchingDoc(matchingDoc)"
                 [ngClass]="{
                   'file-not-ready':
-                  (matchingDoc.hasOwnProperty('confidenceStatus') &&
-                  matchingDoc?.confidenceStatus === false) ||
-                  matchingDoc.checked,
+                    (matchingDoc.hasOwnProperty('confidenceStatus') &&
+                      matchingDoc?.confidenceStatus === false) ||
+                    matchingDoc.checked,
                   'file-ready':
-                  (matchingDoc.hasOwnProperty('confidenceStatus') &&
-                  matchingDoc?.confidenceStatus === false) ||
-                  matchingDoc.checked
+                    (matchingDoc.hasOwnProperty('confidenceStatus') &&
+                      matchingDoc?.confidenceStatus === false) ||
+                    matchingDoc.checked
                 }"
                 class="sub-doc-name"
                 >{{ matchingDoc.originalName }}</a
