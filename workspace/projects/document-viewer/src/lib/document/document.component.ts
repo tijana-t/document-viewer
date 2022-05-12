@@ -358,7 +358,7 @@ export class DocumentComponent
     const containerRight = document.querySelector('#container-right');
     if (containerRight) {
       const widthSet = Math.floor(
-        containerRight.clientWidth - 60 - 200
+        containerRight.clientWidth - 60 - 300
       ).toString();
 
       let container = docContainer as HTMLElement;
