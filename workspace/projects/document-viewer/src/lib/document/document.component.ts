@@ -125,8 +125,6 @@ export class DocumentComponent
             //main img url
             if (res.mainImgExtension && res.mainImg) {
               this.mainImg = res.mainImg + '&img=' + res.mainImgExtension;
-            } else {
-              this.mainImg = res.mainImg + '&img=_cleaned_rotated';
             }
             //original img
             if (res.originalImgExtension && res.mainImg) {
@@ -246,10 +244,10 @@ export class DocumentComponent
   setTransImgPosition(initalSetting?: boolean) {
     const outerCont = document.getElementById('outer-cont');
     let documentImage;
-    if (this.documentConfig.editable == false) {
-      documentImage = document.getElementById('docImg');
-    } else {
+    if (this.mainImgOrginal !== '') {
       documentImage = document.getElementById('docImgOrginal');
+    } else {
+      documentImage = document.getElementById('docImg');
     }
 
     if (documentImage && outerCont) {

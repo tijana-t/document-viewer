@@ -40,7 +40,9 @@
     </div>
   </div>
   <img
-    *ngIf="documentConfig.editable"
+    *ngIf="
+      (mainImgOrginal || mainImgOrginal !== '') && (!mainImg || mainImg == '')
+    "
     [ngStyle]="{
       width: documentConfig.containerWidth + 'px',
       position: 'absolute',
@@ -54,7 +56,7 @@
     alt=""
   />
   <img
-    *ngIf="documentConfig.editable == false"
+    *ngIf="mainImg || mainImg !== ''"
     [ngStyle]="{
       width: documentConfig.containerWidth + 'px',
       position: 'absolute',
@@ -82,7 +84,11 @@
     >
       <div id="orgImageParent">
         <img
-          *ngIf="!changeDocument && documentConfig.editable == false"
+          *ngIf="
+            !changeDocument &&
+            documentConfig.editable == false &&
+            (mainImg || mainImg !== '')
+          "
           [attr.width]="documentConfig.containerWidth + 'px'"
           id="docImg"
           #documentImage
@@ -124,7 +130,7 @@
       </div>
 
       <img
-        *ngIf="!changeDocument"
+        *ngIf="!changeDocument && (mainImgOrginal || mainImgOrginal !== '')"
         [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImgOrginal"
         #documentImage
