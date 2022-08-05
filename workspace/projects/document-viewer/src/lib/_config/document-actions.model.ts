@@ -5,4 +5,5 @@ export type DocumentActions = {
   informationHelp?: string;
   showOrginalImg?: string;
   downloadPdfPlain?: string;
+  separateMergedDoc?: string;
 };

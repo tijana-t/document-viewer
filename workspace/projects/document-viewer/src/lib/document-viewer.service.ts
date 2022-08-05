@@ -22,6 +22,7 @@ export class DocumentViewerService {
     mainImg: string;
     originalImgExtension?: string;
     mainImgExtension?: string;
+    colorValue?: string;
   }>({ mainImg: '' });
   importantPages = new BehaviorSubject<number[]>([0]);
   activateSearch = new BehaviorSubject<number>(0);

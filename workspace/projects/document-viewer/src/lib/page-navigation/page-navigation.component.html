@@ -5,8 +5,8 @@
 >
   <div class="form-group number-input">
     <input
-      (keyup)="searchPage(page.value)"
-      #page="ngModel"
+      (keyup)="searchPage(+page.value)"
+      #page
       type="number"
       class="form-control"
       placeholder="#"
@@ -19,42 +19,126 @@
     />
   </div>
   <div class="shadow-over-top"></div>
+  <!-- <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let movie of thumbnails" cdkDrag>
+      {{ movie }}
+    </div>
+  </div> -->
   <div
     [ngStyle]="{ height: navigationConfig.containerHeight }"
     #thumbnailContainer
     class="thumbnail-container d-inline-flex flex-column align-items-center"
   >
-    <div
-      *ngFor="let image of thumbnails; index as i"
-      (click)="changePage(i + 1, true, image)"
-      #thumbnailImage
-      id="img-{{ i + 1 }}"
-      style="position: relative"
-    >
-      <img
-        appLazyLoad
-        [imageObj]="image"
-        [src]="image.src"
-        width="100%"
-        [ngClass]="pageNumber === i + 1 ? 'active-thumbnail' : ''"
-        class="thumbnail"
-        [style]="{ marginBottom: navigationConfig.imageMargin }"
-      />
-      <div class="spinner" *ngIf="!image.show">
-        <div style="display: inline-flex" class="spinner-border" role="loading">
-          <span class="sr-only">Loading...</span>
+    <!-- single doc thumbs -->
+    <ng-container *ngIf="!multipleDocs">
+      <div
+        *ngFor="let image of thumbnails; index as i"
+        (click)="changePage(i + 1, true, image)"
+        #thumbnailImage
+        id="img-{{ i + 1 }}"
+        style="position: relative"
+      >
+        <img
+          appLazyLoad
+          [imageObj]="image"
+          [src]="image.src"
+          width="100%"
+          [ngClass]="pageNumber === i + 1 ? 'active-thumbnail' : ''"
+          class="thumbnail"
+          [style]="{ marginBottom: navigationConfig.imageMargin }"
+        />
+        <div class="spinner" *ngIf="!image.show">
+          <div
+            style="display: inline-flex"
+            class="spinner-border"
+            role="loading"
+          >
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <span
+          class="page-number"
+          [ngClass]="pageNumber === i + 1 ? 'active-page-number' : ''"
+          [ngStyle]="{ bottom: navigationConfig.imageMargin + 'px' }"
+        >
+          {{ i + 1 }}
+        </span>
+        <span class="important-page mark" *ngIf="image.isImportant"></span>
+        <span
+          class="important-page search"
+          *ngIf="image.hasSearchedText"
+        ></span>
+      </div>
+    </ng-container>
+
+    <!-- multiple docs thumbs -->
+    <ng-container *ngIf="multipleDocs">
+      <div
+        cdkDropList
+        (cdkDropListDropped)="drop($event)"
+        style="padding: 10px; margin-bottom: 22px"
+        [ngStyle]="{ border: '3px solid ' + doc[0]['thumbColor'] }"
+        id="container-{{ doc[0]['fileId'] }}"
+        (mouseover)="showSettings($event, doc[0], doc[0]['fileId'])"
+        (mouseout)="hideSettings($event)"
+        *ngFor="let doc of multipleDocsThumbs; index as docIndex"
+      >
+        <div
+          *ngFor="let image of doc; index as i"
+          (click)="changePage(getPageNum(docIndex) + i + 1, true, image)"
+          #thumbnailImage
+          [id]="
+            !multipleDocsThumbs[docIndex - 1]
+              ? 'img-' + +(i + 1)
+              : 'img-' + +(getPageNum(docIndex) + i + 1)
+          "
+          style="position: relative"
+        >
+          <img
+            cdkDrag
+            appLazyLoad
+            [imageObj]="image"
+            [src]="image.src"
+            width="100%"
+            [ngClass]="
+              pageNumber === getPageNum(docIndex) + i + 1
+                ? 'active-thumbnail'
+                : ''
+            "
+            class="thumbnail"
+            [style]="{
+              marginBottom: navigationConfig.imageMargin
+            }"
+          />
+          <div class="spinner" *ngIf="!image.show">
+            <div
+              style="display: inline-flex"
+              class="spinner-border"
+              role="loading"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <span
+            class="page-number"
+            [ngClass]="pageNumber === i + 1 ? 'active-page-number' : ''"
+            [ngStyle]="{ bottom: navigationConfig.imageMargin + 'px' }"
+          >
+            <span *ngIf="multipleDocsThumbs[docIndex - 1]">
+              {{ getPageNum(docIndex) + i + 1 }}
+            </span>
+            <span *ngIf="!multipleDocsThumbs[docIndex - 1]">
+              {{ i + 1 }}
+            </span>
+          </span>
+          <span class="important-page mark" *ngIf="image.isImportant"></span>
+          <span
+            class="important-page search"
+            *ngIf="image.hasSearchedText"
+          ></span>
         </div>
       </div>
-      <span
-        class="page-number"
-        [ngClass]="pageNumber === i + 1 ? 'active-page-number' : ''"
-        [ngStyle]="{ bottom: navigationConfig.imageMargin + 'px' }"
-      >
-        {{ i + 1 }}
-      </span>
-      <span class="important-page mark" *ngIf="image.isImportant"></span>
-      <span class="important-page search" *ngIf="image.hasSearchedText"></span>
-    </div>
+    </ng-container>
   </div>
   <div class="shadow-over"></div>
 
@@ -87,5 +171,72 @@
       [max]="thumbnails.length"
       step="1"
     />
+  </div>
+</div>
+
+<div
+  #thumbSettings
+  class="thumb-settings"
+  [ngStyle]="{
+    top: topCorner + 'px',
+    right: rightCorner + 'px'
+  }"
+  [ngClass]="showThumbSettings ? 'visible' : 'not-visible'"
+>
+  <div class="d-flex flex-column">
+    <strong>{{ thumbnailInfo.originalName }}</strong>
+    <div class="d-flex flex-row align-items-center justify-content-center">
+      <button
+        class="btn-custom left-rounded"
+        [disabled]="
+          this.documentsList &&
+          thumbnailInfo.fileId === this.documentsList[0].file._id
+        "
+        (click)="reorderDocument(thumbnailInfo, -1)"
+      >
+        up
+      </button>
+      <button
+        class="btn-custom right-rounded"
+        [disabled]="
+          this.documentsList &&
+          thumbnailInfo.fileId ===
+            this.documentsList[this.documentsList.length - 1].file._id
+        "
+        (click)="reorderDocument(thumbnailInfo, 1)"
+      >
+        down
+      </button>
+    </div>
+    <div class="d-flex flex-row align-items-center justify-content-center">
+      <button
+        class="circle btn-custom"
+        (click)="separateDocument(thumbnailInfo.fileId)"
+      >
+        <img
+          width="15px"
+          height="15px"
+          [src]="documentActionsSrc.separateMergedDoc"
+          alt=""
+        />
+      </button>
+      <button
+        (click)="
+          downloadDocument(
+            thumbnailInfo.fileId,
+            thumbnailInfo.fileName,
+            thumbnailInfo.originalName
+          )
+        "
+        class="circle btn-custom"
+      >
+        <img
+          width="15px"
+          height="15px"
+          [src]="documentActionsSrc.downloadPdfPlain"
+          alt=""
+        />
+      </button>
+    </div>
   </div>
 </div>

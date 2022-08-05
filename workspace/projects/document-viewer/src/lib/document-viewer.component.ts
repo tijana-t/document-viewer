@@ -47,7 +47,11 @@ export class DocumentViewerComponent
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
+  @Output('separateDocumentEvent') separateDocumentEvent = new EventEmitter();
+  @Output('reorderDocumentEvent') reorderDocumentEvent = new EventEmitter();
   @Output('linePosition') linePosition = new EventEmitter();
+  @Output('filterPatternEvent') filterPatternEvent = new EventEmitter();
+
   @Input('searchResult') searchResult: SearchResult[] = [];
   @Input('currentPage') initialPage = 1;
   @Input('token') token?: string = '';
@@ -65,6 +69,8 @@ export class DocumentViewerComponent
     containerWidth: 0,
   };
   @Input('docModel') docModel: any;
+  @Input('activeFileId') activeFileId: string = '';
+
   @Input('params') params: any;
   @Input('singleDocument') singleDocument: any;
   @Input('inProjects') inProjects: any;
@@ -73,6 +79,8 @@ export class DocumentViewerComponent
   subscriptions = new Subscription();
   destroy$ = new Subject();
   collapsStatus = false;
+  multipleDocs: boolean = false;
+  filterFileIds = [];
   ngOnInit() {
     this.subscriptions = this.docViewerService.lineStatus.subscribe(
       (status) => {
@@ -108,8 +116,22 @@ export class DocumentViewerComponent
     this.triggerTextLayer.emit(event);
   }
 
+  triggerSeparateDocument(event: Event) {
+    this.separateDocumentEvent.next(event);
+  }
+
+  triggerReorderDocument(event: Event) {
+    this.reorderDocumentEvent.next(event);
+  }
+
   downloadDocument(event: Event) {
     this.downloadDocumentEvent.emit(event);
+  }
+
+  removeExtension(fileName: string) {
+    var lastDotPosition = fileName.lastIndexOf('.');
+    if (lastDotPosition === -1) return fileName;
+    else return fileName.substr(0, lastDotPosition);
   }
 
   collapsSubDocs() {
@@ -133,15 +155,40 @@ export class DocumentViewerComponent
     this.collapsStatus = !this.collapsStatus;
   }
 
+  filterPattern(file: any) {
+    this.activeFileId = '';
+    let fileId;
+    let filterValue;
+    fileId = file._id;
+    if (!file['filterValue'] || file['filterValue'] === false) {
+      file['filterValue'] = true;
+      filterValue = true;
+    } else {
+      file['filterValue'] = false;
+      filterValue = false;
+    }
+
+    this.filterPatternEvent.emit({ fileId, filterValue });
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pageInfo'] && changes['pageInfo'].currentValue) {
+      console.log('tijana pageinfo');
       this.docViewerService.pageInfo.next(changes['pageInfo'].currentValue);
     }
+    // if (changes['activeFileId'] && changes['activeFileId'].currentValue) {
+    //   const f = this.singleDocument.originalMergedDocs.find(
+    //     (doc: any) => doc.file._id === changes['activeFileId'].currentValue
+    //   );
+    //   f.file.filterValue = true;
+    //   this.activeFileId = changes['activeFileId'].currentValue;
+    // }
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
       this.docViewerService.docConfSubject.next(this.documentConfig);
     }
     if (changes['searchResult'] && changes['searchResult'].currentValue) {
+      // debugger;
       this.docViewerService.searchResultSubject.next(
         changes['searchResult'].currentValue
       );
@@ -151,14 +198,34 @@ export class DocumentViewerComponent
     }
     if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
       this.singleDocument = changes['singleDocument'].currentValue;
-      this.getFileTypeForHipotekarna(
-        this.singleDocument.file,
-        this.singleDocument.data
-      );
+      if (this.singleDocument.mergedDocs) {
+        this.multipleDocs = true;
+        this.singleDocument.file.originalName = '';
+        let connection;
+        this.singleDocument.originalMergedDocs.forEach(
+          (doc: any, index: number) => {
+            if (index !== this.singleDocument.originalMergedDocs.length - 1) {
+              connection = ' & ';
+            } else {
+              connection = '';
+            }
+            this.singleDocument.file.originalName +=
+              this.removeExtension(doc.file.originalName) + connection;
+          }
+        );
+      } else {
+        this.multipleDocs = false;
+
+        this.getFileTypeForHipotekarna(
+          this.singleDocument.file,
+          this.singleDocument.data
+        );
+      }
       this.collapsStatus = false;
     }
-    if (changes['docModel']) {
+    if (changes['docModel'] && changes['docModel'].currentValue) {
       this.docModel = changes['docModel'].currentValue;
+      console.log('docmodel', this.docModel);
     }
   }
 
@@ -189,7 +256,7 @@ export class DocumentViewerComponent
     //check type for matchingDocs
     if (file && file.matchingDocs && file.matchingDocs.length !== 0) {
       for (const matchDoc of file.matchingDocs) {
-        this.getFileTypeForHipotekarna(matchDoc, matchDoc.data);
+        // this.getFileTypeForHipotekarna(matchDoc, matchDoc.data);
       }
     }
   }

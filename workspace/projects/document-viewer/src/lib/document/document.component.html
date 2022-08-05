@@ -69,12 +69,13 @@
     id="trans-img"
     alt=""
   />
+
   <div
     #docContainer
+    [ngStyle]="{ border: colorValue ? '4px solid ' + colorValue : '' }"
     (scroll)="scrollEvent($event, documentImage)"
     id="document-container"
   >
-    <!--  <div class="shadow-test"></div> -->
     <div
       class="document-page"
       id="document-page"

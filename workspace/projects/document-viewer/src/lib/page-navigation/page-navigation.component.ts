@@ -11,10 +11,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil, skip } from 'rxjs/operators';
 import { DocumentViewerService } from '../document-viewer.service';
 import { NavigationConfig } from '../_config/page-navigation.model';
 import { Thumbnail } from '../_config/thumbnail.model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { DocumentActions } from '../_config/document-actions.model';
 
 @Component({
   selector: 'lib-page-navigation',
@@ -30,11 +32,25 @@ export class PageNavigationComponent
   @ViewChild('inputRange') inputRange: ElementRef | undefined;
   @ViewChild('bubbleValue') bubbleValue: ElementRef | undefined;
   @ViewChild('pageInput') pageInput: ElementRef | undefined;
+  @ViewChild('thumbSettings') thumbSettings: any;
+
   thumbnails: Thumbnail[] = [{ id: '', src: '', show: false }];
   destroy$ = new Subject();
   showMyElement: boolean = false;
 
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
+  @Output('separateDocumentEvent') separateDocumentEvent = new EventEmitter();
+  @Output('reorderDocumentEvent') reorderDocumentEvent = new EventEmitter();
+  @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
+
+  @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
+    informationHelp: '',
+    downloadPdfPlain: '',
+    separateMergedDoc: '',
+  };
+
+  @Input('documentsList') documentsList: any;
+
   searchSubject = new Subject<number>();
   results$ = new Subscription();
 
@@ -53,6 +69,12 @@ export class PageNavigationComponent
   originalImgExtension?: string;
   mainImgExtension?: string;
   changeActivated: boolean = false;
+  topCorner = 0;
+  showThumbSettings: boolean = false;
+  rightCorner = 0;
+  thumbnailInfo: Thumbnail = { fileId: '', id: '', originalName: '' };
+  multipleDocsThumbs: any = [];
+  multipleDocs: boolean = false;
 
   constructor(private docViewerService: DocumentViewerService) {
     this.subscriptions.add(
@@ -97,15 +119,17 @@ export class PageNavigationComponent
       });
 
     this.docViewerService.pageInfo
-      .pipe(takeUntil(this.destroy$))
+      .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe(
         (res: {
-          pages: [{ src?: string; id: string; isImportant?: boolean }];
+          multipleDocs?: boolean;
+          pages: any;
           currentPage: number;
           originalImgExtension?: string;
           mainImgExtension?: string;
+          colorValue?: string;
         }) => {
-          if (res) {
+          if (res && (res.currentPage || res.pages)) {
             this.pageNumber = res.currentPage;
             this.previousPageNum = res.currentPage;
             this.oldPageNumber = res.currentPage;
@@ -116,14 +140,28 @@ export class PageNavigationComponent
             if (res.mainImgExtension) {
               this.mainImgExtension = res.mainImgExtension;
             }
+
             this.docViewerService.pageNumberSubject.next(res.currentPage);
-            if (res.pages) this.thumbnails = res.pages;
+            if (res.pages && !res.multipleDocs) {
+              this.multipleDocs = false;
+              this.thumbnails = res.pages;
+              this.multipleDocsThumbs = [1];
+            } else if (res.pages && res.multipleDocs) {
+              this.multipleDocs = true;
+              this.multipleDocsThumbs = res.pages;
+              this.thumbnails.shift();
+              this.multipleDocsThumbs.forEach((doc: any) => {
+                this.thumbnails.push(...doc);
+                console.log('thumbs', this.thumbnails);
+              });
+            }
+
             //do not call, because textLayer is activated already from changePage()
             if (!this.changeActivated) {
               setTimeout(() => {
                 this.isChangePage = false;
                 this.docViewerService.pageChange.next(false);
-                this.scrollToPageNumber(this.pageNumber);
+                this.scrollToPageNumber(3, this.pageNumber);
               }, 0);
             }
 
@@ -131,6 +169,43 @@ export class PageNavigationComponent
           }
         }
       );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['documentsList'] && changes['documentsList'].currentValue) {
+      this.documentsList = changes['documentsList'].currentValue;
+    }
+  }
+
+  showSettings(event: MouseEvent, image: Thumbnail, fileId: any) {
+    fileId = `container-${fileId}`;
+    this.thumbnailInfo = image;
+    console.log('thumb info', this.thumbnailInfo);
+    this.showThumbSettings = true;
+    const el = document.getElementById(fileId);
+    if (el) {
+      const position = el.getBoundingClientRect();
+      console.log({ el });
+
+      const body = document.getElementsByTagName('body')[0];
+      if (body) {
+        body.appendChild(this.thumbSettings.nativeElement);
+      }
+
+      this.topCorner = position.top;
+      this.rightCorner = 125;
+
+      console.log({ position });
+    }
+  }
+
+  hideSettings(event: MouseEvent) {
+    // this.showThumbSettings = false;
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log({ event, prev: event.previousIndex, crr: event.currentIndex });
+    moveItemInArray(this.thumbnails, event.previousIndex, event.currentIndex);
   }
 
   ngAfterViewInit() {}
@@ -152,22 +227,23 @@ export class PageNavigationComponent
       this.isChangePage = true;
       this.docViewerService.pageNumberSubject.next(res);
       this.docViewerService.pageChange.next(true);
-      this.scrollToPageNumber(res, true);
+      this.scrollToPageNumber(1, res, true);
       this.oldPageNumber = res;
     }
   }
 
   //scrolls thumbnail container and updates thumb position
-  scrollToPageNumber(pageNumber: number, isChangePage?: boolean) {
-    const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
+  scrollToPageNumber(num: number, pageNumber: number, isChangePage?: boolean) {
+    const offsetTop = document.getElementById(
+      'img-' + this.pageNumber
+    )?.offsetTop;
     this.thumbnailContainer?.nativeElement.scrollTo({
       top: offsetTop,
       behavior: 'auto',
     });
     if (this.inputRange) {
-      this.inputRange.nativeElement.value = pageNumber;
+      this.inputRange.nativeElement.value = this.pageNumber;
     }
-
     this.calculateThumbPosition();
     const mainImg = this.thumbnails[this.pageNumber - 1].src.replace(
       'thumb',
@@ -177,11 +253,19 @@ export class PageNavigationComponent
       mainImg,
       originalImgExtension: this.originalImgExtension,
       mainImgExtension: this.mainImgExtension,
+      colorValue: this.thumbnails[this.pageNumber - 1].thumbColor,
     });
     this.triggerTextLayer.emit({
       pageNumber: this.pageNumber,
       pageChange: isChangePage,
+      fileId: this.thumbnails[this.pageNumber - 1].fileId,
+      thumbId: +this.thumbnails[this.pageNumber - 1].id,
     });
+  }
+
+  separateDocument(documentId: string) {
+    this.showThumbSettings = false;
+    this.separateDocumentEvent.emit(documentId);
   }
 
   //fires on thumbnail click
@@ -196,7 +280,7 @@ export class PageNavigationComponent
       this.docViewerService.pageNumberSubject.next(pageNumber);
       this.isChangePage = true;
       this.docViewerService.pageChange.next(true);
-      this.scrollToPageNumber(pageNumber, true);
+      this.scrollToPageNumber(2, +thumbnail.id, true);
       this.clearTextLayer();
     }
     this.oldPageNumber = pageNumber;
@@ -205,6 +289,27 @@ export class PageNavigationComponent
       this.docViewerService.activateSearch.next(pageNumber);
     } else {
       this.docViewerService.activateSearch.next(0);
+    }
+  }
+
+  getPageNum(docIndex: number) {
+    let pageNum = 0;
+
+    for (const [index, doc] of this.multipleDocsThumbs.entries()) {
+      if (index === docIndex) {
+        return pageNum;
+      }
+      pageNum += this.getLength(doc);
+    }
+
+    return 0;
+  }
+
+  getLength(arr: any) {
+    if (arr) {
+      return arr.length;
+    } else {
+      return 0;
     }
   }
 
@@ -312,9 +417,40 @@ export class PageNavigationComponent
     this.previousPageNum = pageNumber;
   }
 
+  downloadDocument(fileId: string, fileName: string, originalName: string) {
+    this.downloadDocumentEvent.emit({ fileId, fileName, originalName });
+  }
+
+  reorderDocument(thumb: Thumbnail, offsetNum: number) {
+    // debugger;
+    const filesInfo = [];
+    for (const [index, doc] of this.documentsList.entries()) {
+      if (doc.file._id === thumb.fileId) {
+        //going down
+        if (offsetNum === 1) {
+          doc.file.mergedDocOrder += 1;
+          this.documentsList[index + 1].file.mergedDocOrder -= 1;
+        } else {
+          //going up
+          doc.file.mergedDocOrder -= 1;
+          this.documentsList[index - 1].file.mergedDocOrder += 1;
+        }
+      }
+
+      filesInfo.push({
+        fileId: doc.file._id,
+        mergedDocOrder: doc.file.mergedDocOrder,
+      });
+    }
+
+    this.reorderDocumentEvent.emit(filesInfo);
+  }
+
   ngOnDestroy(): void {
     this.results$.unsubscribe();
     this.destroy$.next(null);
     this.destroy$.complete();
+
+    this.showThumbSettings = false;
   }
 }

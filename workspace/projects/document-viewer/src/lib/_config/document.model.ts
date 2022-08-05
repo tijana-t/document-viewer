@@ -5,6 +5,7 @@ export type DocumentConfig = {
   flag?: string;
   debugMode?: boolean;
   showCanvas?: boolean;
+  docColor?: string;
 };
 
 export type ShowDocumentConfig = {

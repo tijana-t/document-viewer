@@ -269,3 +269,11 @@ a:hover {
 :host ::ng-deep .viewer-container:hover .disable-next-prev {
   opacity: 0.6;
 }
+
+.active-filter {
+  font-weight: 700;
+}
+
+.inactive-filter {
+  opacity: 0.7;
+}

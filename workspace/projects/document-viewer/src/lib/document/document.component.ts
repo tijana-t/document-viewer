@@ -67,6 +67,7 @@ export class DocumentComponent
   changeDocument: boolean = false;
   isChangePage: boolean = true;
   showDebugger: boolean = false;
+  colorValue?: string;
 
   constructor(
     private docViewerService: DocumentViewerService,
@@ -116,6 +117,7 @@ export class DocumentComponent
           mainImg: string;
           originalImgExtension?: string;
           mainImgExtension?: string;
+          colorValue?: string;
         }) => {
           if (res) {
             this.docViewerService.docConfSubject.next({
@@ -133,6 +135,8 @@ export class DocumentComponent
             } else {
               this.mainImgOrginal = res.mainImg;
             }
+            this.colorValue = res.colorValue;
+            console.log('colorvalue', this.colorValue);
             this.docViewerService.fitToPage.next(true);
             this.docViewerService.changeDocSubject.next(false);
           }

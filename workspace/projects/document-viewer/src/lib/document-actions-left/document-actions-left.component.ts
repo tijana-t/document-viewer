@@ -74,7 +74,7 @@ export class DocumentActionsLeftComponent
   }
 
   downloadDocument() {
-    this.downloadDocumentEvent.emit(true);
+    this.downloadDocumentEvent.emit(false);
   }
 
   showOriginalDocument() {

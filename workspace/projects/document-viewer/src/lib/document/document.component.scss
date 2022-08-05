@@ -3,7 +3,7 @@
 #document-container {
   overflow: auto;
   z-index: 0;
-  user-select: none;
+  // user-select: none;
   position: relative;
   background: var(--bg-viewer);
   border: 4px solid var(--main-white);

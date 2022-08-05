@@ -104,6 +104,7 @@ export class SearchModalComponent implements OnInit, OnDestroy {
     }
     this.groupedByPage = [];
     this.docViewerService.groupedByPageSubj.next(null);
+    this.docViewerService.searchResultSubject.next([]);
     this.docViewerService.importantPages.next([]);
     this.searchLoader = false;
     this.searchTextInDoc.emit(null);

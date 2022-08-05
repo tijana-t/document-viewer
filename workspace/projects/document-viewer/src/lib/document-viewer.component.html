@@ -35,8 +35,63 @@
             </div>
           </div>
         </ng-template>
+
+        <ng-container *ngIf="singleDocument.originalMergedDocs">
+          <div class="model-info p-0 parent-ellipsis">
+            <span
+              (click)="filterPattern(doc.file)"
+              [ngbTooltip]="singleDocInfo"
+              *ngFor="
+                let doc of singleDocument.originalMergedDocs;
+                last as isLast
+              "
+            >
+              <span
+                [ngClass]="
+                  doc.file.filterValue || activeFileId === doc.file._id
+                    ? 'active-filter'
+                    : 'inactive-filter'
+                "
+              >
+                {{ doc?.file?.originalName }}
+              </span>
+              <span *ngIf="!isLast"> & </span>
+
+              <!-- tooltip template -->
+              <ng-template #singleDocInfo>
+                <div class="sub-doc-info">
+                  <div *ngIf="collapsStatus">
+                    {{ doc?.file?.originalName }}
+                  </div>
+                  <span class="file-type-sub file-type">
+                    <span
+                      class="kat-sub-sent"
+                      *ngIf="
+                        doc?.file?.sent && docModel.isModelContainerRjesenje
+                      "
+                    ></span>
+                    <span
+                      class="kat-sub-not-sent"
+                      *ngIf="
+                        !doc?.file?.sent && docModel.isModelContainerRjesenje
+                      "
+                    ></span>
+                    <span class="sub-date">{{
+                      doc?.file?.createdAt | date: "dd/MM/yy"
+                    }}</span>
+                  </span>
+                  <div class="sub-dco-type">
+                    {{ doc?.file.type }}
+                  </div>
+                </div>
+              </ng-template>
+            </span>
+          </div>
+        </ng-container>
+
         <div class="model-info p-0 parent-ellipsis" [ngbTooltip]="orgDocInfo">
           <p
+            *ngIf="!singleDocument.mergedDocs"
             [ngClass]="{
               'red-flag': documentConfig?.flag == 'red',
               'green-flag': documentConfig?.flag == 'green'
@@ -62,7 +117,7 @@
           class="parent-ellipsis"
         >
           <div
-            *ngIf="matchingDoc.collaps"
+            *ngIf="!singleDocument.mergedDocs && matchingDoc.collaps"
             [@inOutAnimation]
             class="collaps-box"
           >
@@ -180,7 +235,12 @@
   </div>
 
   <lib-page-navigation
+    [documentActionsSrc]="documentActionsSrc"
+    (downloadDocumentEvent)="downloadDocument($event)"
+    [documentsList]="singleDocument.originalMergedDocs"
     (triggerTextLayer)="triggerTextLayerCreation($event)"
+    (reorderDocumentEvent)="triggerReorderDocument($event)"
+    (separateDocumentEvent)="triggerSeparateDocument($event)"
     class="document-page-navigation-container"
   ></lib-page-navigation>
 </div>
