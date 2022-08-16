@@ -15,7 +15,6 @@ import { debounceTime, takeUntil, skip } from 'rxjs/operators';
 import { DocumentViewerService } from '../document-viewer.service';
 import { NavigationConfig } from '../_config/page-navigation.model';
 import { Thumbnail } from '../_config/thumbnail.model';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DocumentActions } from '../_config/document-actions.model';
 
 @Component({
@@ -201,11 +200,6 @@ export class PageNavigationComponent
 
   hideSettings(event: MouseEvent) {
     // this.showThumbSettings = false;
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    console.log({ event, prev: event.previousIndex, crr: event.currentIndex });
-    moveItemInArray(this.thumbnails, event.previousIndex, event.currentIndex);
   }
 
   ngAfterViewInit() {}

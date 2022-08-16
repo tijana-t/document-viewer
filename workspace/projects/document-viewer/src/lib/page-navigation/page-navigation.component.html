@@ -74,9 +74,7 @@
     <!-- multiple docs thumbs -->
     <ng-container *ngIf="multipleDocs">
       <div
-        cdkDropList
-        (cdkDropListDropped)="drop($event)"
-        style="padding: 10px; margin-bottom: 22px"
+        style="padding: 10px; margin-bottom: 22px; border-radius: 10px"
         [ngStyle]="{ border: '3px solid ' + doc[0]['thumbColor'] }"
         id="container-{{ doc[0]['fileId'] }}"
         (mouseover)="showSettings($event, doc[0], doc[0]['fileId'])"

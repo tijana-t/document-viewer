@@ -9,7 +9,6 @@ import { PageNavigationComponent } from './page-navigation/page-navigation.compo
 import { DocumentViewerComponent } from './document-viewer.component';
 import { InfoModalComponent } from './info-modal/info-modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -20,13 +19,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     PageNavigationComponent,
     InfoModalComponent,
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgbModule,
-    SharedComponentsModule,
-    DragDropModule,
-  ],
+  imports: [CommonModule, FormsModule, NgbModule, SharedComponentsModule],
   exports: [
     DocumentViewerComponent,
     DocumentComponent,
