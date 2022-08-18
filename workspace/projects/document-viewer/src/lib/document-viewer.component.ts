@@ -14,6 +14,8 @@ import { DocumentActions } from './_config/document-actions.model';
 import { SearchResult } from './_config/document-search.model';
 import { DocumentConfig } from './_config/document.model';
 import { Thumbnail } from './_config/thumbnail.model';
+import { skip, takeUntil } from 'rxjs/operators';
+
 import {
   trigger,
   state,
@@ -51,12 +53,15 @@ export class DocumentViewerComponent
   @Output('reorderDocumentEvent') reorderDocumentEvent = new EventEmitter();
   @Output('linePosition') linePosition = new EventEmitter();
   @Output('filterPatternEvent') filterPatternEvent = new EventEmitter();
+  @Output('triggerPagesReorder') pagesReorderEvent = new EventEmitter();
 
   @Input('searchResult') searchResult: SearchResult[] = [];
   @Input('currentPage') initialPage = 1;
   @Input('token') token?: string = '';
   @Input('pageInfo') pageInfo: any;
-  @Input('thumbnails') thumbnails: Thumbnail[] = [{ id: '', src: '' }];
+  @Input('thumbnails') thumbnails: Thumbnail[] = [
+    { id: '', src: '', fileId: '', fileName: '', originalName: '' },
+  ];
   @Input('totalPages') totalPages: number = 0;
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
@@ -81,6 +86,7 @@ export class DocumentViewerComponent
   collapsStatus = false;
   multipleDocs: boolean = false;
   filterFileIds = [];
+  openedDocColor: string = '';
   ngOnInit() {
     this.subscriptions = this.docViewerService.lineStatus.subscribe(
       (status) => {
@@ -91,6 +97,21 @@ export class DocumentViewerComponent
     this.subscriptions = this.docViewerService.showDebugger.subscribe((res) =>
       this.showDebugger.next(res)
     );
+
+    this.subscriptions = this.docViewerService.mainImgInfo
+      .pipe(skip(1), takeUntil(this.destroy$))
+      .subscribe(
+        (res: {
+          mainImg: string;
+          originalImgExtension?: string;
+          mainImgExtension?: string;
+          colorValue?: string;
+        }) => {
+          if (res && res.colorValue) {
+            this.openedDocColor = res.colorValue;
+          }
+        }
+      );
   }
 
   constructor(private docViewerService: DocumentViewerService) {}
@@ -155,6 +176,10 @@ export class DocumentViewerComponent
     this.collapsStatus = !this.collapsStatus;
   }
 
+  triggerPagesReorder($event: any) {
+    this.pagesReorderEvent.emit($event);
+  }
+
   filterPattern(file: any) {
     this.activeFileId = '';
     let fileId;
@@ -173,16 +198,14 @@ export class DocumentViewerComponent
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pageInfo'] && changes['pageInfo'].currentValue) {
-      console.log('tijana pageinfo');
       this.docViewerService.pageInfo.next(changes['pageInfo'].currentValue);
     }
-    // if (changes['activeFileId'] && changes['activeFileId'].currentValue) {
-    //   const f = this.singleDocument.originalMergedDocs.find(
-    //     (doc: any) => doc.file._id === changes['activeFileId'].currentValue
-    //   );
-    //   f.file.filterValue = true;
-    //   this.activeFileId = changes['activeFileId'].currentValue;
-    // }
+    if (changes['activeFileId'] && changes['activeFileId'].currentValue) {
+      const f = this.singleDocument.originalMergedDocs.find(
+        (doc: any) => doc.file._id === changes['activeFileId'].currentValue
+      );
+      f.file.filterValue = true;
+    }
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
       this.docViewerService.docConfSubject.next(this.documentConfig);
@@ -200,19 +223,6 @@ export class DocumentViewerComponent
       this.singleDocument = changes['singleDocument'].currentValue;
       if (this.singleDocument.mergedDocs) {
         this.multipleDocs = true;
-        this.singleDocument.file.originalName = '';
-        let connection;
-        this.singleDocument.originalMergedDocs.forEach(
-          (doc: any, index: number) => {
-            if (index !== this.singleDocument.originalMergedDocs.length - 1) {
-              connection = ' & ';
-            } else {
-              connection = '';
-            }
-            this.singleDocument.file.originalName +=
-              this.removeExtension(doc.file.originalName) + connection;
-          }
-        );
       } else {
         this.multipleDocs = false;
 
@@ -225,7 +235,6 @@ export class DocumentViewerComponent
     }
     if (changes['docModel'] && changes['docModel'].currentValue) {
       this.docModel = changes['docModel'].currentValue;
-      console.log('docmodel', this.docModel);
     }
   }
 

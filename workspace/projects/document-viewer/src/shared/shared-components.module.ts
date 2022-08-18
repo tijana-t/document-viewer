@@ -6,12 +6,15 @@ import { SearchModalComponent } from './modals/search-modal/search-modal.compone
 import { SecureImgPipe } from './pipes/secure-img.pipe';
 import { SecureSvgPipe } from './pipes/secure-svg.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StringEllipsisPipe } from './pipes/string-ellipsis.pipe';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
     SearchModalComponent,
     SecureImgPipe,
     SecureSvgPipe,
     LazyLoadDirective,
+    StringEllipsisPipe,
   ],
   imports: [CommonModule, FormsModule, NgbModule],
   exports: [
@@ -19,6 +22,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SecureImgPipe,
     SecureSvgPipe,
     LazyLoadDirective,
+    StringEllipsisPipe,
+    DragDropModule,
   ],
   providers: [],
 })

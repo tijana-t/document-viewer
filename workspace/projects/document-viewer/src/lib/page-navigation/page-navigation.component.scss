@@ -119,7 +119,6 @@
     }
 
     .active-thumbnail {
-      // box-shadow: 0px 1px 7px 4px #01011066;
       border: 1px solid var(--main-yellow);
     }
 
@@ -343,31 +342,6 @@
   }
 }
 
-.example-list {
-  width: 500px;
-  max-width: 100%;
-  border: solid 1px #ccc;
-  min-height: 60px;
-  display: block;
-  background: white;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.example-box {
-  padding: 20px 10px;
-  border-bottom: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  cursor: move;
-  background: white;
-  font-size: 14px;
-}
-
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
@@ -383,30 +357,12 @@
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.example-box:last-child {
-  border: none;
-}
-
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
 .visible {
   visibility: visible;
 }
 .not-visible {
   visibility: hidden;
 }
-
-.thumb-settings {
-  position: absolute;
-}
-
-// test
-// ::-webkit-scrollbar {
-//   width: 0 !important; /* Remove scrollbar space */
-//   background: transparent !important; /* Optional: just make scrollbar invisible */
-// }
 
 .btn-custom {
   background: var(--main-white);
@@ -415,7 +371,7 @@
   width: var(--circle-icon-width);
   align-items: center;
   margin-right: 5px;
-  margin-bottom: 0 !important;
+  margin-bottom: 1px !important;
   padding: 0px !important;
   box-shadow: var(--border-light) 0px 8px 24px;
   transition: all 0.2s ease-in-out;
@@ -460,4 +416,41 @@
   position: absolute;
   z-index: 1000;
   border-left: 21px solid transparent;
+}
+
+.thumb-settings {
+  transition: all 0.5s ease-in-out 0s;
+  visibility: hidden;
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.thumb-image {
+  position: relative;
+}
+
+.thumb-container {
+  border-radius: 10px;
+  margin-bottom: 22px;
+  padding: 10px;
+  position: relative;
+}
+
+.disabled-btn {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.typcn-chevron-right {
+  display: flex;
+}
+
+.typcn-chevron-right.down {
+  transform: rotate(90deg) translateY(2px);
+}
+
+.typcn-chevron-right.up {
+  transform: rotate(-90deg);
 }

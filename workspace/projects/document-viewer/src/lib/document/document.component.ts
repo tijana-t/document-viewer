@@ -93,7 +93,6 @@ export class DocumentComponent
         release: '3.0.2',
       });
     } else {
-      console.log('development');
       //sentry for development
       Sentry.init({
         dsn: 'https://b7b6b615b90b489c9ee665fe7a1841eb@o1092278.ingest.sentry.io/6212951',
@@ -136,7 +135,6 @@ export class DocumentComponent
               this.mainImgOrginal = res.mainImg;
             }
             this.colorValue = res.colorValue;
-            console.log('colorvalue', this.colorValue);
             this.docViewerService.fitToPage.next(true);
             this.docViewerService.changeDocSubject.next(false);
           }

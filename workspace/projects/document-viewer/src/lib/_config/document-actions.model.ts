@@ -6,4 +6,5 @@ export type DocumentActions = {
   showOrginalImg?: string;
   downloadPdfPlain?: string;
   separateMergedDoc?: string;
+  reorderPages?: string;
 };

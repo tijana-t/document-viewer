@@ -17,10 +17,7 @@
     "module": "es2020",
     "lib": ["es2018", "dom"],
     "paths": {
-      "document-viewer": [
-        "dist/document-viewer/document-viewer",
-        "dist/document-viewer"
-      ],
+      "document-viewer": ["./projects/document-viewer/src/public-api.ts"],
       "@ng-bootstrap/ng-bootstrap": [
         "./node_modules/@ng-bootstrap/ng-bootstrap"
       ]

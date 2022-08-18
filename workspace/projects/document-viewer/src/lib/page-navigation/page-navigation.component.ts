@@ -16,6 +16,7 @@ import { DocumentViewerService } from '../document-viewer.service';
 import { NavigationConfig } from '../_config/page-navigation.model';
 import { Thumbnail } from '../_config/thumbnail.model';
 import { DocumentActions } from '../_config/document-actions.model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'lib-page-navigation',
@@ -41,14 +42,16 @@ export class PageNavigationComponent
   @Output('separateDocumentEvent') separateDocumentEvent = new EventEmitter();
   @Output('reorderDocumentEvent') reorderDocumentEvent = new EventEmitter();
   @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
+  @Output('triggerPagesReorder') triggerPagesReorder = new EventEmitter();
 
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     informationHelp: '',
     downloadPdfPlain: '',
     separateMergedDoc: '',
+    reorderPages: '',
   };
-
   @Input('documentsList') documentsList: any;
+  @Input('singleDocument') singleDocument: any;
 
   searchSubject = new Subject<number>();
   results$ = new Subscription();
@@ -74,6 +77,12 @@ export class PageNavigationComponent
   thumbnailInfo: Thumbnail = { fileId: '', id: '', originalName: '' };
   multipleDocsThumbs: any = [];
   multipleDocs: boolean = false;
+  openedDoc: any;
+  docIndexMapping: {
+    fileId: string;
+    indexes: { prev: number; curr: number }[];
+  }[] = [];
+  openedDocColor: string | undefined = '';
 
   constructor(private docViewerService: DocumentViewerService) {
     this.subscriptions.add(
@@ -151,7 +160,6 @@ export class PageNavigationComponent
               this.thumbnails.shift();
               this.multipleDocsThumbs.forEach((doc: any) => {
                 this.thumbnails.push(...doc);
-                console.log('thumbs', this.thumbnails);
               });
             }
 
@@ -174,32 +182,109 @@ export class PageNavigationComponent
     if (changes['documentsList'] && changes['documentsList'].currentValue) {
       this.documentsList = changes['documentsList'].currentValue;
     }
-  }
-
-  showSettings(event: MouseEvent, image: Thumbnail, fileId: any) {
-    fileId = `container-${fileId}`;
-    this.thumbnailInfo = image;
-    console.log('thumb info', this.thumbnailInfo);
-    this.showThumbSettings = true;
-    const el = document.getElementById(fileId);
-    if (el) {
-      const position = el.getBoundingClientRect();
-      console.log({ el });
-
-      const body = document.getElementsByTagName('body')[0];
-      if (body) {
-        body.appendChild(this.thumbSettings.nativeElement);
-      }
-
-      this.topCorner = position.top;
-      this.rightCorner = 125;
-
-      console.log({ position });
+    if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
+      this.singleDocument = changes['singleDocument'].currentValue;
     }
   }
 
-  hideSettings(event: MouseEvent) {
-    // this.showThumbSettings = false;
+  showSettings(image: Thumbnail, fileId: string) {
+    this.thumbnailInfo = image;
+    this.showThumbSettings = true;
+    const settings = document.getElementById('settings-' + fileId);
+    if (settings) {
+      settings.style.visibility = 'visible';
+    }
+  }
+
+  hideSettings(fileId: string) {
+    const settings = document.getElementById('settings-' + fileId);
+    if (settings) {
+      settings.style.visibility = 'hidden';
+    }
+  }
+
+  reorderPages(fileId: string) {
+    let mappedPages;
+    if (this.multipleDocs) {
+      mappedPages = this.openedDoc.file['newMappedPages'];
+    } else {
+      mappedPages = this.singleDocument.file['newMappedPages'];
+    }
+    this.triggerPagesReorder.emit({
+      fileId,
+      mappedPages,
+    });
+  }
+
+  checkReorder(fileId: string) {
+    let singleDoc;
+    if (this.multipleDocs) {
+      singleDoc = this.documentsList.find(
+        (doc: any) => doc.file._id === fileId
+      );
+    } else {
+      singleDoc = this.singleDocument;
+    }
+
+    if (singleDoc) {
+      if (
+        singleDoc.file['newMappedPages'] &&
+        singleDoc.file['newMappedPages'].length !== 0 &&
+        singleDoc.file.mappedPages &&
+        singleDoc.file.mappedPages.length !== 0
+      ) {
+        // if both arrays exist, compare similarity
+        if (
+          JSON.stringify(singleDoc.file.mappedPages) ===
+          JSON.stringify(singleDoc.file['newMappedPages'])
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+        // check new mappedPages with normal order
+      } else if (
+        singleDoc.file['newMappedPages'] &&
+        singleDoc.file['newMappedPages'].length !== 0 &&
+        !singleDoc.file.mappedPages
+      ) {
+        let arr = [];
+        const total = singleDoc.numberOfPages;
+        for (let i = 0; i <= total; i++) {
+          arr.push(i + 1);
+        }
+        if (
+          JSON.stringify(arr) ===
+          JSON.stringify(singleDoc.file['newMappedPages'])
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  drop(event: CdkDragDrop<string[]>, innerImgArray: any[], docIndex: number) {
+    moveItemInArray(innerImgArray, event.previousIndex, event.currentIndex);
+    this.openedDoc = this.documentsList.find(
+      (doc: any) => doc.file._id === innerImgArray[0].fileId
+    );
+    this.openedDoc.file['newMappedPages'] = innerImgArray.map((item) =>
+      Number(item.id)
+    );
+  }
+
+  dropSingleDoc(event: CdkDragDrop<string[]>, innerImgArray: any[]) {
+    moveItemInArray(innerImgArray, event.previousIndex, event.currentIndex);
+
+    this.singleDocument.file['newMappedPages'] = innerImgArray.map((item) =>
+      Number(item.id)
+    );
   }
 
   ngAfterViewInit() {}
@@ -228,9 +313,8 @@ export class PageNavigationComponent
 
   //scrolls thumbnail container and updates thumb position
   scrollToPageNumber(num: number, pageNumber: number, isChangePage?: boolean) {
-    const offsetTop = document.getElementById(
-      'img-' + this.pageNumber
-    )?.offsetTop;
+    console.log({ pageNumber }, document.getElementById('img-' + pageNumber));
+    const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
     this.thumbnailContainer?.nativeElement.scrollTo({
       top: offsetTop,
       behavior: 'auto',
@@ -249,6 +333,7 @@ export class PageNavigationComponent
       mainImgExtension: this.mainImgExtension,
       colorValue: this.thumbnails[this.pageNumber - 1].thumbColor,
     });
+    this.openedDocColor = this.thumbnails[this.pageNumber - 1].thumbColor;
     this.triggerTextLayer.emit({
       pageNumber: this.pageNumber,
       pageChange: isChangePage,
@@ -257,7 +342,7 @@ export class PageNavigationComponent
     });
   }
 
-  separateDocument(documentId: string) {
+  separateDocument(documentId?: string) {
     this.showThumbSettings = false;
     this.separateDocumentEvent.emit(documentId);
   }
@@ -274,7 +359,7 @@ export class PageNavigationComponent
       this.docViewerService.pageNumberSubject.next(pageNumber);
       this.isChangePage = true;
       this.docViewerService.pageChange.next(true);
-      this.scrollToPageNumber(2, +thumbnail.id, true);
+      this.scrollToPageNumber(2, this.pageNumber, true);
       this.clearTextLayer();
     }
     this.oldPageNumber = pageNumber;
@@ -383,8 +468,8 @@ export class PageNavigationComponent
       height: container.clientHeight,
       width: container.clientWidth,
     };
-
     const child = document.getElementById('img-' + pageNumber);
+    // console.log({ child });
     // Where is the child
 
     if (child) {
@@ -400,8 +485,14 @@ export class PageNavigationComponent
         const scrollTop = childRect.top - parentRect.top;
         const scrollBot = childRect.bottom - parentRect.bottom;
         if (Math.abs(scrollTop) < Math.abs(scrollBot)) {
+          //add offset if we have merged documents
+          let offset = 0;
+          if (this.multipleDocs) {
+            offset = -26;
+          }
+
           // we're near the top of the list
-          container.scrollTop += scrollTop;
+          container.scrollTop += scrollTop + offset;
         } else {
           // we're near the bottom of the list
           container.scrollTop += scrollBot + 30;
@@ -411,7 +502,11 @@ export class PageNavigationComponent
     this.previousPageNum = pageNumber;
   }
 
-  downloadDocument(fileId: string, fileName: string, originalName: string) {
+  downloadDocument(
+    fileId: string | undefined,
+    fileName: string | undefined,
+    originalName: string | undefined
+  ) {
     this.downloadDocumentEvent.emit({ fileId, fileName, originalName });
   }
 

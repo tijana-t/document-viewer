@@ -54,7 +54,17 @@
                     : 'inactive-filter'
                 "
               >
-                {{ doc?.file?.originalName }}
+                <div
+                  class="underlined"
+                  [ngStyle]="{
+                    'border-bottom':
+                      doc.colorValue === openedDocColor
+                        ? '4px solid ' + doc.colorValue
+                        : '4px solid ' + doc.colorValue + '54'
+                  }"
+                >
+                  {{ doc?.file?.originalName | stringEllipsis: 15 }}
+                </div>
               </span>
               <span *ngIf="!isLast"> & </span>
 
@@ -237,11 +247,13 @@
 
   <lib-page-navigation
     [documentActionsSrc]="documentActionsSrc"
+    [singleDocument]="singleDocument"
     (downloadDocumentEvent)="downloadDocument($event)"
     [documentsList]="singleDocument.originalMergedDocs"
     (triggerTextLayer)="triggerTextLayerCreation($event)"
     (reorderDocumentEvent)="triggerReorderDocument($event)"
     (separateDocumentEvent)="triggerSeparateDocument($event)"
+    (triggerPagesReorder)="triggerPagesReorder($event)"
     class="document-page-navigation-container"
   ></lib-page-navigation>
 </div>
