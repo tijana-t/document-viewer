@@ -225,11 +225,10 @@
                   alt=""
                 />
               </button>
-            </div>
 
-            <!-- confirm pages reorder -->
-            <div *ngIf="checkReorder(doc[0]['fileId'])">
+              <!-- confirm pages reorder -->
               <button
+                *ngIf="checkReorder(doc[0]['fileId'])"
                 class="circle btn-custom"
                 (click)="reorderPages(doc[0]['fileId'])"
               >

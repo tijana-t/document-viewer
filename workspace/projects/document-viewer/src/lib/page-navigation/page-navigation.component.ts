@@ -313,7 +313,6 @@ export class PageNavigationComponent
 
   //scrolls thumbnail container and updates thumb position
   scrollToPageNumber(num: number, pageNumber: number, isChangePage?: boolean) {
-    console.log({ pageNumber }, document.getElementById('img-' + pageNumber));
     const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
     this.thumbnailContainer?.nativeElement.scrollTo({
       top: offsetTop,
