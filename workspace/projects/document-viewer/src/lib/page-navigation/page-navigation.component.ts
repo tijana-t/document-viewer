@@ -83,6 +83,8 @@ export class PageNavigationComponent
     indexes: { prev: number; curr: number }[];
   }[] = [];
   openedDocColor: string | undefined = '';
+  activeThumbnail: Thumbnail = { fileId: '', id: '', originalName: '' };
+  activeThumbnailIndex: number = 0;
 
   constructor(private docViewerService: DocumentViewerService) {
     this.subscriptions.add(
@@ -157,10 +159,17 @@ export class PageNavigationComponent
             } else if (res.pages && res.multipleDocs) {
               this.multipleDocs = true;
               this.multipleDocsThumbs = res.pages;
-              this.thumbnails.shift();
+              this.thumbnails = [];
               this.multipleDocsThumbs.forEach((doc: any) => {
                 this.thumbnails.push(...doc);
               });
+
+              for (const [index, thumb] of this.thumbnails.entries()) {
+                if (index + 1 === this.pageNumber) {
+                  this.activeThumbnail = this.thumbnails[index];
+                  this.activeThumbnailIndex = index;
+                }
+              }
             }
 
             //do not call, because textLayer is activated already from changePage()
@@ -203,16 +212,18 @@ export class PageNavigationComponent
     }
   }
 
-  reorderPages(fileId: string) {
+  reorderPages(fileId: string, callService: boolean) {
     let mappedPages;
     if (this.multipleDocs) {
       mappedPages = this.openedDoc.file['newMappedPages'];
     } else {
       mappedPages = this.singleDocument.file['newMappedPages'];
     }
+
     this.triggerPagesReorder.emit({
       fileId,
       mappedPages,
+      callService,
     });
   }
 
@@ -271,12 +282,17 @@ export class PageNavigationComponent
 
   drop(event: CdkDragDrop<string[]>, innerImgArray: any[], docIndex: number) {
     moveItemInArray(innerImgArray, event.previousIndex, event.currentIndex);
+    // const pageNumNew = this.getPageNum(docIndex) + event.currentIndex + 1;
+    // this.pageNumber = pageNumNew;
     this.openedDoc = this.documentsList.find(
       (doc: any) => doc.file._id === innerImgArray[0].fileId
     );
     this.openedDoc.file['newMappedPages'] = innerImgArray.map((item) =>
       Number(item.id)
     );
+
+    //reorder pages, but without service calling
+    // this.reorderPages(innerImgArray[0].fileId, false);
   }
 
   dropSingleDoc(event: CdkDragDrop<string[]>, innerImgArray: any[]) {
@@ -313,11 +329,23 @@ export class PageNavigationComponent
 
   //scrolls thumbnail container and updates thumb position
   scrollToPageNumber(num: number, pageNumber: number, isChangePage?: boolean) {
-    const offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
-    this.thumbnailContainer?.nativeElement.scrollTo({
-      top: offsetTop,
-      behavior: 'auto',
-    });
+    let offsetTop;
+    let parentOffsetTop;
+    offsetTop = document.getElementById('img-' + pageNumber)?.offsetTop;
+    parentOffsetTop = document.getElementById('img-' + pageNumber)
+      ?.parentElement?.offsetTop;
+
+    if (parentOffsetTop && offsetTop) {
+      this.thumbnailContainer?.nativeElement.scrollTo({
+        top: parentOffsetTop + offsetTop,
+        behavior: 'auto',
+      });
+    } else if (offsetTop) {
+      this.thumbnailContainer?.nativeElement.scrollTo({
+        top: offsetTop,
+        behavior: 'auto',
+      });
+    }
     if (this.inputRange) {
       this.inputRange.nativeElement.value = this.pageNumber;
     }
@@ -341,9 +369,30 @@ export class PageNavigationComponent
     });
   }
 
-  separateDocument(documentId?: string) {
-    this.showThumbSettings = false;
-    this.separateDocumentEvent.emit(documentId);
+  separateDocument(fileId?: string) {
+    for (const [index, doc] of this.multipleDocsThumbs.entries()) {
+      if (doc[0].fileId === fileId) {
+        this.multipleDocsThumbs.splice(index, 1);
+      }
+    }
+    this.thumbnails = [];
+    this.multipleDocsThumbs.forEach((doc: any) => {
+      this.thumbnails.push(...doc);
+    });
+
+    let thumbIndex;
+    if (this.activeThumbnail.fileId === fileId) {
+      thumbIndex = 0;
+    } else {
+      thumbIndex = this.thumbnails.indexOf(this.activeThumbnail);
+    }
+    this.pageNumber = thumbIndex + 1;
+    this.oldPageNumber = thumbIndex + 1;
+
+    this.activeThumbnailIndex = thumbIndex;
+    this.openedDocColor = this.thumbnails[this.pageNumber - 1].thumbColor;
+
+    this.separateDocumentEvent.emit({ fileId, pageNumber: this.pageNumber });
   }
 
   //fires on thumbnail click
@@ -354,12 +403,14 @@ export class PageNavigationComponent
   ) {
     this.changeActivated = changeActivation;
     this.pageNumber = pageNumber;
+    this.activeThumbnail = thumbnail;
     if (this.pageNumber !== this.oldPageNumber) {
+      this.clearTextLayer();
+
       this.docViewerService.pageNumberSubject.next(pageNumber);
       this.isChangePage = true;
       this.docViewerService.pageChange.next(true);
       this.scrollToPageNumber(2, this.pageNumber, true);
-      this.clearTextLayer();
     }
     this.oldPageNumber = pageNumber;
     this.changeActivated = false;
@@ -509,29 +560,51 @@ export class PageNavigationComponent
     this.downloadDocumentEvent.emit({ fileId, fileName, originalName });
   }
 
-  reorderDocument(thumb: Thumbnail, offsetNum: number) {
-    // debugger;
+  reorderDocument(thumb: Thumbnail, offsetNum: number, docIndex: number) {
+    let newPosition = 0;
+    let temp = [...this.multipleDocsThumbs[docIndex]];
     const filesInfo = [];
     for (const [index, doc] of this.documentsList.entries()) {
       if (doc.file._id === thumb.fileId) {
         //going down
         if (offsetNum === 1) {
-          doc.file.mergedDocOrder += 1;
-          this.documentsList[index + 1].file.mergedDocOrder -= 1;
+          newPosition = docIndex + 1;
         } else {
           //going up
-          doc.file.mergedDocOrder -= 1;
-          this.documentsList[index - 1].file.mergedDocOrder += 1;
+          newPosition = docIndex - 1;
         }
       }
+    }
 
+    let newPos = [...this.multipleDocsThumbs[newPosition]];
+    this.multipleDocsThumbs[docIndex] = newPos;
+    this.multipleDocsThumbs[newPosition] = temp;
+
+    for (const [index, docArr] of this.multipleDocsThumbs.entries()) {
       filesInfo.push({
-        fileId: doc.file._id,
-        mergedDocOrder: doc.file.mergedDocOrder,
+        fileId: docArr[0].fileId,
+        mergedDocOrder: index + 1,
       });
     }
 
-    this.reorderDocumentEvent.emit(filesInfo);
+    this.thumbnails = [];
+    this.multipleDocsThumbs.forEach((doc: any) => {
+      this.thumbnails.push(...doc);
+    });
+
+    let thumbIndex;
+    if (this.activeThumbnail) {
+      thumbIndex = this.thumbnails.indexOf(this.activeThumbnail);
+      this.activeThumbnailIndex = thumbIndex;
+      this.pageNumber = thumbIndex + 1;
+      this.oldPageNumber = thumbIndex + 1;
+      this.openedDocColor = this.thumbnails[this.pageNumber - 1].thumbColor;
+
+      this.reorderDocumentEvent.emit({
+        pageNumber: this.pageNumber,
+        filesInfo,
+      });
+    }
   }
 
   ngOnDestroy(): void {

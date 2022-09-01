@@ -421,6 +421,7 @@
 .thumb-settings {
   transition: all 0.5s ease-in-out 0s;
   visibility: hidden;
+  display: inline;
   position: absolute;
   left: 0px;
   top: 50%;

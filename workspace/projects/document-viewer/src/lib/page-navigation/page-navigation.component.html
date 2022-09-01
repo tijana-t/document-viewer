@@ -8,7 +8,7 @@
     <button
       *ngIf="checkReorder(singleDocument.file._id)"
       class="circle btn-custom"
-      (click)="reorderPages(singleDocument.file._id)"
+      (click)="reorderPages(singleDocument.file._id, true)"
     >
       <img
         width="15px"
@@ -85,7 +85,14 @@
     </div>
 
     <!-- multiple docs thumbs -->
-    <ng-container *ngIf="multipleDocs">
+    <ng-container
+      *ngFor="
+        let doc of multipleDocsThumbs;
+        index as docIndex;
+        last as isLast;
+        first as isFirst
+      "
+    >
       <div
         cdkDropList
         (cdkDropListDropped)="drop($event, doc, docIndex)"
@@ -100,12 +107,7 @@
         id="container-{{ doc[0]['fileId'] }}"
         (mouseover)="showSettings(doc[0], doc[0]['fileId'])"
         (mouseout)="hideSettings(doc[0]['fileId'])"
-        *ngFor="
-          let doc of multipleDocsThumbs;
-          index as docIndex;
-          last as isLast;
-          first as isFirst
-        "
+        *ngIf="multipleDocs && doc && doc[0]"
       >
         <div
           *ngFor="let image of doc; index as i"
@@ -141,7 +143,11 @@
           </div>
           <span
             class="page-number"
-            [ngClass]="pageNumber === i + 1 ? 'active-page-number' : ''"
+            [ngClass]="
+              pageNumber === getPageNum(docIndex) + i + 1
+                ? 'active-page-number'
+                : ''
+            "
             [ngStyle]="{ bottom: navigationConfig.imageMargin + 'px' }"
           >
             <span *ngIf="multipleDocsThumbs[docIndex - 1]">
@@ -176,7 +182,7 @@
                     ? 'disabled-btn'
                     : ''
                 "
-                (click)="reorderDocument(thumbnailInfo, -1)"
+                (click)="reorderDocument(thumbnailInfo, -1, docIndex)"
               >
                 <span class="d-flex typcn typcn-chevron-right up"> </span>
               </button>
@@ -189,7 +195,7 @@
                     ? 'disabled-btn'
                     : ''
                 "
-                (click)="reorderDocument(thumbnailInfo, 1)"
+                (click)="reorderDocument(thumbnailInfo, 1, docIndex)"
               >
                 <span class="d-flex typcn typcn-chevron-right down"> </span>
               </button>
@@ -228,9 +234,9 @@
 
               <!-- confirm pages reorder -->
               <button
-                *ngIf="checkReorder(doc[0]['fileId'])"
+                *ngIf="doc && doc[0] && checkReorder(doc[0]['fileId'])"
                 class="circle btn-custom"
-                (click)="reorderPages(doc[0]['fileId'])"
+                (click)="doc && doc[0] && reorderPages(doc[0]['fileId'], true)"
               >
                 <img
                   width="15px"
