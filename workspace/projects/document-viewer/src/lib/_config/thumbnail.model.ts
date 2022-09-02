@@ -10,4 +10,5 @@ export type Thumbnail = {
   orderingNumber?: number;
   fileName?: string;
   originalName?: string;
+  showReorder?: boolean;
 };

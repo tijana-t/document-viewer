@@ -5,8 +5,7 @@
 >
   <div class="form-group number-input d-flex flex-row">
     <!-- confirm pages reorder -->
-    <button
-      *ngIf="checkReorder(singleDocument.file._id)"
+    <!-- <button
       class="circle btn-custom"
       (click)="reorderPages(singleDocument.file._id, true)"
     >
@@ -16,7 +15,7 @@
         [src]="documentActionsSrc.reorderPages"
         alt=""
       />
-    </button>
+    </button> -->
     <input
       (keyup)="searchPage(+page.value)"
       #page
@@ -234,9 +233,9 @@
 
               <!-- confirm pages reorder -->
               <button
-                *ngIf="doc && doc[0] && checkReorder(doc[0]['fileId'])"
-                class="circle btn-custom"
-                (click)="doc && doc[0] && reorderPages(doc[0]['fileId'], true)"
+                *ngIf="doc[0] && doc[0].showReorder"
+                class="circle btn-custom reorder-pages"
+                (click)="reorderPages(doc[0]['fileId'], true, pageNumber)"
               >
                 <img
                   width="15px"

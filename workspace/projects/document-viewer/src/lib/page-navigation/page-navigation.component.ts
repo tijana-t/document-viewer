@@ -74,7 +74,12 @@ export class PageNavigationComponent
   topCorner = 0;
   showThumbSettings: boolean = false;
   rightCorner = 0;
-  thumbnailInfo: Thumbnail = { fileId: '', id: '', originalName: '' };
+  thumbnailInfo: Thumbnail = {
+    fileId: '',
+    id: '',
+    originalName: '',
+    showReorder: false,
+  };
   multipleDocsThumbs: any = [];
   multipleDocs: boolean = false;
   openedDoc: any;
@@ -198,6 +203,8 @@ export class PageNavigationComponent
 
   showSettings(image: Thumbnail, fileId: string) {
     this.thumbnailInfo = image;
+    image.showReorder = this.checkReorder(fileId);
+
     this.showThumbSettings = true;
     const settings = document.getElementById('settings-' + fileId);
     if (settings) {
@@ -212,7 +219,7 @@ export class PageNavigationComponent
     }
   }
 
-  reorderPages(fileId: string, callService: boolean) {
+  reorderPages(fileId: string, callService: boolean, pageNumber: number) {
     let mappedPages;
     if (this.multipleDocs) {
       mappedPages = this.openedDoc.file['newMappedPages'];
@@ -224,6 +231,7 @@ export class PageNavigationComponent
       fileId,
       mappedPages,
       callService,
+      pageNumber,
     });
   }
 
@@ -246,13 +254,14 @@ export class PageNavigationComponent
       ) {
         // if both arrays exist, compare similarity
         if (
-          JSON.stringify(singleDoc.file.mappedPages) ===
+          JSON.stringify(singleDoc.file.mappedPages) ==
           JSON.stringify(singleDoc.file['newMappedPages'])
         ) {
           return false;
         } else {
           return true;
         }
+
         // check new mappedPages with normal order
       } else if (
         singleDoc.file['newMappedPages'] &&
@@ -280,10 +289,35 @@ export class PageNavigationComponent
     }
   }
 
-  drop(event: CdkDragDrop<string[]>, innerImgArray: any[], docIndex: number) {
+  drop(event: any, innerImgArray: any[], docIndex: number) {
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    }
+
     moveItemInArray(innerImgArray, event.previousIndex, event.currentIndex);
-    // const pageNumNew = this.getPageNum(docIndex) + event.currentIndex + 1;
-    // this.pageNumber = pageNumNew;
+
+    const prevEl = this.thumbnails.find(
+      (t) => t === innerImgArray[event.previousIndex]
+    );
+    const currEl = this.thumbnails.find(
+      (t) => t === innerImgArray[event.currentIndex]
+    );
+    let prevInd;
+    let currInd;
+    if (prevEl && currEl) {
+      prevInd = this.thumbnails.indexOf(prevEl);
+      currInd = this.thumbnails.indexOf(currEl);
+
+      this.thumbnails[prevInd] = currEl;
+      this.thumbnails[currInd] = prevEl;
+    }
+
+    if (this.activeThumbnail.fileId === innerImgArray[0].fileId) {
+      const pageNumNew = this.getPageNum(docIndex) + event.currentIndex + 1;
+      this.pageNumber = pageNumNew;
+      this.oldPageNumber = pageNumNew;
+    }
+
     this.openedDoc = this.documentsList.find(
       (doc: any) => doc.file._id === innerImgArray[0].fileId
     );
@@ -291,8 +325,13 @@ export class PageNavigationComponent
       Number(item.id)
     );
 
+    this.multipleDocsThumbs[docIndex] = innerImgArray;
+    this.multipleDocsThumbs[docIndex][0].showReorder = this.checkReorder(
+      innerImgArray[0].fileId
+    );
+    this.thumbnailInfo.showReorder = this.checkReorder(innerImgArray[0].fileId);
     //reorder pages, but without service calling
-    // this.reorderPages(innerImgArray[0].fileId, false);
+    this.reorderPages(innerImgArray[0].fileId, false, this.pageNumber);
   }
 
   dropSingleDoc(event: CdkDragDrop<string[]>, innerImgArray: any[]) {
@@ -519,9 +558,7 @@ export class PageNavigationComponent
       width: container.clientWidth,
     };
     const child = document.getElementById('img-' + pageNumber);
-    // console.log({ child });
     // Where is the child
-
     if (child) {
       var childRect = child.getBoundingClientRect();
       // Is the child viewable?
