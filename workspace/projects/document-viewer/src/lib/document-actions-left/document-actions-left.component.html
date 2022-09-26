@@ -35,7 +35,7 @@
     />
   </button>
 
-  <div class="range-parent" *ngIf="showOrginalConfig.showOrginal">
+  <div class="range-parent" *ngIf="!showOrginalConfig.showOrginal">
     <input
       type="range"
       min="1"
@@ -50,7 +50,6 @@
 
   <button
     class="col circle"
-    *ngIf="defaultConfig?.debugMode"
     (click)="openDebugger()"
     [ngbTooltip]="!showDebugger ? 'Show debugger' : 'Hide debugger'"
     [ngClass]="{ 'show-debugger': showDebugger }"
