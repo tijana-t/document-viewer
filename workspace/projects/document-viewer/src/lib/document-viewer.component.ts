@@ -48,6 +48,9 @@ export class DocumentViewerComponent
   @Output('changeDocument') changeDocument = new EventEmitter();
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
+  @Output('downloadParagraphsEvent') downloadParagraphsEvent =
+    new EventEmitter();
+
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
   @Output('separateDocumentEvent') separateDocumentEvent = new EventEmitter();
   @Output('reorderDocumentEvent') reorderDocumentEvent = new EventEmitter();
@@ -147,6 +150,10 @@ export class DocumentViewerComponent
 
   downloadDocument(event: Event) {
     this.downloadDocumentEvent.emit(event);
+  }
+
+  downloadParagraphs(event: Event) {
+    this.downloadParagraphsEvent.emit(event);
   }
 
   removeExtension(fileName: string) {

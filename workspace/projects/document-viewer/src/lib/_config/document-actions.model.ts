@@ -7,4 +7,5 @@ export type DocumentActions = {
   downloadPdfPlain?: string;
   separateMergedDoc?: string;
   reorderPages?: string;
+  exportParagraphs?: string;
 };

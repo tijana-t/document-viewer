@@ -36,9 +36,12 @@ export class DocumentActionsLeftComponent
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     informationHelp: '',
     downloadPdfPlain: '',
+    exportParagraphs: '',
   };
   @Input('editable') editable: any = null;
   @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
+  @Output('downloadParagraphs') downloadParagraphsEvent = new EventEmitter();
+
   defaultConfig: DocumentConfig = { containerWidth: 0 };
   showDebugger = false;
   constructor(private docViewerService: DocumentViewerService) {}
@@ -75,6 +78,10 @@ export class DocumentActionsLeftComponent
 
   downloadDocument() {
     this.downloadDocumentEvent.emit(false);
+  }
+
+  downloadParagraphs() {
+    this.downloadParagraphsEvent.emit(false);
   }
 
   showOriginalDocument() {

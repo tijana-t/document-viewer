@@ -8,11 +8,24 @@
     />
   </button>
 
-  <button class="col circle" (click)="openModal()">
+  <!-- <button class="col circle" (click)="openModal()">
     <img
       width="15px"
       height="15px"
       [src]="documentActionsSrc.informationHelp"
+      alt=""
+    />
+  </button> -->
+
+  <button
+    [ngbTooltip]="'Export document\'s paragraphs'"
+    class="col circle"
+    (click)="downloadParagraphs()"
+  >
+    <img
+      width="15px"
+      height="15px"
+      [src]="documentActionsSrc.exportParagraphs"
       alt=""
     />
   </button>

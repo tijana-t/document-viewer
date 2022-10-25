@@ -228,6 +228,7 @@
     <lib-document-actions-left
       [editable]="documentConfig?.editable"
       (downloadDocument)="downloadDocument($event)"
+      (downloadParagraphs)="downloadParagraphs($event)"
       class="document-actions-left-container"
       id="viewer"
       [documentActionsSrc]="documentActionsSrc"
