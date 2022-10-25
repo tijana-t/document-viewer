@@ -134,7 +134,7 @@ export class PageNavigationComponent
       });
 
     this.docViewerService.pageInfo
-      .pipe(skip(1), takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res: {
           multipleDocs?: boolean;
