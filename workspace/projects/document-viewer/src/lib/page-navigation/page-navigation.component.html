@@ -37,11 +37,7 @@
     class="thumbnail-container d-inline-flex flex-column align-items-center"
   >
     <!-- single doc thumbs -->
-    <div
-      *ngIf="!multipleDocs"
-      cdkDropList
-      (cdkDropListDropped)="dropSingleDoc($event, thumbnails)"
-    >
+    <div *ngIf="!multipleDocs">
       <div
         *ngFor="let image of thumbnails; index as i"
         (click)="changePage(i + 1, true, image)"
@@ -50,7 +46,6 @@
         style="position: relative"
       >
         <img
-          cdkDrag
           appLazyLoad
           [imageObj]="image"
           [src]="image.src"

@@ -7,7 +7,7 @@
     <div class="col-12 col-sm-12 p-0">
       <div class="d-flex justify-content-center" *ngIf="docModel">
         <ng-template #orgDocInfo>
-          <div class="sub-doc-info">
+          <div class="sub-doc-info p-0">
             <div *ngIf="collapsStatus">
               {{ singleDocument?.file?.originalName }}
             </div>
@@ -32,6 +32,11 @@
             </span>
             <div class="sub-dco-type">
               {{ singleDocument?.file.type }}
+            </div>
+            <div class="mt-1">
+              <div *ngFor="let sentance of singleDocument.file.toFix">
+                <span class="mt-2"> {{ sentance }} </span>
+              </div>
             </div>
           </div>
         </ng-template>
