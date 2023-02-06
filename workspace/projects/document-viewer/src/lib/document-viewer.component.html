@@ -231,6 +231,8 @@
     >
     </lib-search-modal>
     <lib-document-actions-left
+      [inProjects]="inProjects"
+      (downloadExcelEvent)="downloadExcel($event)"
       [editable]="documentConfig?.editable"
       (downloadDocument)="downloadDocument($event)"
       (downloadParagraphs)="downloadParagraphs($event)"

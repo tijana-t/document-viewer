@@ -48,6 +48,8 @@ export class DocumentViewerComponent
   @Output('changeDocument') changeDocument = new EventEmitter();
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
+  @Output('downloadExcelEvent') downloadExcelEvent = new EventEmitter();
+
   @Output('downloadParagraphsEvent') downloadParagraphsEvent =
     new EventEmitter();
 
@@ -72,6 +74,7 @@ export class DocumentViewerComponent
     fitToPageSrc: '',
     informationHelp: '',
     downloadPdfPlain: '',
+    downloadExcel: '',
   };
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
@@ -150,6 +153,10 @@ export class DocumentViewerComponent
 
   downloadDocument(event: Event) {
     this.downloadDocumentEvent.emit(event);
+  }
+
+  downloadExcel(event: Event) {
+    this.downloadExcelEvent.emit(event);
   }
 
   downloadParagraphs(event: Event) {

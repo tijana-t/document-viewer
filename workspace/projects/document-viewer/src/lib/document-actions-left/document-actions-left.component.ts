@@ -30,6 +30,8 @@ export class DocumentActionsLeftComponent
     viewPercent: 50,
   };
   @Input('document') document: DocumentComponent | undefined;
+  @Input('inProjects') inProjects: boolean = false;
+
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
   };
@@ -37,9 +39,12 @@ export class DocumentActionsLeftComponent
     informationHelp: '',
     downloadPdfPlain: '',
     exportParagraphs: '',
+    downloadExcel: '',
   };
   @Input('editable') editable: any = null;
   @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
+  @Output('downloadExcelEvent') downloadExcelEvent = new EventEmitter();
+
   @Output('downloadParagraphs') downloadParagraphsEvent = new EventEmitter();
 
   defaultConfig: DocumentConfig = { containerWidth: 0 };
@@ -62,6 +67,11 @@ export class DocumentActionsLeftComponent
       }
     );
   }
+
+  downloadExcel() {
+    this.downloadExcelEvent.emit(true);
+  }
+
   openDebugger() {
     this.showDebugger = !this.showDebugger;
     this.docViewerService.showDebugger.next(this.showDebugger);
