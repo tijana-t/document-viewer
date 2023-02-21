@@ -35,6 +35,5 @@ export class DocumentViewerService {
   });
   pageChange = new BehaviorSubject<boolean>(true);
   showDebugger = new BehaviorSubject<boolean>(false);
-
   constructor() {}
 }

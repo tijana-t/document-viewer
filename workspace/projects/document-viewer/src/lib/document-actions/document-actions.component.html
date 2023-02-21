@@ -1,5 +1,16 @@
 <div class="action-buttons">
   <button
+  class="col circle"
+  (click)="isOpenEmmit()"
+>
+  <img
+    width="15px"
+    height="15px"
+    [src]="documentActionsSrc.rotateIcon"
+    alt=""
+  />
+</button>
+  <button
     [disabled]="zoomOutDisabled"
     [ngStyle]="{ opacity: zoomOutDisabled ? '0.6' : '' }"
     (click)="zoomOutImg()"

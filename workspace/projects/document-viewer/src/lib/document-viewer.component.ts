@@ -42,12 +42,12 @@ import {
   ],
 })
 export class DocumentViewerComponent
-  implements OnInit, AfterViewInit, OnChanges
-{
+  implements OnInit, AfterViewInit, OnChanges {
   @Output('searchDocument') searchDocument = new EventEmitter();
   @Output('changeDocument') changeDocument = new EventEmitter();
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
+  @Output('isOpen') isOpen = new EventEmitter();
   @Output('downloadParagraphsEvent') downloadParagraphsEvent =
     new EventEmitter();
 
@@ -117,9 +117,9 @@ export class DocumentViewerComponent
       );
   }
 
-  constructor(private docViewerService: DocumentViewerService) {}
+  constructor(private docViewerService: DocumentViewerService) { }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   emitSearchedText(event: any) {
     this.searchDocument.emit(event);
@@ -258,7 +258,7 @@ export class DocumentViewerComponent
       (data[0].groupsList[0].intents[0].intentsList[0].entities[0].entityId ===
         '61693fb93185442be424dce0' ||
         data[0].groupsList[0].intents[0].intentsList[0].entities[0].entityId ===
-          '616942f7c5a9882da0a4446b')
+        '616942f7c5a9882da0a4446b')
     ) {
       const entValue =
         data[0].groupsList[0].intents[0].intentsList[0].entities[0]
@@ -287,9 +287,11 @@ export class DocumentViewerComponent
     this.docViewerService.changeDocSubject.next(true);
     this.changeDocument.emit({ matchingDoc });
   }
-
   changeDoc(status: boolean) {
     this.docViewerService.changeDocSubject.next(true);
     this.changeDocument.emit({ status, matchingDoc: null });
+  }
+  isOpenEmmit(isOpen: boolean) {
+    this.isOpen.emit(isOpen);
   }
 }

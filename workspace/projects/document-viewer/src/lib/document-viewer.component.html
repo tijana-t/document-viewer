@@ -223,6 +223,7 @@
       class="document-actions-container"
       [documentActionsSrc]="documentActionsSrc"
       id="viewer"
+      (isOpen)="isOpenEmmit($event)"
     ></lib-document-actions>
     <lib-search-modal
       (pageSearch)="emitPageSearch($event)"

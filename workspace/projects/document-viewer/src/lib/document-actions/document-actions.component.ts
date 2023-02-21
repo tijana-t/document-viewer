@@ -1,10 +1,12 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
@@ -19,19 +21,21 @@ import { DocumentConfig, ShowDocumentConfig } from '../_config/document.model';
   styleUrls: ['./document-actions.component.scss'],
 })
 export class DocumentActionsComponent
-  implements OnInit, AfterViewInit, OnChanges, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input('document') document: DocumentComponent | undefined;
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
   };
+  @Output("isOpen") isOpen = new EventEmitter();
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
     zoomOutSrc: '',
     fitToPageSrc: '../../assets/icons/zoom-in.svg' || '',
     informationHelp: '',
     downloadPdfPlain: '',
+    rotateIcon: '',
   };
+  opend: boolean = false;
   defaultConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
   zoomInDisabled = false;
   zoomOutDisabled = false;
@@ -47,8 +51,8 @@ export class DocumentActionsComponent
     showOrginal: false,
     viewPercent: 50,
   };
-
-  constructor(private docViewerService: DocumentViewerService) {}
+  constructor(private docViewerService: DocumentViewerService) {
+  }
 
   ngOnInit(): void {
     this.documentPage = document.getElementById('document-page');
@@ -157,7 +161,10 @@ export class DocumentActionsComponent
       }
     }, 300);
   }
-
+  isOpenEmmit() {
+    this.opend = !this.opend;
+    this.isOpen.emit(this.opend)
+  }
   ngOnDestroy() {
     this.destroy$.next(null);
     this.destroy$.complete();
