@@ -16,7 +16,7 @@
         alt=""
       />
     </button> -->
-    <input
+    <!-- <input
       (keyup)="searchPage(+page.value)"
       #page
       type="number"
@@ -28,7 +28,7 @@
       pattern="-?[0-9]*(\.[0-9]+)?"
       max="{{ thumbnails.length - 1 }}"
       min="1"
-    />
+    /> -->
   </div>
   <div class="shadow-over-top"></div>
   <div
@@ -37,7 +37,7 @@
     class="thumbnail-container d-inline-flex flex-column align-items-center"
   >
     <!-- single doc thumbs -->
-    <div *ngIf="!multipleDocs">
+    <!-- <div *ngIf="!multipleDocs">
       <div
         *ngFor="let image of thumbnails; index as i"
         (click)="changePage(i + 1, true, image)"
@@ -76,7 +76,7 @@
           *ngIf="image.hasSearchedText"
         ></span>
       </div>
-    </div>
+    </div> -->
 
     <!-- multiple docs thumbs -->
     <ng-container
@@ -101,7 +101,7 @@
         id="container-{{ doc[0]['fileId'] }}"
         (mouseover)="showSettings(doc[0], doc[0]['fileId'])"
         (mouseout)="hideSettings(doc[0]['fileId'])"
-        *ngIf="multipleDocs && doc && doc[0]"
+        *ngIf="doc && doc[0]"
       >
         <div
           *ngFor="let image of doc; index as i"
