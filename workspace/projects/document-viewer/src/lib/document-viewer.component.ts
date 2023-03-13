@@ -78,7 +78,7 @@ export class DocumentViewerComponent
   };
   @Input('docModel') docModel: any;
   @Input('activeFileId') activeFileId: string = '';
-
+  @Input("isOpenVar") isOpenVar: boolean = false;
   @Input('params') params: any;
   @Input('singleDocument') singleDocument: any;
   @Input('inProjects') inProjects: any;
@@ -204,8 +204,12 @@ export class DocumentViewerComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log("changes",changes['isOpenVar'] )
     if (changes['pageInfo'] && changes['pageInfo'].currentValue) {
       this.docViewerService.pageInfo.next(changes['pageInfo'].currentValue);
+    }
+    if (changes['isOpenVar'] && changes['isOpenVar'].currentValue) {
+      this.isOpen.emit(changes['isOpenVar'].currentValue);
     }
     if (changes['activeFileId'] && changes['activeFileId'].currentValue) {
       const f = this.singleDocument.originalMergedDocs.find(

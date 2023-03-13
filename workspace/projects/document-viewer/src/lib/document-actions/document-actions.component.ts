@@ -27,6 +27,7 @@ export class DocumentActionsComponent
     containerWidth: 0,
   };
   @Output("isOpen") isOpen = new EventEmitter();
+  @Input("isOpenVar") isOpenVar: boolean = false;
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
     zoomOutSrc: '',
@@ -139,9 +140,14 @@ export class DocumentActionsComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log("changes", changes['isOpenVar'])
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
       this.scrollEvent();
+    }
+    if (changes['isOpenVar'] && changes['isOpenVar'].currentValue) {
+      this.opend = changes['isOpenVar'].currentValue;
+      this.isOpen.emit(changes['isOpenVar'].currentValue);
     }
   }
 
@@ -162,7 +168,9 @@ export class DocumentActionsComponent
     }, 300);
   }
   isOpenEmmit() {
-    this.opend = !this.opend;
+    console.log("opend", this.isOpenVar);
+    this.opend = this.isOpenVar !== undefined ?
+      !this.isOpenVar : !this.opend;
     this.isOpen.emit(this.opend)
   }
   ngOnDestroy() {
