@@ -37,7 +37,7 @@
     class="thumbnail-container d-inline-flex flex-column align-items-center"
   >
     <!-- single doc thumbs -->
-    <!-- <div *ngIf="!multipleDocs">
+    <div *ngIf="!multipleDocs">
       <div
         *ngFor="let image of thumbnails; index as i"
         (click)="changePage(i + 1, true, image)"
@@ -76,7 +76,7 @@
           *ngIf="image.hasSearchedText"
         ></span>
       </div>
-    </div> -->
+    </div>
 
     <!-- multiple docs thumbs -->
     <ng-container
