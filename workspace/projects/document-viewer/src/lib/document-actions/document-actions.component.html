@@ -1,50 +1,19 @@
 <div class="action-buttons">
-  <button
-  class="col circle"
-  (click)="isOpenEmmit()"
->
-  <img
-    width="15px"
-    height="15px"
-    [src]="documentActionsSrc.rotateIcon"
-    alt=""
-  />
-</button>
-  <button
-    [disabled]="zoomOutDisabled"
-    [ngStyle]="{ opacity: zoomOutDisabled ? '0.6' : '' }"
-    (click)="zoomOutImg()"
-    class="col circle"
-  >
-    <img
-      width="10px"
-      height="10px"
-      [src]="documentActionsSrc.zoomOutSrc"
-      alt=""
-    />
+  <button class="col circle" (click)="isOpenEmmit()" ngbTooltip="Rotate">
+    <img width="15px" height="15px" [src]="documentActionsSrc.rotateIcon" alt="" />
+  </button>
+  <button [disabled]="zoomOutDisabled" [ngStyle]="{ opacity: zoomOutDisabled ? '0.6' : '' }" (click)="zoomOutImg()"
+    class="col circle" ngbTooltip="Zoom out">
+    <img width="10px" height="10px" [src]="documentActionsSrc.zoomOutSrc" alt="" />
   </button>
 
-  <button class="col circle" (click)="fitToPage()">
-    <img
-      width="10px"
-      height="10px"
-      [src]="documentActionsSrc.fitToPageSrc"
-      alt=""
-    />
+  <button class="col circle" (click)="fitToPage()" ngbTooltip="Fit to page">
+    <img width="10px" height="10px" [src]="documentActionsSrc.fitToPageSrc" alt="" />
   </button>
 
-  <button
-    [disabled]="zoomInDisabled"
-    type="button"
-    class="col circle"
-    [ngStyle]="{ opacity: zoomInDisabled ? '0.6' : '' }"
-    (click)="zoomInImg()"
-  >
-    <img
-      width="10px"
-      height="10px"
-      [src]="documentActionsSrc.zoomInSrc"
-      alt=""
-    />
+  <button ngbTooltip="Zoom in" [disabled]="zoomInDisabled" type="button" class="col circle"
+    [ngStyle]="{ opacity: zoomInDisabled ? '0.6' : '' }" (click)="zoomInImg()">
+    <img width="10px" height="10px" [src]="documentActionsSrc.zoomInSrc" alt="" />
   </button>
 </div>
+
