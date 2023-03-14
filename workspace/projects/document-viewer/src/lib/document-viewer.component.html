@@ -27,7 +27,7 @@
                 "
               ></span>
               <span class="sub-date">{{
-                singleDocument?.file?.createdAt | date: "dd/MM/yy"
+                singleDocument?.file?.createdAt | date : "dd/MM/yy"
               }}</span>
             </span>
             <div class="sub-dco-type">
@@ -68,7 +68,7 @@
                         : '4px solid ' + doc.colorValue + '54'
                   }"
                 >
-                  {{ doc?.file?.originalName | stringEllipsis: 15 }}
+                  {{ doc?.file?.originalName | stringEllipsis : 15 }}
                 </div>
               </span>
               <span *ngIf="!isLast"> & </span>
@@ -93,7 +93,7 @@
                       "
                     ></span>
                     <span class="sub-date">{{
-                      doc?.file?.createdAt | date: "dd/MM/yy"
+                      doc?.file?.createdAt | date : "dd/MM/yy"
                     }}</span>
                   </span>
                   <div class="sub-dco-type">
@@ -162,7 +162,7 @@
                       "
                     ></span>
                     <span class="sub-date">{{
-                      matchingDoc.createdAt | date: "dd/MM/yy"
+                      matchingDoc.createdAt | date : "dd/MM/yy"
                     }}</span>
                   </span>
                   <div class="sub-dco-type">
@@ -201,7 +201,7 @@
             "
           ></span>
           MODEL: {{ docModel.modelName }} - {{ docModel.modelVersion }} @
-          {{ singleDocument.file.createdAt | date: "MMM d, y HH:mm" }}
+          {{ singleDocument.file.createdAt | date : "MMM d, y HH:mm" }}
           <span
             [ngClass]="
               this.singleDocument.next.fileName ? '' : 'disable-next-prev'
@@ -256,12 +256,18 @@
   <lib-page-navigation
     [documentActionsSrc]="documentActionsSrc"
     [singleDocument]="singleDocument"
+    [reorderFinished]="reorderFinished"
     (downloadDocumentEvent)="downloadDocument($event)"
-    [documentsList]="singleDocument.originalMergedDocs"
+    [documentsList]="
+      singleDocument.originalMergedDocs
+        ? singleDocument.originalMergedDocs
+        : [singleDocument]
+    "
     (triggerTextLayer)="triggerTextLayerCreation($event)"
     (reorderDocumentEvent)="triggerReorderDocument($event)"
     (separateDocumentEvent)="triggerSeparateDocument($event)"
     (triggerPagesReorder)="triggerPagesReorder($event)"
+    (triggerSplitDocument)="triggerSplitDocument($event)"
     class="document-page-navigation-container"
   ></lib-page-navigation>
 </div>

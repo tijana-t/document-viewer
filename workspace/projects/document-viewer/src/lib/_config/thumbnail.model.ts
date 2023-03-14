@@ -11,4 +11,6 @@ export type Thumbnail = {
   fileName?: string;
   originalName?: string;
   showReorder?: boolean;
+  showDivider?: boolean;
+  activeThumbnail?: boolean;
 };

@@ -9,4 +9,6 @@ export type DocumentActions = {
   reorderPages?: string;
   exportParagraphs?: string;
   downloadExcel?: string;
+  undoArrow?: string;
+  split?: string;
 };

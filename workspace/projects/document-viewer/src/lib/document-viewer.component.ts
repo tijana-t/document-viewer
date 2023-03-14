@@ -59,6 +59,7 @@ export class DocumentViewerComponent
   @Output('linePosition') linePosition = new EventEmitter();
   @Output('filterPatternEvent') filterPatternEvent = new EventEmitter();
   @Output('triggerPagesReorder') pagesReorderEvent = new EventEmitter();
+  @Output('triggerSplitDocument') triggerSplitEvent = new EventEmitter();
 
   @Input('searchResult') searchResult: SearchResult[] = [];
   @Input('currentPage') initialPage = 1;
@@ -68,6 +69,7 @@ export class DocumentViewerComponent
     { id: '', src: '', fileId: '', fileName: '', originalName: '' },
   ];
   @Input('totalPages') totalPages: number = 0;
+  @Input('reorderFinished') reorderFinished: boolean = false;
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
     zoomOutSrc: '',
@@ -194,6 +196,10 @@ export class DocumentViewerComponent
     this.pagesReorderEvent.emit($event);
   }
 
+  triggerSplitDocument($event: any) {
+    this.triggerSplitEvent.emit($event);
+  }
+
   filterPattern(file: any) {
     this.activeFileId = '';
     let fileId;
@@ -220,12 +226,15 @@ export class DocumentViewerComponent
       );
       f.file.filterValue = true;
     }
+
+    if (changes['reorderFinished'] && changes['reorderFinished'].currentValue) {
+      this.reorderFinished = changes['reorderFinished'].currentValue;
+    }
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
       this.docViewerService.docConfSubject.next(this.documentConfig);
     }
     if (changes['searchResult'] && changes['searchResult'].currentValue) {
-      // debugger;
       this.docViewerService.searchResultSubject.next(
         changes['searchResult'].currentValue
       );
