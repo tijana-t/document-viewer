@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -32,6 +33,7 @@ export class PageNavigationComponent
   @ViewChild('inputRange') inputRange: ElementRef | undefined;
   @ViewChild('bubbleValue') bubbleValue: ElementRef | undefined;
   @ViewChild('pageInput') pageInput: ElementRef | undefined;
+  @ViewChild('thumbContainer') thumbContainer: ElementRef | undefined;
   @ViewChild('thumbSettings') thumbSettings: any;
 
   thumbnails: Thumbnail[] = [{ id: '', src: '', show: false }];
@@ -39,22 +41,29 @@ export class PageNavigationComponent
   showMyElement: boolean = false;
 
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
+
   @Output('separateDocumentEvent') separateDocumentEvent = new EventEmitter();
   @Output('reorderDocumentEvent') reorderDocumentEvent = new EventEmitter();
   @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
   @Output('triggerPagesReorder') triggerPagesReorder = new EventEmitter();
+  @Output('triggerSplitDocument') triggerSplitDocument = new EventEmitter();
 
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     informationHelp: '',
     downloadPdfPlain: '',
     separateMergedDoc: '',
     reorderPages: '',
+    undoArrow: '',
+    split: '',
   };
   @Input('documentsList') documentsList: any;
   @Input('singleDocument') singleDocument: any;
+  @Input('reorderFinished') reorderFinished: boolean = false;
 
   searchSubject = new Subject<number>();
   results$ = new Subscription();
+  thumbsStates: any[] = [];
+  reorderStates: any[] = [];
 
   navigationConfig: NavigationConfig = {
     imageMargin: 20,
@@ -80,6 +89,7 @@ export class PageNavigationComponent
     originalName: '',
     showReorder: false,
   };
+  docColorPallete: string[] = [];
   multipleDocsThumbs: any = [];
   multipleDocs: boolean = false;
   openedDoc: any;
@@ -106,6 +116,17 @@ export class PageNavigationComponent
     );
   }
 
+  @HostListener('document:click', ['$event'])
+  // if we clicked outside od container, close it
+  clickout($event: MouseEvent) {
+    if (
+      this.thumbContainer &&
+      !this.thumbContainer.nativeElement.contains($event.target)
+    ) {
+      this.thumbnails.forEach((t) => (t.showDivider = false));
+    }
+  }
+
   ngOnInit(): void {
     //wait small amount of time before another request is called
     this.results$ = this.searchSubject
@@ -126,6 +147,8 @@ export class PageNavigationComponent
             } else {
               this.triggerPageChange(this.pageNumber);
             }
+
+            this.setActiveThumb(this.thumbnails[res - 1]);
           }
         } else {
           // not a number
@@ -143,11 +166,13 @@ export class PageNavigationComponent
           originalImgExtension?: string;
           mainImgExtension?: string;
           colorValue?: string;
+          docColorPallete: string[];
         }) => {
           if (res && (res.currentPage || res.pages)) {
             this.pageNumber = res.currentPage;
             this.previousPageNum = res.currentPage;
             this.oldPageNumber = res.currentPage;
+            this.docColorPallete = res.docColorPallete;
 
             if (res.originalImgExtension) {
               this.originalImgExtension = res.originalImgExtension;
@@ -159,8 +184,20 @@ export class PageNavigationComponent
             this.docViewerService.pageNumberSubject.next(res.currentPage);
             if (res.pages && !res.multipleDocs) {
               this.multipleDocs = false;
-              this.thumbnails = res.pages;
-              this.multipleDocsThumbs = [1];
+
+              this.multipleDocsThumbs = [res.pages];
+              this.thumbnails = [];
+              this.multipleDocsThumbs.forEach((doc: any) => {
+                this.thumbnails.push(...doc);
+              });
+
+              for (const [index, thumb] of this.thumbnails.entries()) {
+                if (index + 1 === this.pageNumber) {
+                  this.activeThumbnail = this.thumbnails[index];
+                  this.setActiveThumb(this.thumbnails[index]);
+                  this.activeThumbnailIndex = index;
+                }
+              }
             } else if (res.pages && res.multipleDocs) {
               this.multipleDocs = true;
               this.multipleDocsThumbs = res.pages;
@@ -172,6 +209,7 @@ export class PageNavigationComponent
               for (const [index, thumb] of this.thumbnails.entries()) {
                 if (index + 1 === this.pageNumber) {
                   this.activeThumbnail = this.thumbnails[index];
+                  this.setActiveThumb(this.thumbnails[index]);
                   this.activeThumbnailIndex = index;
                 }
               }
@@ -199,6 +237,54 @@ export class PageNavigationComponent
     if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
       this.singleDocument = changes['singleDocument'].currentValue;
     }
+
+    if (changes['reorderFinished'] && changes['reorderFinished'].currentValue) {
+      this.reorderFinished = changes['reorderFinished'].currentValue;
+    }
+  }
+
+  insertAt(array: any, index: number, newSplittedDoc: any) {
+    array.splice(index, 0, newSplittedDoc);
+  }
+
+  onRightClick(event: any, image: Thumbnail, doc: Thumbnail[], imgId: string) {
+    event.preventDefault();
+
+    doc.forEach((img) => {
+      img.showDivider = false;
+    });
+
+    image.showDivider = true;
+  }
+
+  showDividerAndSaveSplitting(
+    event: Event,
+    doc: Thumbnail[],
+    image: Thumbnail,
+    docIndex: number,
+    imgIndex: number
+  ) {
+    let dividerExists = this.thumbnails.find((t) => t.showDivider);
+    if (dividerExists) {
+      dividerExists.showDivider = false;
+    }
+
+    //save for undo action
+    this.thumbsStates.push([...this.multipleDocsThumbs]);
+
+    const firstPart = doc.slice(0, imgIndex + 1);
+    firstPart.forEach((fp) => (fp.thumbColor = this.docColorPallete[docIndex]));
+
+    const secondPart = doc.slice(imgIndex + 1, doc.length);
+    secondPart.forEach(
+      (sp) => (sp.thumbColor = this.docColorPallete[docIndex + 1])
+    );
+
+    this.multipleDocsThumbs.splice(docIndex, 1);
+    this.insertAt(this.multipleDocsThumbs, docIndex, firstPart);
+    this.insertAt(this.multipleDocsThumbs, docIndex + 1, secondPart);
+
+    image.showDivider = false;
   }
 
   showSettings(image: Thumbnail, fileId: string) {
@@ -219,7 +305,12 @@ export class PageNavigationComponent
     }
   }
 
-  reorderPages(fileId: string, callService: boolean, pageNumber: number) {
+  reorderPages(
+    fileId: string,
+    callService: boolean,
+    pageNumber: number,
+    icon: any
+  ) {
     let mappedPages;
     if (this.multipleDocs) {
       mappedPages = this.openedDoc.file['newMappedPages'];
@@ -232,7 +323,39 @@ export class PageNavigationComponent
       mappedPages,
       callService,
       pageNumber,
+      icon,
     });
+  }
+
+  undoSplit() {
+    this.multipleDocsThumbs = this.thumbsStates[this.thumbsStates.length - 1];
+    this.thumbnails = this.multipleDocsThumbs[0];
+
+    this.thumbsStates.pop();
+  }
+
+  undoReorder() {
+    this.multipleDocsThumbs = this.reorderStates[this.reorderStates.length - 1];
+    this.thumbnails = this.multipleDocsThumbs[0];
+    this.reorderStates.pop();
+  }
+
+  splitDocument(fileId: string, icon: HTMLElement) {
+    const pagesArr = [];
+    let counter = 0;
+
+    for (const doc of this.multipleDocsThumbs) {
+      let range = [];
+      for (let i = 1 + counter; i <= doc.length + counter; i++) {
+        range.push(i);
+      }
+      pagesArr.push(range);
+      counter += doc.length;
+    }
+
+    console.log({ pagesArr });
+
+    this.triggerSplitDocument.emit({ fileId, icon, pagesArr });
   }
 
   checkReorder(fileId: string) {
@@ -293,7 +416,8 @@ export class PageNavigationComponent
     if (event.stopPropagation) {
       event.stopPropagation();
     }
-
+    //for undo action
+    this.reorderStates.push([[...innerImgArray]]);
     moveItemInArray(innerImgArray, event.previousIndex, event.currentIndex);
 
     const prevEl = this.thumbnails.find(
@@ -307,7 +431,6 @@ export class PageNavigationComponent
     if (prevEl && currEl) {
       prevInd = this.thumbnails.indexOf(prevEl);
       currInd = this.thumbnails.indexOf(currEl);
-
       this.thumbnails[prevInd] = currEl;
       this.thumbnails[currInd] = prevEl;
     }
@@ -331,7 +454,7 @@ export class PageNavigationComponent
     );
     this.thumbnailInfo.showReorder = this.checkReorder(innerImgArray[0].fileId);
     //reorder pages, but without service calling
-    this.reorderPages(innerImgArray[0].fileId, false, this.pageNumber);
+    this.reorderPages(innerImgArray[0].fileId, false, this.pageNumber, null);
   }
 
   dropSingleDoc(event: CdkDragDrop<string[]>, innerImgArray: any[]) {
@@ -443,6 +566,8 @@ export class PageNavigationComponent
     this.changeActivated = changeActivation;
     this.pageNumber = pageNumber;
     this.activeThumbnail = thumbnail;
+
+    this.setActiveThumb(thumbnail);
     if (this.pageNumber !== this.oldPageNumber) {
       this.clearTextLayer();
 
@@ -458,6 +583,15 @@ export class PageNavigationComponent
     } else {
       this.docViewerService.activateSearch.next(0);
     }
+  }
+
+  setActiveThumb(thumbnail: Thumbnail) {
+    let thumbs = this.thumbnails.filter((t) => t !== thumbnail);
+    if (thumbs.length !== 0) {
+      thumbs.forEach((th) => (th.activeThumbnail = false));
+    }
+
+    thumbnail.activeThumbnail = true;
   }
 
   getPageNum(docIndex: number) {
