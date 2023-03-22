@@ -329,8 +329,11 @@ export class PageNavigationComponent
 
   undoSplit() {
     this.multipleDocsThumbs = this.thumbsStates[this.thumbsStates.length - 1];
-    this.thumbnails = this.multipleDocsThumbs[0];
 
+    this.thumbnails = [];
+    this.multipleDocsThumbs.forEach((doc: any) => {
+      this.thumbnails.push(...doc);
+    });
     this.thumbsStates.pop();
   }
 
@@ -419,21 +422,7 @@ export class PageNavigationComponent
     //for undo action
     this.reorderStates.push([[...innerImgArray]]);
     moveItemInArray(innerImgArray, event.previousIndex, event.currentIndex);
-
-    const prevEl = this.thumbnails.find(
-      (t) => t === innerImgArray[event.previousIndex]
-    );
-    const currEl = this.thumbnails.find(
-      (t) => t === innerImgArray[event.currentIndex]
-    );
-    let prevInd;
-    let currInd;
-    if (prevEl && currEl) {
-      prevInd = this.thumbnails.indexOf(prevEl);
-      currInd = this.thumbnails.indexOf(currEl);
-      this.thumbnails[prevInd] = currEl;
-      this.thumbnails[currInd] = prevEl;
-    }
+    this.thumbnails = innerImgArray;
 
     if (this.activeThumbnail.fileId === innerImgArray[0].fileId) {
       const pageNumNew = this.getPageNum(docIndex) + event.currentIndex + 1;
@@ -448,7 +437,6 @@ export class PageNavigationComponent
       Number(item.id)
     );
 
-    this.multipleDocsThumbs[docIndex] = innerImgArray;
     this.multipleDocsThumbs[docIndex][0].showReorder = this.checkReorder(
       innerImgArray[0].fileId
     );

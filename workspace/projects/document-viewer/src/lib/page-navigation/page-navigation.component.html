@@ -3,12 +3,111 @@
   (wheel)="scrollThumbnail($event, inputRange)"
   class="navigation-container"
 >
-  <div class="form-group number-input d-flex flex-row">
+  <span class="number-input d-flex flex-row">
+    <span ngbDropdown>
+      <button
+        class="circle btn-custom dropdown left-rounded"
+        id="dropdownBasic1"
+        ngbDropdownToggle
+        placement="bottom-end"
+        ngbTooltip="Additional Options"
+      >
+        <span class="typcn icon typcn-cog-outline"> </span>
+      </button>
+      <!-- split document settings -->
+      <div
+        ngbDropdownMenu
+        class="settings-buttons"
+        aria-labelledby="dropdownBasic1"
+        *ngIf="documentsList.length === 1"
+      >
+        <!-- undo -->
+        <button
+          ngbDropdownItem
+          *ngIf="!reorderFinished && thumbsStates.length === 0"
+          type="button"
+          [ngClass]="reorderStates.length === 0 ? 'disabled-btn' : ''"
+          class="btn-custom reorder-pages"
+          (click)="undoReorder()"
+        >
+          <img
+            width="15px"
+            height="15px"
+            [src]="documentActionsSrc.undoArrow"
+            alt=""
+          />
+          undo reorder
+        </button>
+        <button
+          ngbDropdownItem
+          *ngIf="reorderFinished || thumbsStates.length !== 0"
+          type="button"
+          [ngClass]="thumbsStates.length === 0 ? 'disabled-btn' : ''"
+          class="btn-custom reorder-pages"
+          (click)="undoSplit()"
+        >
+          <img
+            width="15px"
+            height="15px"
+            [src]="documentActionsSrc.undoArrow"
+            alt=""
+          />
+          undo split
+        </button>
+
+        <button
+          ngbDropdownItem
+          type="button"
+          [ngClass]="
+            !multipleDocsThumbs[0][0].showReorder ||
+            reorderFinished ||
+            reorderStates.length === 0 ||
+            thumbsStates.length !== 0
+              ? 'disabled-btn'
+              : ''
+          "
+          #reorderButton
+          class="btn-custom reorder-pages"
+          (click)="
+            reorderPages(
+              singleDocument.file._id,
+              true,
+              pageNumber,
+              reorderButton
+            )
+          "
+        >
+          <img
+            width="15px"
+            height="15px"
+            [src]="documentActionsSrc.reorderPages"
+            alt=""
+          />
+          reorder pages
+        </button>
+        <button
+          ngbDropdownItem
+          type="button"
+          [ngClass]="multipleDocsThumbs.length <= 1 ? 'disabled-btn' : ''"
+          #splitButton
+          class="btn-custom reorder-pages"
+          (click)="splitDocument(singleDocument.file._id, splitButton)"
+        >
+          <img
+            width="17px"
+            height="17px"
+            [src]="documentActionsSrc.split"
+            alt=""
+          />
+          split
+        </button>
+      </div>
+    </span>
     <input
       (keyup)="searchPage(+page.value)"
       #page
       type="number"
-      class="form-control"
+      class="form-control right-rounded"
       placeholder="#"
       [(ngModel)]="pageNumber"
       name="pageNumber"
@@ -17,80 +116,7 @@
       max="{{ thumbnails.length - 1 }}"
       min="1"
     />
-  </div>
-
-  <!-- split document settings -->
-  <div
-    class="d-flex flex-column settings-buttons"
-    *ngIf="documentsList.length === 1"
-  >
-    <!-- undo -->
-    <button
-      [ngbTooltip]="'Undo reorder'"
-      *ngIf="!reorderFinished && thumbsStates.length === 0"
-      type="button"
-      [ngClass]="reorderStates.length === 0 ? 'disabled-btn' : 'highlight-btn'"
-      class="circle btn-custom reorder-pages mb-16"
-      (click)="undoReorder()"
-    >
-      <img
-        width="15px"
-        height="15px"
-        [src]="documentActionsSrc.undoArrow"
-        alt=""
-      />
-    </button>
-    <button
-      [ngbTooltip]="'Undo split'"
-      *ngIf="reorderFinished || thumbsStates.length !== 0"
-      type="button"
-      [ngClass]="thumbsStates.length === 0 ? 'disabled-btn' : 'highlight-btn'"
-      class="circle btn-custom reorder-pages mb-16"
-      (click)="undoSplit()"
-    >
-      <img
-        width="15px"
-        height="15px"
-        [src]="documentActionsSrc.undoArrow"
-        alt=""
-      />
-    </button>
-
-    <button
-      [ngbTooltip]="'Reorder pages'"
-      type="button"
-      [ngClass]="
-        !multipleDocsThumbs[0][0].showReorder ||
-        reorderFinished ||
-        reorderStates.length === 0 ||
-        thumbsStates.length !== 0
-          ? 'disabled-btn'
-          : 'highlight-btn'
-      "
-      #reorderButton
-      class="circle btn-custom reorder-pages"
-      (click)="
-        reorderPages(singleDocument.file._id, true, pageNumber, reorderButton)
-      "
-    >
-      <img
-        width="15px"
-        height="15px"
-        [src]="documentActionsSrc.reorderPages"
-        alt=""
-      />
-    </button>
-    <button
-      [ngbTooltip]="'Split document'"
-      type="button"
-      [ngClass]="multipleDocsThumbs.length <= 1 ? 'disabled-btn' : ''"
-      #splitButton
-      class="circle btn-custom reorder-pages"
-      (click)="splitDocument(singleDocument.file._id, splitButton)"
-    >
-      <img width="17px" height="17px" [src]="documentActionsSrc.split" alt="" />
-    </button>
-  </div>
+  </span>
 
   <div class="shadow-over-top"></div>
   <div
@@ -116,7 +142,8 @@
             doc[0]['thumbColor'] === openedDocColor
               ? '3px solid ' + doc[0]['thumbColor']
               : '3px solid ' + doc[0]['thumbColor'] + '7d',
-          'margin-top': isFirst ? '22px' : ''
+          'margin-top':
+            isFirst && multipleDocsThumbs.length > 1 ? '22px !important' : ''
         }"
         [ngClass]="multipleDocsThumbs.length <= 1 ? 'no-border' : ''"
         class="thumb-container"
@@ -168,13 +195,35 @@
 
           <!-- settings menu for spliting documents -->
           <div
-            class="splitter d-flex flex-column justify-content-center align-items-center"
+            class="d-flex flex-column justify-content-center align-items-center"
             *ngIf="image.showDivider && i !== doc.length - 1"
-            (click)="
-              showDividerAndSaveSplitting($event, doc, image, docIndex, i)
-            "
           >
-            <strong style="color: #fac317"> split document</strong>
+            <div class="splitter">
+              <div
+                class="border-up"
+                [ngStyle]="{
+                  'border-color':
+                    multipleDocsThumbs.length <= 1
+                      ? docColorPallete[multipleDocsThumbs.length - 1]
+                      : image['thumbColor']
+                }"
+              ></div>
+              <div
+                [ngStyle]="{
+                  'border-color': docColorPallete[multipleDocsThumbs.length]
+                }"
+                class="border-down"
+                [ngStyle]=""
+              ></div>
+              <button
+                (click)="
+                  showDividerAndSaveSplitting($event, doc, image, docIndex, i)
+                "
+                class="btn-custom"
+              >
+                split
+              </button>
+            </div>
           </div>
 
           <span
