@@ -1,5 +1,15 @@
 ## PDF VIEWER
-
+cd document-viewer
+cd workspace
+npm install
+cd projects/document-viewer
+npm install
+cd ../../
+ng build document-viewer
+cd dist/document-viewer
+npm link
+cd uhura
+npm link ngx-view-document
 ### Build library - `ng build document-viewer`
 
 ### Track live changes (watch): command starts from workspace `ng build document-viewer --watch=true`
