@@ -1,20 +1,11 @@
 ## PDF VIEWER
-`cd document-viewer
-cd workspace
-npm install
-cd projects/document-viewer
-npm install
-cd ../../
-ng build document-viewer
-cd dist/document-viewer
-npm link
-cd uhura
-npm link ngx-view-document`
+
+### Inside document-viewer/workspace `npm install`; Also inside projects/document-viewer `npm install`, then `cd ../../`
 ### Build library - `ng build document-viewer`
 
 ### Track live changes (watch): command starts from workspace `ng build document-viewer --watch=true`
 
-### Linking library - `npm link` inside dist folder of a library; `npm link ngx-view-document` inside project where you want library to to be visible
+### Linking library - `npm link` inside dist/document-viewer folder of a library; `npm link ngx-view-document` inside project where you want library to to be visible
 
 ### Architecture v1
 
