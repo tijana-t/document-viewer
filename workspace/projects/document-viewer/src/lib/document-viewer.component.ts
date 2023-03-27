@@ -42,7 +42,8 @@ import {
   ],
 })
 export class DocumentViewerComponent
-  implements OnInit, AfterViewInit, OnChanges {
+  implements OnInit, AfterViewInit, OnChanges
+{
   @Output('searchDocument') searchDocument = new EventEmitter();
   @Output('changeDocument') changeDocument = new EventEmitter();
   @Output('pageSearch') pageSearch = new EventEmitter();
@@ -83,7 +84,7 @@ export class DocumentViewerComponent
   };
   @Input('docModel') docModel: any;
   @Input('activeFileId') activeFileId: string = '';
-  @Input("isOpenVar") isOpenVar: boolean = false;
+  @Input('isOpenVar') isOpenVar: boolean = false;
   @Input('params') params: any;
   @Input('singleDocument') singleDocument: any;
   @Input('inProjects') inProjects: any;
@@ -122,9 +123,9 @@ export class DocumentViewerComponent
       );
   }
 
-  constructor(private docViewerService: DocumentViewerService) { }
+  constructor(private docViewerService: DocumentViewerService) {}
 
-  ngAfterViewInit() { }
+  ngAfterViewInit() {}
 
   emitSearchedText(event: any) {
     this.searchDocument.emit(event);
@@ -217,7 +218,7 @@ export class DocumentViewerComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("changes",changes['isOpenVar'] )
+    console.log('changes', changes['isOpenVar']);
     if (changes['pageInfo'] && changes['pageInfo'].currentValue) {
       this.docViewerService.pageInfo.next(changes['pageInfo'].currentValue);
     }
@@ -278,7 +279,7 @@ export class DocumentViewerComponent
       (data[0].groupsList[0].intents[0].intentsList[0].entities[0].entityId ===
         '61693fb93185442be424dce0' ||
         data[0].groupsList[0].intents[0].intentsList[0].entities[0].entityId ===
-        '616942f7c5a9882da0a4446b')
+          '616942f7c5a9882da0a4446b')
     ) {
       const entValue =
         data[0].groupsList[0].intents[0].intentsList[0].entities[0]
