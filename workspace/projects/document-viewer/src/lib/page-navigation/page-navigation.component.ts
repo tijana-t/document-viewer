@@ -277,7 +277,8 @@ export class PageNavigationComponent
 
     const secondPart = doc.slice(imgIndex + 1, doc.length);
     secondPart.forEach(
-      (sp) => (sp.thumbColor = this.docColorPallete[docIndex + 1])
+      (sp) =>
+        (sp.thumbColor = this.docColorPallete[this.multipleDocsThumbs.length])
     );
 
     this.multipleDocsThumbs.splice(docIndex, 1);
