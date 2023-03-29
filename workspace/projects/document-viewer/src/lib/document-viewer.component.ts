@@ -57,6 +57,7 @@ export class DocumentViewerComponent
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
   @Output('separateDocumentEvent') separateDocumentEvent = new EventEmitter();
   @Output('reorderDocumentEvent') reorderDocumentEvent = new EventEmitter();
+  @Output('openTriggeredEvent') openTriggeredEvent = new EventEmitter();
   @Output('linePosition') linePosition = new EventEmitter();
   @Output('filterPatternEvent') filterPatternEvent = new EventEmitter();
   @Output('triggerPagesReorder') pagesReorderEvent = new EventEmitter();
@@ -90,6 +91,7 @@ export class DocumentViewerComponent
   @Input('inProjects') inProjects: any;
   @Output('naturalDimensions') naturalDimensions = new EventEmitter();
   @Output('showDebugger') showDebugger = new EventEmitter();
+  @Input('triggeredModalIsOpen') triggeredModalIsOpen: any;
   subscriptions = new Subscription();
   destroy$ = new Subject();
   collapsStatus = false;
@@ -148,6 +150,11 @@ export class DocumentViewerComponent
 
   triggerSeparateDocument(event: Event) {
     this.separateDocumentEvent.next(event);
+  }
+
+  openTriggered(event: Event) {
+    console.log('event', event);
+    this.openTriggeredEvent.next(event);
   }
 
   triggerReorderDocument(event: Event) {
@@ -234,6 +241,12 @@ export class DocumentViewerComponent
 
     if (changes['reorderFinished'] && changes['reorderFinished'].currentValue) {
       this.reorderFinished = changes['reorderFinished'].currentValue;
+    }
+    if (
+      changes['triggeredModalIsOpen'] &&
+      changes['triggeredModalIsOpen'].currentValue
+    ) {
+      this.triggeredModalIsOpen = changes['triggeredModalIsOpen'].currentValue;
     }
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;

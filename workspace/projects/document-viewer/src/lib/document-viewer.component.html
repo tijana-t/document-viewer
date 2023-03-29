@@ -185,6 +185,7 @@
 
   <lib-page-navigation
     [documentActionsSrc]="documentActionsSrc"
+    [triggeredModalIsOpen]="triggeredModalIsOpen"
     [singleDocument]="singleDocument"
     [reorderFinished]="reorderFinished"
     (downloadDocumentEvent)="downloadDocument($event)"
@@ -198,6 +199,7 @@
     (separateDocumentEvent)="triggerSeparateDocument($event)"
     (triggerPagesReorder)="triggerPagesReorder($event)"
     (triggerSplitDocument)="triggerSplitDocument($event)"
+    (openTriggeredEmittrt)="openTriggered($event)"
     class="document-page-navigation-container"
   ></lib-page-navigation>
 </div>
