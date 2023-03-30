@@ -171,32 +171,37 @@ export class PageNavigationComponent
         }
       })
     );
-    this.subscriptions.add(this.triggerSeparateMethod.subscribe((triggerSeparate)=>{
-      if (triggerSeparate) {
-        for (const [index, doc] of this.multipleDocsThumbs.entries()) {
-          if (doc[0].fileId === this.fileId) {
-            this.multipleDocsThumbs.splice(index, 1);
+    this.subscriptions.add(
+      this.triggerSeparateMethod.subscribe((triggerSeparate) => {
+        if (triggerSeparate) {
+          for (const [index, doc] of this.multipleDocsThumbs.entries()) {
+            if (doc[0].fileId === this.fileId) {
+              this.multipleDocsThumbs.splice(index, 1);
+            }
           }
-        }
-        this.thumbnails = [];
-        this.multipleDocsThumbs.forEach((doc: any) => {
-          this.thumbnails.push(...doc);
-        });
+          this.thumbnails = [];
+          this.multipleDocsThumbs.forEach((doc: any) => {
+            this.thumbnails.push(...doc);
+          });
 
-        let thumbIndex;
-        if (this.activeThumbnail.fileId === this.fileId) {
-          thumbIndex = 0;
-        } else {
-          thumbIndex = this.thumbnails.indexOf(this.activeThumbnail);
-        }
-        this.pageNumber = thumbIndex + 1;
-        this.oldPageNumber = thumbIndex + 1;
+          let thumbIndex;
+          if (this.activeThumbnail.fileId === this.fileId) {
+            thumbIndex = 0;
+          } else {
+            thumbIndex = this.thumbnails.indexOf(this.activeThumbnail);
+          }
+          this.pageNumber = thumbIndex + 1;
+          this.oldPageNumber = thumbIndex + 1;
 
-        this.activeThumbnailIndex = thumbIndex;
-        this.openedDocColor = this.thumbnails[this.pageNumber - 1].thumbColor;
-        this.separateDocumentEvent.emit({ fileId: this.fileId, pageNumber: this.pageNumber });
-      }
-    }))
+          this.activeThumbnailIndex = thumbIndex;
+          this.openedDocColor = this.thumbnails[this.pageNumber - 1].thumbColor;
+          this.separateDocumentEvent.emit({
+            fileId: this.fileId,
+            pageNumber: this.pageNumber,
+          });
+        }
+      })
+    );
   }
 
   @HostListener('document:click', ['$event'])
@@ -328,10 +333,16 @@ export class PageNavigationComponent
       changes['triggeredModalIsOpen'].currentValue
     ) {
       this.triggeredModalIsOpen = changes['triggeredModalIsOpen'].currentValue;
-      if (this.triggeredModalIsOpen.triggered === true && this.triggeredModalIsOpen.from ==="reorder") {
+      if (
+        this.triggeredModalIsOpen.triggered === true &&
+        this.triggeredModalIsOpen.from === 'reorder'
+      ) {
         this.triggerReorderMethod.next(true);
       }
-      if (this.triggeredModalIsOpen.triggered === true && this.triggeredModalIsOpen.from ==="separate") {
+      if (
+        this.triggeredModalIsOpen.triggered === true &&
+        this.triggeredModalIsOpen.from === 'separate'
+      ) {
         this.triggerSeparateMethod.next(true);
       }
       console.log('data in lib', this.triggeredModalIsOpen);
@@ -616,7 +627,7 @@ export class PageNavigationComponent
   }
   separateDocument(fileId?: string, e?: MouseEvent) {
     this.top = e?.pageY;
-    this.fileId  = fileId;
+    this.fileId = fileId;
     this.openTriggeredEmittert.emit({
       open: true,
       top: this.top,
@@ -808,10 +819,11 @@ export class PageNavigationComponent
     this.offsetNum = offsetNum;
     this.docIndex = docIndex;
     this.top = e.pageY;
+
     this.openTriggeredEmittert.emit({
       open: true,
       top: this.top,
-      from: 'reorder',
+      from: offsetNum === -1 ? 'up' : 'down',
     });
   }
 

@@ -1,5 +1,8 @@
-<div class="viewer-container" [ngStyle]="{ 'justify-content': totalPages > 1 ? 'space-between' : 'center' }"
-  id="viewer-container">
+<div
+  class="viewer-container"
+  [ngStyle]="{ 'justify-content': totalPages > 1 ? 'space-between' : 'center' }"
+  id="viewer-container"
+>
   <div id="info-box">
     <div class="col-12 col-sm-12 p-0">
       <div class="d-flex justify-content-center" *ngIf="docModel">
@@ -9,14 +12,20 @@
               {{ singleDocument?.file?.originalName }}
             </div>
             <span class="file-type-sub file-type">
-              <span class="kat-sub-sent" *ngIf="
+              <span
+                class="kat-sub-sent"
+                *ngIf="
                   singleDocument?.file?.sent &&
                   docModel.isModelContainerRjesenje
-                "></span>
-              <span class="kat-sub-not-sent" *ngIf="
+                "
+              ></span>
+              <span
+                class="kat-sub-not-sent"
+                *ngIf="
                   !singleDocument?.file?.sent &&
                   docModel.isModelContainerRjesenje
-                "></span>
+                "
+              ></span>
               <span class="sub-date">{{
                 singleDocument?.file?.createdAt | date : "dd/MM/yy"
               }}</span>
@@ -34,16 +43,25 @@
 
         <ng-container *ngIf="singleDocument.originalMergedDocs">
           <div class="model-info p-0 parent-ellipsis">
-            <span (click)="filterPattern(doc.file)" [ngbTooltip]="singleDocInfo" *ngFor="
+            <span
+              (click)="filterPattern(doc.file)"
+              [ngbTooltip]="singleDocInfo"
+              *ngFor="
                 let doc of singleDocument.originalMergedDocs;
                 last as isLast
-              ">
-              <span class="document-name" [ngClass]="
+              "
+            >
+              <span
+                class="document-name"
+                [ngClass]="
                   doc.file.filterValue || activeFileId === doc.file._id
                     ? 'active-filter'
                     : 'inactive-filter'
-                ">
-                <div class="underlined" [ngStyle]="{
+                "
+              >
+                <div
+                  class="underlined"
+                  [ngStyle]="{
                     'border-bottom':
                       doc.colorValue === openedDocColor
                         ? '4px solid ' + doc.colorValue
@@ -62,12 +80,18 @@
                     {{ doc?.file?.originalName }}
                   </div>
                   <span class="file-type-sub file-type">
-                    <span class="kat-sub-sent" *ngIf="
+                    <span
+                      class="kat-sub-sent"
+                      *ngIf="
                         doc?.file?.sent && docModel.isModelContainerRjesenje
-                      "></span>
-                    <span class="kat-sub-not-sent" *ngIf="
+                      "
+                    ></span>
+                    <span
+                      class="kat-sub-not-sent"
+                      *ngIf="
                         !doc?.file?.sent && docModel.isModelContainerRjesenje
-                      "></span>
+                      "
+                    ></span>
                     <span class="sub-date">{{
                       doc?.file?.createdAt | date : "dd/MM/yy"
                     }}</span>
@@ -82,21 +106,37 @@
         </ng-container>
 
         <div class="model-info p-0 parent-ellipsis" [ngbTooltip]="orgDocInfo">
-          <p *ngIf="!singleDocument.mergedDocs" [ngClass]="{
+          <p
+            *ngIf="!singleDocument.mergedDocs"
+            [ngClass]="{
               'red-flag': documentConfig?.flag == 'red',
               'green-flag': documentConfig?.flag == 'green'
-            }" class="traning-model-name text-ellipsis" (click)="collapsSubDocs()">
+            }"
+            class="traning-model-name text-ellipsis"
+            (click)="collapsSubDocs()"
+          >
             {{ singleDocument?.file?.originalName }}
           </p>
         </div>
-        <span *ngIf="
+        <span
+          *ngIf="
             singleDocument.file?.matchingDocs?.length > 0 && !collapsStatus
-          " class="sub-doc-num">DOCS: {{ singleDocument.file?.matchingDocs?.length }}</span>
-        <div *ngFor="
+          "
+          class="sub-doc-num"
+          >DOCS: {{ singleDocument.file?.matchingDocs?.length }}</span
+        >
+        <div
+          *ngFor="
             let matchingDoc of singleDocument.file?.matchingDocs;
             let i = index
-          " class="parent-ellipsis">
-          <div *ngIf="!singleDocument.mergedDocs && matchingDoc.collaps" [@inOutAnimation] class="collaps-box">
+          "
+          class="parent-ellipsis"
+        >
+          <div
+            *ngIf="!singleDocument.mergedDocs && matchingDoc.collaps"
+            [@inOutAnimation]
+            class="collaps-box"
+          >
             <div id="pointer"></div>
             <div class="sub-doc text-ellipsis" [ngbTooltip]="redFlagTemplate">
               <ng-template #redFlagTemplate>
@@ -105,16 +145,22 @@
                     {{ matchingDoc.originalName }}
                   </div>
                   <span class="file-type-sub file-type">
-                    <span class="kat-sub-sent" *ngIf="
+                    <span
+                      class="kat-sub-sent"
+                      *ngIf="
                         matchingDoc.jobStatus == 'completed' &&
                         matchingDoc.sent &&
                         docModel.isModelContainerRjesenje
-                      "></span>
-                    <span class="kat-sub-not-sent" *ngIf="
+                      "
+                    ></span>
+                    <span
+                      class="kat-sub-not-sent"
+                      *ngIf="
                         matchingDoc.jobStatus == 'completed' &&
                         !matchingDoc.sent &&
                         docModel.isModelContainerRjesenje
-                      "></span>
+                      "
+                    ></span>
                     <span class="sub-date">{{
                       matchingDoc.createdAt | date : "dd/MM/yy"
                     }}</span>
@@ -124,7 +170,9 @@
                   </div>
                 </div>
               </ng-template>
-              <a (click)="openMatchingDoc(matchingDoc)" [ngClass]="{
+              <a
+                (click)="openMatchingDoc(matchingDoc)"
+                [ngClass]="{
                   'file-not-ready':
                     (matchingDoc.hasOwnProperty('confidenceStatus') &&
                       matchingDoc?.confidenceStatus === false) ||
@@ -133,37 +181,56 @@
                     (matchingDoc.hasOwnProperty('confidenceStatus') &&
                       matchingDoc?.confidenceStatus === false) ||
                     matchingDoc.checked
-                }" class="sub-doc-name">{{ matchingDoc.originalName }}</a>
+                }"
+                class="sub-doc-name"
+                >{{ matchingDoc.originalName }}</a
+              >
             </div>
           </div>
         </div>
       </div>
       <div class="align-items-center info-container" *ngIf="docModel">
         <p>
-          <span [ngClass]="
+          <span
+            [ngClass]="
               this.singleDocument.prev.fileName ? '' : 'disable-next-prev'
-            " class="doc-prev typcn typcn-chevron-left" (click)="
+            "
+            class="doc-prev typcn typcn-chevron-left"
+            (click)="
               !this.singleDocument.prev.fileName ? null : changeDoc(false)
-            "></span>
+            "
+          ></span>
           MODEL: {{ docModel.modelName }} - {{ docModel.modelVersion }} @
           {{ singleDocument.file.createdAt | date : "MMM d, y HH:mm" }}
           <span
             [ngClass]="
               this.singleDocument.next.fileName ? '' : 'disable-next-prev'
-            " class="doc-next typcn typcn-chevron-right" (click)="
+            "
+            class="doc-next typcn typcn-chevron-right"
+            (click)="
               !this.singleDocument.next.fileName ? null : changeDoc(true)
-            "></span>
+            "
+          ></span>
         </p>
       </div>
     </div>
   </div>
 
   <div id="search-box">
-    <lib-document-actions [documentConfig]="documentConfig" [document]="document" class="document-actions-container"
-      [documentActionsSrc]="documentActionsSrc" id="viewer" [isOpenVar]="isOpenVar"
-      (isOpen)="isOpenEmmit($event)"></lib-document-actions>
-    <lib-search-modal (pageSearch)="emitPageSearch($event)" class="search-component"
-      (searchTextInDoc)="emitSearchedText($event)">
+    <lib-document-actions
+      [documentConfig]="documentConfig"
+      [document]="document"
+      class="document-actions-container"
+      [documentActionsSrc]="documentActionsSrc"
+      id="viewer"
+      [isOpenVar]="isOpenVar"
+      (isOpen)="isOpenEmmit($event)"
+    ></lib-document-actions>
+    <lib-search-modal
+      (pageSearch)="emitPageSearch($event)"
+      class="search-component"
+      (searchTextInDoc)="emitSearchedText($event)"
+    >
     </lib-search-modal>
     <lib-document-actions-left
       [inProjects]="inProjects"
@@ -178,9 +245,14 @@
   </div>
 
   <div class="d-flex align-items-center flex-column" id="doc-box">
-    <lib-document (naturalDimensions)="emitImgNaturalDimension($event)" [documentConfig]="documentConfig" #document
-      (triggerTextLayer)="triggerTextLayerCreation($event)" (pageSearch)="emitPageSearch($event)"
-      class="document-viewer-container"></lib-document>
+    <lib-document
+      (naturalDimensions)="emitImgNaturalDimension($event)"
+      [documentConfig]="documentConfig"
+      #document
+      (triggerTextLayer)="triggerTextLayerCreation($event)"
+      (pageSearch)="emitPageSearch($event)"
+      class="document-viewer-container"
+    ></lib-document>
   </div>
 
   <lib-page-navigation
