@@ -519,12 +519,12 @@ export class PageNavigationComponent
         (singleDoc.file.mappedPages === undefined ||
           singleDoc.file.mappedPages.length === 0)
       ) {
-        console.log(
-          'reorder',
-          singleDoc,
-          singleDoc.file.mappedPages,
-          singleDoc.file['newMappedPages']
-        );
+        // console.log(
+        //   'reorder',
+        //   singleDoc,
+        //   singleDoc.file.mappedPages,
+        //   singleDoc.file['newMappedPages']
+        // );
         let arr = [];
         const total = singleDoc.numberOfPages;
         for (let i = 0; i <= total; i++) {
