@@ -824,10 +824,11 @@ export class PageNavigationComponent
     this.offsetNum = offsetNum;
     this.docIndex = docIndex;
     this.top = e.pageY;
+
     this.openTriggeredEmittert.emit({
       open: true,
       top: this.top,
-      from: 'reorder',
+      from: offsetNum === -1 ? 'up' : 'down',
     });
   }
 
