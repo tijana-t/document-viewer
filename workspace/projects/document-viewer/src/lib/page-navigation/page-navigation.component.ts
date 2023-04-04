@@ -18,6 +18,7 @@ import { NavigationConfig } from '../_config/page-navigation.model';
 import { Thumbnail } from '../_config/thumbnail.model';
 import { DocumentActions } from '../_config/document-actions.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'lib-page-navigation',
@@ -107,7 +108,11 @@ export class PageNavigationComponent
   docIndex: number = 0;
   triggerSeparateMethod = new Subject<boolean>();
   fileId: string | undefined = '';
-  constructor(private docViewerService: DocumentViewerService) {
+  constructor(
+    private docViewerService: DocumentViewerService,
+    config: NgbDropdownConfig
+  ) {
+    config.placement = 'bottom-end';
     this.subscriptions.add(
       this.docViewerService.importantPages.subscribe((res: number[]) => {
         this.importantPages = res;
@@ -216,6 +221,13 @@ export class PageNavigationComponent
   }
 
   ngOnInit(): void {
+    // console.log(
+    //   'reorder',
+    //   this.multipleDocsThumbs,
+    //   this.reorderFinished,
+    //   this.reorderStates.length,
+    //   this.thumbsStates.length
+    // );
     //wait small amount of time before another request is called
     this.results$ = this.searchSubject
       .pipe(debounceTime(800))
@@ -424,7 +436,7 @@ export class PageNavigationComponent
     } else {
       mappedPages = this.singleDocument.file['newMappedPages'];
     }
-
+    console.log('mappedPages', mappedPages, this.multipleDocs);
     this.triggerPagesReorder.emit({
       fileId,
       mappedPages,
@@ -477,7 +489,12 @@ export class PageNavigationComponent
     } else {
       singleDoc = this.singleDocument;
     }
-
+    console.log(
+      'reorder1',
+      singleDoc,
+      singleDoc.file.mappedPages,
+      singleDoc.file['newMappedPages']
+    );
     if (singleDoc) {
       if (
         singleDoc.file['newMappedPages'] &&
@@ -499,8 +516,15 @@ export class PageNavigationComponent
       } else if (
         singleDoc.file['newMappedPages'] &&
         singleDoc.file['newMappedPages'].length !== 0 &&
-        !singleDoc.file.mappedPages
+        (singleDoc.file.mappedPages === undefined ||
+          singleDoc.file.mappedPages.length === 0)
       ) {
+        // console.log(
+        //   'reorder',
+        //   singleDoc,
+        //   singleDoc.file.mappedPages,
+        //   singleDoc.file['newMappedPages']
+        // );
         let arr = [];
         const total = singleDoc.numberOfPages;
         for (let i = 0; i <= total; i++) {
@@ -548,6 +572,7 @@ export class PageNavigationComponent
       innerImgArray[0].fileId
     );
     this.thumbnailInfo.showReorder = this.checkReorder(innerImgArray[0].fileId);
+    // console.log('reorder', this.thumbnailInfo.showReorder);
     //reorder pages, but without service calling
     this.reorderPages(innerImgArray[0].fileId, false, this.pageNumber, null);
   }
