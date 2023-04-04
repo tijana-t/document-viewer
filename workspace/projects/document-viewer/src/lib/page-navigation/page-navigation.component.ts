@@ -18,7 +18,7 @@ import { NavigationConfig } from '../_config/page-navigation.model';
 import { Thumbnail } from '../_config/thumbnail.model';
 import { DocumentActions } from '../_config/document-actions.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'lib-page-navigation',
@@ -109,10 +109,10 @@ export class PageNavigationComponent
   triggerSeparateMethod = new Subject<boolean>();
   fileId: string | undefined = '';
   constructor(
-    private docViewerService: DocumentViewerService,
-    config: NgbDropdownConfig
-  ) {
-    config.placement = 'bottom-end';
+    private docViewerService: DocumentViewerService
+  ) // config: NgbDropdownConfig
+  {
+    // config.placement = 'bottom-end';
     this.subscriptions.add(
       this.docViewerService.importantPages.subscribe((res: number[]) => {
         this.importantPages = res;
