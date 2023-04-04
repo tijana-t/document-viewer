@@ -28,14 +28,12 @@
           [ngClass]="reorderStates.length === 0 ? 'disabled-btn' : ''"
           class="btn-custom reorder-pages"
           (click)="undoReorder()"
-          ngbTooltip="undo reorder"
         >
           <img
             width="15px"
             height="15px"
             [src]="documentActionsSrc.undoArrow"
             alt=""
-            ngbTooltip="undo reorder"
           />
           undo reorder
         </button>
@@ -46,7 +44,6 @@
           [ngClass]="thumbsStates.length === 0 ? 'disabled-btn' : ''"
           class="btn-custom reorder-pages"
           (click)="undoSplit()"
-          ngbTooltip="undo split"
         >
           <img
             width="15px"
