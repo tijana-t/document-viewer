@@ -29,12 +29,14 @@
           [ngClass]="reorderStates.length === 0 ? 'disabled-btn' : ''"
           class="btn-custom reorder-pages"
           (click)="undoReorder()"
+          ngbTooltip="undo reorder"
         >
           <img
             width="15px"
             height="15px"
             [src]="documentActionsSrc.undoArrow"
             alt=""
+            ngbTooltip="undo reorder"
           />
           undo reorder
         </button>
@@ -45,12 +47,14 @@
           [ngClass]="thumbsStates.length === 0 ? 'disabled-btn' : ''"
           class="btn-custom reorder-pages"
           (click)="undoSplit()"
+          ngbTooltip="undo split"
         >
           <img
             width="15px"
             height="15px"
             [src]="documentActionsSrc.undoArrow"
             alt=""
+            ngbTooltip="undo split"
           />
           undo split
         </button>
@@ -76,12 +80,14 @@
               reorderButton
             )
           "
+          ngbTooltip="reorder pages"
         >
           <img
             width="15px"
             height="15px"
             [src]="documentActionsSrc.reorderPages"
             alt=""
+            ngbTooltip="reorder pages"
           />
           reorder pages
         </button>
@@ -92,12 +98,14 @@
           #splitButton
           class="btn-custom reorder-pages"
           (click)="splitDocument(singleDocument.file._id, splitButton)"
+          ngbTooltip="split"
         >
           <img
             width="17px"
             height="17px"
             [src]="documentActionsSrc.split"
             alt=""
+            ngbTooltip="split"
           />
           split
         </button>
@@ -117,7 +125,6 @@
       min="1"
     />
   </span>
-
   <div class="shadow-over-top"></div>
   <div
     [ngStyle]="{ height: navigationConfig.containerHeight }"
@@ -218,6 +225,7 @@
                 (click)="
                   showDividerAndSaveSplitting($event, doc, image, docIndex, i)
                 "
+                ngbTooltip="split"
                 class="btn-custom"
               >
                 split
@@ -247,7 +255,6 @@
             *ngIf="image.hasSearchedText"
           ></span>
         </div>
-
         <!-- thumb settings -->
         <div
           *ngIf="documentsList.length > 1"
@@ -268,6 +275,8 @@
                     : ''
                 "
                 (click)="reorderDocument(thumbnailInfo, -1, docIndex, $event)"
+                ngbTooltip="Up"
+                placement="right"
               >
                 <span class="d-flex typcn typcn-chevron-right up"> </span>
               </button>
@@ -281,6 +290,8 @@
                     : ''
                 "
                 (click)="reorderDocument(thumbnailInfo, 1, docIndex, $event)"
+                ngbTooltip="Down"
+                placement="right"
               >
                 <span class="d-flex typcn typcn-chevron-right down"> </span>
               </button>
@@ -291,6 +302,8 @@
               <button
                 class="circle btn-custom"
                 (click)="separateDocument(thumbnailInfo.fileId, $event)"
+                ngbTooltip="Remove"
+                placement="right"
               >
                 <img
                   width="25px"
@@ -307,6 +320,8 @@
                     thumbnailInfo.originalName
                   )
                 "
+                ngbTooltip="Download"
+                placement="right"
                 class="circle btn-custom"
               >
                 <img
@@ -329,6 +344,7 @@
                     reorderButton
                   )
                 "
+                ngbTooltip="reorder"
               >
                 <img
                   width="15px"
