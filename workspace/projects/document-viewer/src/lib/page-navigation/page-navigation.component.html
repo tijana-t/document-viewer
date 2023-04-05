@@ -18,7 +18,6 @@
         ngbDropdownMenu
         class="settings-buttons"
         aria-labelledby="dropdownBasic1"
-        *ngIf="documentsList.length === 1"
       >
         <!-- undo -->
         <button
@@ -91,7 +90,6 @@
           #splitButton
           class="btn-custom reorder-pages"
           (click)="splitDocument(singleDocument.file._id, splitButton)"
-          ngbTooltip="split"
         >
           <img
             width="17px"
@@ -217,7 +215,6 @@
                 (click)="
                   showDividerAndSaveSplitting($event, doc, image, docIndex, i)
                 "
-                ngbTooltip="split"
                 class="btn-custom"
               >
                 split
