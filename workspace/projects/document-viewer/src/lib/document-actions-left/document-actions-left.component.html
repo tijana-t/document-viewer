@@ -1,5 +1,9 @@
 <div class="action-buttons">
-  <button (click)="downloadDocument()" class="col circle" ngbTooltip="Download document">
+  <button
+    (click)="downloadDocument()"
+    class="col circle"
+    ngbTooltip="Download document"
+  >
     <img
       width="15px"
       height="15px"
@@ -29,7 +33,20 @@
       alt=""
     />
   </button>
-
+  <!--   *ngIf="docModel.modelContainerId === '642d21829b383bdb26ec3c29'" -->
+  <button
+    [ngbTooltip]="'Export monthly statistic'"
+    class="col circle"
+    *ngIf="docModel.modelContainerId === '642d21829b383bdb26ec3c29'"
+    (click)="exportMonthlyStatistic()"
+  >
+    <img
+      width="15px"
+      height="15px"
+      [src]="documentActionsSrc.exportParagraphs"
+      alt=""
+    />
+  </button>
   <button
     [ngbTooltip]="
       'Download excel file with a detailed report for this document'

@@ -62,8 +62,9 @@ export class DocumentViewerComponent
   @Output('filterPatternEvent') filterPatternEvent = new EventEmitter();
   @Output('triggerPagesReorder') pagesReorderEvent = new EventEmitter();
   @Output('triggerSplitDocument') triggerSplitEvent = new EventEmitter();
-
-  @Input('searchResult') searchResult: SearchResult[] = [];
+  @Output('exportMonthlyStat') exportMonthlyStat = new EventEmitter();
+  @Input('searchResult')
+  searchResult: SearchResult[] = [];
   @Input('currentPage') initialPage = 1;
   @Input('token') token?: string = '';
   @Input('pageInfo') pageInfo: any;
@@ -99,6 +100,7 @@ export class DocumentViewerComponent
   filterFileIds = [];
   openedDocColor: string = '';
   ngOnInit() {
+    // console.log('valss', this.docModel, this.singleDocument);
     this.subscriptions = this.docViewerService.lineStatus.subscribe(
       (status) => {
         this.linePosition.emit();
@@ -327,5 +329,8 @@ export class DocumentViewerComponent
   }
   isOpenEmmit(isOpen: boolean) {
     this.isOpen.emit(isOpen);
+  }
+  exportMonthlyStatEventEmmiter(data: any) {
+    this.exportMonthlyStat.emit(data);
   }
 }

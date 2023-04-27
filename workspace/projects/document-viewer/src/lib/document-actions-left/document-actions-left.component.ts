@@ -42,11 +42,14 @@ export class DocumentActionsLeftComponent
     downloadExcel: '',
   };
   @Input('editable') editable: any = null;
-  @Output('downloadDocument') downloadDocumentEvent = new EventEmitter();
+  @Input('singleDocument') singleDocument: any;
+  @Input('docModel') docModel: any;
+  @Input('params') params: any;
+  @Output('downloadDocument')
+  downloadDocumentEvent = new EventEmitter();
   @Output('downloadExcelEvent') downloadExcelEvent = new EventEmitter();
-
   @Output('downloadParagraphs') downloadParagraphsEvent = new EventEmitter();
-
+  @Output('exportMonthlyStat') exportMonthlyStat = new EventEmitter();
   defaultConfig: DocumentConfig = { containerWidth: 0 };
   showDebugger = false;
   constructor(private docViewerService: DocumentViewerService) {}
@@ -122,7 +125,17 @@ export class DocumentActionsLeftComponent
         'px';
     }
   }
+  exportMonthlyStatistic() {
+    let data = {
+      modelContainerId: this.docModel.modelContainerId,
+      documentId: this.singleDocument.file._id,
+      relation: this.inProjects ? 'ANALYSIS' : 'TRAINING',
+      versionId: this.params.versionId,
+    };
 
+    console.log('vals', data);
+    this.exportMonthlyStat.emit(data);
+  }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;

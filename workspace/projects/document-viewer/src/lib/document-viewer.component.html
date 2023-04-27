@@ -241,6 +241,11 @@
       class="document-actions-left-container"
       id="viewer"
       [documentActionsSrc]="documentActionsSrc"
+      [document]="document"
+      [singleDocument]="singleDocument"
+      [docModel]="docModel"
+      [params]="params"
+      (exportMonthlyStat)="exportMonthlyStatEventEmmiter($event)"
     ></lib-document-actions-left>
   </div>
 
