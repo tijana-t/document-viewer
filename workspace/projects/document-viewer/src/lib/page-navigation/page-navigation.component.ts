@@ -109,9 +109,8 @@ export class PageNavigationComponent
   triggerSeparateMethod = new Subject<boolean>();
   fileId: string | undefined = '';
   constructor(
-    private docViewerService: DocumentViewerService
-  ) // config: NgbDropdownConfig
-  {
+    private docViewerService: DocumentViewerService // config: NgbDropdownConfig
+  ) {
     // config.placement = 'bottom-end';
     this.subscriptions.add(
       this.docViewerService.importantPages.subscribe((res: number[]) => {
@@ -643,6 +642,7 @@ export class PageNavigationComponent
       colorValue: this.thumbnails[this.pageNumber - 1].thumbColor,
     });
     this.openedDocColor = this.thumbnails[this.pageNumber - 1].thumbColor;
+    this.setActiveThumb(this.thumbnails[this.pageNumber - 1]);
     this.triggerTextLayer.emit({
       pageNumber: this.pageNumber,
       pageChange: isChangePage,
