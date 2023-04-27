@@ -33,17 +33,21 @@
       alt=""
     />
   </button>
-  <!--   *ngIf="docModel.modelContainerId === '642d21829b383bdb26ec3c29'" -->
+
+  <ng-template #exportTooltip>
+    Export document's:
+    <div>chapters, sections, articles, paragraphs</div>
+  </ng-template>
   <button
-    [ngbTooltip]="'Export monthly statistic'"
+    [ngbTooltip]="exportTooltip"
     class="col circle"
-    *ngIf="docModel.modelContainerId === '642d21829b383bdb26ec3c29'"
+    *ngIf="docModel?.modelContainerId === '642d21829b383bdb26ec3c29'"
     (click)="exportMonthlyStatistic()"
   >
     <img
       width="15px"
       height="15px"
-      [src]="documentActionsSrc.exportParagraphs"
+      [src]="documentActionsSrc.exportChaptersArticles"
       alt=""
     />
   </button>

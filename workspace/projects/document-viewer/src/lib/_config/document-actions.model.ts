@@ -8,6 +8,7 @@ export type DocumentActions = {
   separateMergedDoc?: string;
   reorderPages?: string;
   exportParagraphs?: string;
+  exportChaptersArticles?: string;
   rotateIcon?: string;
   downloadExcel?: string;
   undoArrow?: string;

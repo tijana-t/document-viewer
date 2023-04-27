@@ -40,6 +40,7 @@ export class DocumentActionsLeftComponent
     downloadPdfPlain: '',
     exportParagraphs: '',
     downloadExcel: '',
+    exportChaptersArticles: '',
   };
   @Input('editable') editable: any = null;
   @Input('singleDocument') singleDocument: any;
