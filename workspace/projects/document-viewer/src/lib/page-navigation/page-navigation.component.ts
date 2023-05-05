@@ -660,6 +660,14 @@ export class PageNavigationComponent
     });
   }
 
+  arrowPageChange(addNum: number) {
+    this.changePage(
+      this.pageNumber + addNum,
+      true,
+      this.thumbnails[this.pageNumber + addNum]
+    );
+  }
+
   //fires on thumbnail click
   changePage(
     pageNumber: number,
