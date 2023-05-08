@@ -661,10 +661,13 @@ export class PageNavigationComponent
   }
 
   arrowPageChange(addNum: number) {
+    this.pageNumber = this.pageNumber + addNum;
+
+    console.log('lenght', this.thumbnails.length);
     this.changePage(
-      this.pageNumber + addNum,
+      this.pageNumber,
       true,
-      this.thumbnails[this.pageNumber + addNum]
+      this.thumbnails[this.pageNumber - 1]
     );
   }
 

@@ -494,6 +494,7 @@
 .disable-next-prev {
   text-shadow: none !important;
   cursor: default !important;
+  pointer-events: none;
 }
 
 .page-next:hover,

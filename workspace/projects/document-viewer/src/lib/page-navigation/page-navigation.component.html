@@ -14,9 +14,7 @@
 
     <span
       [ngbTooltip]="'Next page'"
-      [ngClass]="
-        pageNumber === thumbnails.length - 1 ? 'disable-next-prev' : ''
-      "
+      [ngClass]="pageNumber === thumbnails.length ? 'disable-next-prev' : ''"
       (click)="arrowPageChange(1)"
       class="page-next typcn typcn-chevron-left"
     ></span>
