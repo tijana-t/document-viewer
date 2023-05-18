@@ -458,6 +458,10 @@
   margin-top: -3px;
 }
 
+.settings-buttons {
+  z-index: 100000 !important;
+}
+
 .settings-buttons .reorder-pages {
   width: 100%;
 }
@@ -502,6 +506,7 @@
   text-shadow: 0px 0px 6px var(--light-gray);
 }
 .chevron-container {
+  z-index: 1000;
   left: -16px;
   position: absolute;
 }

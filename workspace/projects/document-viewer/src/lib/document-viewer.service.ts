@@ -34,6 +34,11 @@ export class DocumentViewerService {
     viewPercent: 50,
   });
   pageChange = new BehaviorSubject<boolean>(true);
+  mainDocColor = new BehaviorSubject<string | null | undefined>(null);
   showDebugger = new BehaviorSubject<boolean>(false);
   constructor() {}
+
+  nestedCopy(array: any) {
+    return JSON.parse(JSON.stringify(array));
+  }
 }

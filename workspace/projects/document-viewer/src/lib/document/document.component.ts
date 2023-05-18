@@ -149,6 +149,12 @@ export class DocumentComponent
       }
     );
 
+    this.subscriptions.add(
+      this.docViewerService.mainDocColor.subscribe((res: any) => {
+        this.colorValue = res;
+      })
+    );
+
     this.subscriptions = this.docViewerService.showDebugger.subscribe(
       (res: boolean) => {
         this.showDebugger = res;

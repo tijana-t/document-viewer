@@ -387,7 +387,11 @@ export class PageNavigationComponent
     }
 
     //save for undo action
-    this.thumbsStates.push([...this.multipleDocsThumbs]);
+    let nestedMultiple = this.docViewerService.nestedCopy(
+      this.multipleDocsThumbs
+    );
+
+    this.thumbsStates.push([...nestedMultiple]);
 
     const firstPart = doc.slice(0, imgIndex + 1);
     firstPart.forEach((fp) => (fp.thumbColor = this.docColorPallete[docIndex]));
@@ -403,6 +407,10 @@ export class PageNavigationComponent
     this.insertAt(this.multipleDocsThumbs, docIndex + 1, secondPart);
 
     image.showDivider = false;
+
+    let mainDocColor = this.thumbnails[this.pageNumber - 1].thumbColor;
+    if (mainDocColor) this.docViewerService.mainDocColor.next(mainDocColor);
+    this.setActiveThumb(this.thumbnails[this.pageNumber - 1]);
   }
 
   showSettings(image: Thumbnail, fileId: string) {
@@ -453,6 +461,11 @@ export class PageNavigationComponent
       this.thumbnails.push(...doc);
     });
     this.thumbsStates.pop();
+
+    // update main doc color
+    let mainDocColor = this.thumbnails[this.pageNumber - 1].thumbColor;
+    this.docViewerService.mainDocColor.next(mainDocColor);
+    this.setActiveThumb(this.thumbnails[this.pageNumber - 1]);
   }
 
   undoReorder() {
@@ -488,12 +501,7 @@ export class PageNavigationComponent
     } else {
       singleDoc = this.singleDocument;
     }
-    console.log(
-      'reorder1',
-      singleDoc,
-      singleDoc.file.mappedPages,
-      singleDoc.file['newMappedPages']
-    );
+
     if (singleDoc) {
       if (
         singleDoc.file['newMappedPages'] &&
@@ -663,7 +671,6 @@ export class PageNavigationComponent
   arrowPageChange(addNum: number) {
     this.pageNumber = this.pageNumber + addNum;
 
-    console.log('lenght', this.thumbnails.length);
     this.changePage(
       this.pageNumber,
       true,
@@ -731,26 +738,28 @@ export class PageNavigationComponent
 
   clearTextLayer() {
     this.docViewerService.lineStatus.next(false);
-    const borderElems: any = document.querySelectorAll('.border-intent');
-    if (borderElems)
-      borderElems.forEach((item: Element) => {
-        item.remove();
-      });
+    setTimeout(() => {
+      const borderElems: any = document.querySelectorAll('.border-intent');
+      if (borderElems)
+        borderElems.forEach((item: Element) => {
+          item.remove();
+        });
 
-    const SpanElems: any = document.querySelectorAll('.gray-border');
-    if (SpanElems)
-      SpanElems.forEach((item: Element) => {
-        item.remove();
-      });
+      const SpanElems: any = document.querySelectorAll('.gray-border');
+      if (SpanElems)
+        SpanElems.forEach((item: Element) => {
+          item.remove();
+        });
 
-    const detectronElems: any = document.querySelectorAll(
-      '.detectron-container'
-    );
-    if (detectronElems) {
-      detectronElems.forEach((item: Element) => {
-        item.remove();
-      });
-    }
+      const detectronElems: any = document.querySelectorAll(
+        '.detectron-container'
+      );
+      if (detectronElems) {
+        detectronElems.forEach((item: Element) => {
+          item.remove();
+        });
+      }
+    }, 0);
   }
 
   // fires on wheel event
