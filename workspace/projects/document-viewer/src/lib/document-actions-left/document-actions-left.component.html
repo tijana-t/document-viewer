@@ -37,7 +37,10 @@
   <button
     [ngbTooltip]="'Export monthly statistic'"
     class="col circle"
-    *ngIf="docModel.modelContainerId === '642d21829b383bdb26ec3c29'"
+    *ngIf="
+      docModel !== undefined &&
+      docModel?.modelContainerId === '642d21829b383bdb26ec3c29'
+    "
     (click)="exportMonthlyStatistic()"
   >
     <img
