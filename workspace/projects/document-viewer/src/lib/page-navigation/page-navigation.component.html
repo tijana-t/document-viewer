@@ -3,6 +3,23 @@
   (wheel)="scrollThumbnail($event, inputRange)"
   class="navigation-container"
 >
+  <!-- change page buttons -->
+  <div class="chevron-container d-flex flex-column">
+    <span
+      [ngbTooltip]="'Previous page'"
+      [ngClass]="pageNumber === 1 ? 'disable-next-prev' : ''"
+      class="page-prev typcn typcn-chevron-left"
+      (click)="arrowPageChange(-1)"
+    ></span>
+
+    <span
+      [ngbTooltip]="'Next page'"
+      [ngClass]="pageNumber === thumbnails.length ? 'disable-next-prev' : ''"
+      (click)="arrowPageChange(1)"
+      class="page-next typcn typcn-chevron-left"
+    ></span>
+  </div>
+
   <span class="number-input d-flex flex-row">
     <span ngbDropdown placement="bottom-end">
       <button
@@ -116,6 +133,7 @@
     />
   </span>
   <div class="shadow-over-top"></div>
+
   <div
     [ngStyle]="{ height: navigationConfig.containerHeight }"
     #thumbnailContainer

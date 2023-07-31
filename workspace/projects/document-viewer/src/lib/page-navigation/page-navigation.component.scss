@@ -458,6 +458,10 @@
   margin-top: -3px;
 }
 
+.settings-buttons {
+  z-index: 100000 !important;
+}
+
 .settings-buttons .reorder-pages {
   width: 100%;
 }
@@ -476,10 +480,36 @@
   margin: 0px 7px;
 }
 
-// .btn-custom.dropdown {
-//   left: -28px;
-//   top: 9px;
-// }
+.page-prev,
+.page-next {
+  cursor: pointer;
+  font-size: 25px;
+  color: var(--main-yellow);
+}
+
+.page-prev {
+  transform: rotate(90deg);
+}
+.page-next {
+  display: inherit;
+  transform: rotate(-90deg);
+}
+
+.disable-next-prev {
+  text-shadow: none !important;
+  cursor: default !important;
+  pointer-events: none;
+}
+
+.page-next:hover,
+.page-prev:hover {
+  text-shadow: 0px 0px 6px var(--light-gray);
+}
+.chevron-container {
+  z-index: 1000;
+  left: -16px;
+  position: absolute;
+}
 
 .thumb-tag {
   position: absolute;
