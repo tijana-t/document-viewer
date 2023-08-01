@@ -119,21 +119,31 @@ export class DocumentComponent
           colorValue?: string;
         }) => {
           if (res) {
+            // console.log('res document', res);
             this.docViewerService.docConfSubject.next({
               containerWidth: 0,
             });
             this.documentConfig.containerWidth = 0;
             //main img url
-            if (res.mainImgExtension && res.mainImg) {
+            if (
+              res.mainImgExtension !== undefined &&
+              res.mainImg !== undefined
+            ) {
               this.mainImg = res.mainImg + '&img=' + res.mainImgExtension;
             }
             //original img
-            if (res.originalImgExtension && res.mainImg) {
-              this.mainImgOrginal =
-                res.mainImg + '&img=' + res.originalImgExtension;
+            if (res.originalImgExtension !== undefined) {
+              if (res.mainImg !== undefined) {
+                this.mainImgOrginal =
+                  res.mainImg + '&img=' + res.originalImgExtension;
+              }
             } else {
-              this.mainImgOrginal = res.mainImg;
+              this.mainImgOrginal =
+                this.mainImg !== undefined ? this.mainImg : res.mainImg;
             }
+
+            // console.log('mainImgOrginal', this.mainImgOrginal);
+
             this.colorValue = res.colorValue;
             this.docViewerService.fitToPage.next(true);
             this.docViewerService.changeDocSubject.next(false);
