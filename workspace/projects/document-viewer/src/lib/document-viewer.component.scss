@@ -1,5 +1,126 @@
 @use "./_styles/color-variables" as cv;
+.d-contents {
+  display: contents !important;
+}
+.merged-btn {
+  box-shadow: unset !important;
+  outline: unset !important;
+  ~ .dropdown-menu {
+    height: 30vh;
+    overflow-y: auto;
+    .dropdown-item:hover,
+    .dropdown-item:active,
+    .dropdown-item:focus {
+      background-color: unset !important;
+      color: unset !important;
+    }
+    .dropdown-item {
+      /* checkboxes */
+      .cbx {
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: pointer;
+        padding: 6px 0px;
+        border-radius: 6px;
+        overflow: hidden;
+        transition: all 0.2s ease;
+      }
 
+      .cbx:hover {
+        background: var(--cbx-hover);
+      }
+      .cbx span {
+        float: left;
+        vertical-align: middle;
+        transform: translate3d(0, 0, 0);
+      }
+      .cbx span:first-child {
+        position: relative;
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        transform: scale(1);
+        border: 1px solid var(--cbx-border);
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 1px var(--cbx-box-shadow);
+      }
+      .cbx span:first-child svg {
+        position: absolute;
+        top: 3px;
+        left: 2px;
+        fill: none;
+        stroke: var(--main-white);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 16px;
+        stroke-dashoffset: 16px;
+        transition: all 0.3s ease;
+        transition-delay: 0.1s;
+        transform: translate3d(0, 0, 0);
+      }
+      .cbx span:last-child {
+        padding-left: 8px;
+        line-height: 18px;
+      }
+      .cbx:hover span:first-child {
+        border-color: var(--main-yellow);
+      }
+      .inp-cbx {
+        position: absolute;
+        visibility: hidden;
+      }
+      .inp-cbx:checked + .cbx span:first-child {
+        background: var(--main-yellow);
+        border-color: var(--main-yellow);
+        animation: wave 0.4s ease;
+      }
+      .inp-cbx:checked + .cbx span:first-child svg {
+        stroke-dashoffset: 0;
+      }
+
+      .inline-svg {
+        position: absolute;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+        user-select: none;
+      }
+      @media screen and (max-width: 640px) {
+        body {
+          width: auto;
+          display: inherit;
+          padding: 20px;
+        }
+        .cbx {
+          width: 100%;
+          margin-bottom: 4px;
+          display: inline-block;
+        }
+      }
+      @-moz-keyframes wave {
+        50% {
+          transform: scale(0.9);
+        }
+      }
+      @-webkit-keyframes wave {
+        50% {
+          transform: scale(0.9);
+        }
+      }
+      @-o-keyframes wave {
+        50% {
+          transform: scale(0.9);
+        }
+      }
+      @keyframes wave {
+        50% {
+          transform: scale(0.9);
+        }
+      }
+    }
+  }
+}
 .viewer-container {
   display: flex;
   align-items: center;
@@ -33,7 +154,6 @@
 }
 .sub-doc {
   padding-left: 30px;
-  margin-top: -9px;
 }
 
 .sub-date {
@@ -195,6 +315,7 @@ a:hover {
   font-weight: 500;
   color: var(--font-main);
   margin-bottom: 0px;
+  margin-top: -9px;
 
   .red-flag {
     color: var(--main-red);
@@ -266,11 +387,11 @@ a:hover {
 }
 
 .active-filter {
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
 .inactive-filter {
-  font-weight: 470;
+  font-weight: 470 !important;
 }
 
 .document-name {

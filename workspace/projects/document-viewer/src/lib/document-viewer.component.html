@@ -5,74 +5,136 @@
 >
   <div id="info-box">
     <div class="col-12 col-sm-12 p-0">
-      <div class="d-flex justify-content-center" *ngIf="docModel">
-        <ng-template #orgDocInfo>
-          <div class="sub-doc-info p-0">
-            <div *ngIf="collapsStatus">
-              {{ singleDocument?.file?.originalName }}
-            </div>
-            <span class="file-type-sub file-type">
-              <span
-                class="kat-sub-sent"
-                *ngIf="
-                  singleDocument?.file?.sent &&
-                  docModel.isModelContainerRjesenje
-                "
-              ></span>
-              <span
-                class="kat-sub-not-sent"
-                *ngIf="
-                  !singleDocument?.file?.sent &&
-                  docModel.isModelContainerRjesenje
-                "
-              ></span>
-              <span class="sub-date">{{
-                singleDocument?.file?.createdAt | date : "dd/MM/yy"
-              }}</span>
-            </span>
-            <div class="sub-dco-type">
-              {{ singleDocument?.file.type }}
-            </div>
-            <div class="mt-1">
-              <div *ngFor="let sentance of singleDocument.file.toFix">
-                <span class="mt-2"> {{ sentance }} </span>
-              </div>
+      <ng-template #orgDocInfo>
+        <div class="sub-doc-info p-0">
+          <div *ngIf="collapsStatus">
+            {{ singleDocument?.file?.originalName }}
+          </div>
+          <span class="file-type-sub file-type">
+            <span
+              class="kat-sub-sent"
+              *ngIf="
+                singleDocument?.file?.sent && docModel.isModelContainerRjesenje
+              "
+            ></span>
+            <span
+              class="kat-sub-not-sent"
+              *ngIf="
+                !singleDocument?.file?.sent && docModel.isModelContainerRjesenje
+              "
+            ></span>
+            <span class="sub-date">{{
+              singleDocument?.file?.createdAt | date : "dd/MM/yy"
+            }}</span>
+          </span>
+          <div class="sub-dco-type">
+            {{ singleDocument?.file.type }}
+          </div>
+          <div class="mt-1">
+            <div *ngFor="let sentance of singleDocument.file.toFix">
+              <span class="mt-2"> {{ sentance }} </span>
             </div>
           </div>
-        </ng-template>
+        </div>
+      </ng-template>
+      <!-- merged docs -->
 
-        <ng-container *ngIf="singleDocument.originalMergedDocs">
-          <div class="model-info p-0 parent-ellipsis">
+      <div
+        class="model-info p-0 parent-ellipsis d-contents"
+        *ngIf="singleDocument.originalMergedDocs"
+      >
+        <div ngbDropdown class="d-inline-block">
+          <button
+            type="button"
+            class="btn btn-transparent border-0 btn-classic merged-btn"
+            id="dropdownBasic1"
+            ngbDropdownToggle
+          >
             <span
-              (click)="filterPattern(doc.file)"
+              *ngIf="
+                selectedFile !== undefined && checkSelectedDocs() === false
+              "
+              class="document-name"
+              [ngClass]="
+                selectedFile.file.filterValue ||
+                activeFileId === selectedFile.file._id
+                  ? 'active-filter'
+                  : 'inactive-filter'
+              "
+            >
+              <div
+                class="underlined"
+                [ngStyle]="{
+                  'border-bottom':
+                    selectedFile.colorValue === openedDocColor
+                      ? '4px solid ' + selectedFile.colorValue
+                      : '4px solid ' + selectedFile.colorValue + '54'
+                }"
+              >
+                {{ selectedFile?.file?.originalName | stringEllipsis : 15 }}
+              </div>
+            </span>
+
+            <span
+              *ngIf="
+                checkSelectedDocs() === false && selectedFile === undefined
+              "
+              >Merged documents</span
+            >
+            <span *ngIf="checkSelectedDocs() === true"
+              >Multiple selected documents</span
+            >
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button
+              ngbDropdownItem
+              class="px-1"
               [ngbTooltip]="singleDocInfo"
               *ngFor="
                 let doc of singleDocument.originalMergedDocs;
                 last as isLast
               "
             >
-              <span
-                class="document-name"
+              <input
+                class="form-check-input inp-cbx"
+                type="checkbox"
+                name="document"
+                [id]="'defaultCheck' + doc.file._id"
+                [(ngModel)]="doc.file.filterValue"
+                (ngModelChange)="filterPattern($event, doc)"
+              />
+              <label
+                class="cbx m-0 d-flex align-items-center"
                 [ngClass]="
                   doc.file.filterValue || activeFileId === doc.file._id
                     ? 'active-filter'
                     : 'inactive-filter'
                 "
-              >
-                <div
-                  class="underlined"
-                  [ngStyle]="{
-                    'border-bottom':
-                      doc.colorValue === openedDocColor
-                        ? '4px solid ' + doc.colorValue
-                        : '4px solid ' + doc.colorValue + '54'
-                  }"
-                >
-                  {{ doc?.file?.originalName | stringEllipsis : 15 }}
-                </div>
-              </span>
-              <span *ngIf="!isLast"> & </span>
-
+                [for]="'defaultCheck' + doc.file._id"
+                style="width: fit-content"
+                ><span class="mx-2">
+                  <svg width="12px" height="10px">
+                    <use xlink:href="#check"></use></svg
+                ></span>
+                <span class="document-name">
+                  <div
+                    class="underlined"
+                    [ngStyle]="{
+                      'border-bottom':
+                        doc.colorValue === openedDocColor
+                          ? '4px solid ' + doc.colorValue
+                          : '4px solid ' + doc.colorValue + '54'
+                    }"
+                  >
+                    {{ doc?.file?.originalName | stringEllipsis : 20 }}
+                  </div>
+                </span>
+              </label>
+              <svg class="inline-svg mr-1">
+                <symbol id="check" viewbox="0 0 12 10">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                </symbol>
+              </svg>
               <!-- tooltip template -->
               <ng-template #singleDocInfo>
                 <div class="sub-doc-info">
@@ -101,23 +163,26 @@
                   </div>
                 </div>
               </ng-template>
-            </span>
+            </button>
           </div>
-        </ng-container>
-
-        <div class="model-info p-0 parent-ellipsis" [ngbTooltip]="orgDocInfo">
-          <p
-            *ngIf="!singleDocument.mergedDocs"
-            [ngClass]="{
-              'red-flag': documentConfig?.flag == 'red',
-              'green-flag': documentConfig?.flag == 'green'
-            }"
-            class="traning-model-name text-ellipsis"
-            (click)="collapsSubDocs()"
-          >
-            {{ singleDocument?.file?.originalName }}
-          </p>
         </div>
+      </div>
+
+      <!-- end of merged  -->
+      <div class="model-info p-0 parent-ellipsis" [ngbTooltip]="orgDocInfo">
+        <p
+          *ngIf="!singleDocument.mergedDocs"
+          [ngClass]="{
+            'red-flag': documentConfig?.flag == 'red',
+            'green-flag': documentConfig?.flag == 'green'
+          }"
+          class="traning-model-name text-ellipsis"
+          (click)="collapsSubDocs()"
+        >
+          {{ singleDocument?.file?.originalName }}
+        </p>
+      </div>
+      <div class="d-flex justify-content-center" *ngIf="docModel">
         <span
           *ngIf="
             singleDocument.file?.matchingDocs?.length > 0 && !collapsStatus

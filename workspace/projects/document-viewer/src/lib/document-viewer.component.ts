@@ -99,6 +99,7 @@ export class DocumentViewerComponent
   multipleDocs: boolean = false;
   filterFileIds = [];
   openedDocColor: string = '';
+  selectedFile: any;
   ngOnInit() {
     // console.log('valss', this.docModel, this.singleDocument);
     this.subscriptions = this.docViewerService.lineStatus.subscribe(
@@ -209,25 +210,28 @@ export class DocumentViewerComponent
   triggerSplitDocument($event: any) {
     this.triggerSplitEvent.emit($event);
   }
-
-  filterPattern(file: any) {
+  checkSelectedDocs() {
+    let check = this.singleDocument.originalMergedDocs.filter(
+      (el: any) => el.file.filterValue === true
+    ).length;
+    if (check == 0 || check > 1) {
+      this.selectedFile = undefined;
+    }
+    return check > 1;
+  }
+  filterPattern(checked: boolean, file: any) {
     this.activeFileId = '';
     let fileId;
     let filterValue;
-    fileId = file._id;
-    if (!file['filterValue'] || file['filterValue'] === false) {
-      file['filterValue'] = true;
-      filterValue = true;
-    } else {
-      file['filterValue'] = false;
-      filterValue = false;
-    }
+    fileId = file.file._id;
+    this.selectedFile = file;
+    file.file['filterValue'] = checked;
+    filterValue = checked;
 
     this.filterPatternEvent.emit({ fileId, filterValue });
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changes', changes['isOpenVar']);
     if (changes['pageInfo'] && changes['pageInfo'].currentValue) {
       this.docViewerService.pageInfo.next(changes['pageInfo'].currentValue);
     }
@@ -239,6 +243,8 @@ export class DocumentViewerComponent
         (doc: any) => doc.file._id === changes['activeFileId'].currentValue
       );
       f.file.filterValue = true;
+      console.log({ f });
+      this.selectedFile = f;
     }
 
     if (changes['reorderFinished'] && changes['reorderFinished'].currentValue) {
