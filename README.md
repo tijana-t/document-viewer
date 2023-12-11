@@ -1,6 +1,6 @@
 ## PDF VIEWER
 
-### Inside document-viewer/workspace `npm install`; Also inside projects/document-viewer `npm install`, then `cd ../../`
+### Inside document-viewer/workspace `npm install`; Also inside projects/document-viewer `npm install`, then `cd ../..`
 ### Build library - `ng build document-viewer`
 ### Linking library - `npm link` inside dist/document-viewer folder of a library; `npm link ngx-view-document` inside project where you want library to to be visible
 
