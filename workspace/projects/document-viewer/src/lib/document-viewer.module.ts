@@ -8,7 +8,7 @@ import { DocumentComponent } from './document/document.component';
 import { PageNavigationComponent } from './page-navigation/page-navigation.component';
 import { DocumentViewerComponent } from './document-viewer.component';
 import { InfoModalComponent } from './info-modal/info-modal.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     PageNavigationComponent,
     InfoModalComponent,
   ],
-  imports: [CommonModule, FormsModule, NgbModule, SharedComponentsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NgbModule,
+    SharedComponentsModule,
+    NgbDropdownModule,
+  ],
   exports: [
     DocumentViewerComponent,
     DocumentComponent,
