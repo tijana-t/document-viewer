@@ -21,13 +21,14 @@ import { DocumentConfig, ShowDocumentConfig } from '../_config/document.model';
   styleUrls: ['./document-actions.component.scss'],
 })
 export class DocumentActionsComponent
-  implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+  implements OnInit, AfterViewInit, OnChanges, OnDestroy
+{
   @Input('document') document: DocumentComponent | undefined;
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
   };
-  @Output("isOpen") isOpen = new EventEmitter();
-  @Input("isOpenVar") isOpenVar: boolean = false;
+  @Output('isOpen') isOpen = new EventEmitter();
+  @Input('isOpenVar') isOpenVar: boolean = false;
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
     zoomOutSrc: '',
@@ -52,8 +53,7 @@ export class DocumentActionsComponent
     showOrginal: false,
     viewPercent: 50,
   };
-  constructor(private docViewerService: DocumentViewerService) {
-  }
+  constructor(private docViewerService: DocumentViewerService) {}
 
   ngOnInit(): void {
     this.documentPage = document.getElementById('document-page');
@@ -118,17 +118,28 @@ export class DocumentActionsComponent
       const textLayer = document.getElementById('textLayer');
       const docImg = document.getElementById('docImgOrginal');
       const viewerContainer = document.getElementById('document-container');
+
       if (textLayer && viewerContainer && docImg) {
         // calculate margin: top = 34px and bottom = 34px set in css
         const SCALE_FACTOR_IMAGE =
           (viewerContainer.offsetHeight - 2 * 50) / docImg.offsetHeight;
         const SCALE_FACTOR_TEXT =
           (viewerContainer.offsetHeight - 2 * 50) / textLayer.offsetHeight;
+        console.log({
+          SCALE_FACTOR_IMAGE,
+          SCALE_FACTOR_TEXT,
+        });
         if (SCALE_FACTOR_TEXT !== 1) {
           textLayer.style.transform = 'scale(' + SCALE_FACTOR_TEXT + ')';
           this.documentConfig.containerWidth =
             docImg.offsetWidth * SCALE_FACTOR_IMAGE;
         }
+        console.log({
+          textLayer,
+          docImg,
+          viewerContainer,
+          width: docImg.offsetWidth,
+        });
       } else {
         console.log('Not detected textLayer');
       }
@@ -140,7 +151,7 @@ export class DocumentActionsComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("changes", changes['isOpenVar'])
+    console.log('changes', changes['isOpenVar']);
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
       this.scrollEvent();
@@ -168,10 +179,9 @@ export class DocumentActionsComponent
     }, 300);
   }
   isOpenEmmit() {
-    console.log("opend", this.isOpenVar);
-    this.opend = this.isOpenVar !== undefined ?
-      !this.isOpenVar : !this.opend;
-    this.isOpen.emit(this.opend)
+    console.log('opend', this.isOpenVar);
+    this.opend = this.isOpenVar !== undefined ? !this.isOpenVar : !this.opend;
+    this.isOpen.emit(this.opend);
   }
   ngOnDestroy() {
     this.destroy$.next(null);

@@ -8,7 +8,11 @@ import { DocumentComponent } from './document/document.component';
 import { PageNavigationComponent } from './page-navigation/page-navigation.component';
 import { DocumentViewerComponent } from './document-viewer.component';
 import { InfoModalComponent } from './info-modal/info-modal.component';
-import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDropdownModule,
+  NgbModule,
+  NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -25,6 +29,7 @@ import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule,
     SharedComponentsModule,
     NgbDropdownModule,
+    NgbPopoverModule,
   ],
   exports: [
     DocumentViewerComponent,
