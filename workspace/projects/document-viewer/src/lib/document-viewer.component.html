@@ -111,7 +111,6 @@
                     : 'inactive-filter'
                 "
                 [for]="'defaultCheck' + doc.file._id"
-                style="width: fit-content"
                 ><span class="mx-2">
                   <svg width="12px" height="10px">
                     <use xlink:href="#check"></use></svg
@@ -258,22 +257,22 @@
         <p>
           <span
             [ngClass]="
-              this.singleDocument.prev.fileName ? '' : 'disable-next-prev'
+              this.singleDocument.prev?.fileName ? '' : 'disable-next-prev'
             "
             class="doc-prev typcn typcn-chevron-left"
             (click)="
-              !this.singleDocument.prev.fileName ? null : changeDoc(false)
+              !this.singleDocument.prev?.fileName ? null : changeDoc(false)
             "
           ></span>
           MODEL: {{ docModel.modelName }} - {{ docModel.modelVersion }} @
           {{ singleDocument.file.createdAt | date : "MMM d, y HH:mm" }}
           <span
             [ngClass]="
-              this.singleDocument.next.fileName ? '' : 'disable-next-prev'
+              this.singleDocument.next?.fileName ? '' : 'disable-next-prev'
             "
             class="doc-next typcn typcn-chevron-right"
             (click)="
-              !this.singleDocument.next.fileName ? null : changeDoc(true)
+              !this.singleDocument.next?.fileName ? null : changeDoc(true)
             "
           ></span>
         </p>
