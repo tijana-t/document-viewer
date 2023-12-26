@@ -166,7 +166,124 @@
           </div>
         </div>
       </div>
+      <span
+        class="d-inline-flex mx-2 w-50px"
+        *ngIf="
+          singleDocument?.file?.existingAnalysedFilesGroupsIDs &&
+          singleDocument?.file.existingAnalysedFilesGroupsIDs.length > 0
+        "
+      >
+        <ul
+          *ngIf="singleDocument?.file.existingAnalysedFilesGroupsIDs"
+          class="list-of-existing-analysed"
+        >
+          <li
+            *ngFor="
+              let item of singleDocument?.file.existingAnalysedFilesGroupsIDs;
+              let i = index
+            "
+            (click)="redirectTo(item._id)"
+          >
+            <a
+              role="button"
+              ngbTooltip="Go to previous file"
+              class="text-small btn archive-btn btn-sm btn-circle bg-light"
+              *ngIf="i < 2"
+            >
+              <span class="archive-icon" [id]="item">
+                <svg
+                  version="1.0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="512.000000pt"
+                  height="512.000000pt"
+                  viewBox="0 0 512.000000 512.000000"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <g
+                    transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                    fill="#000000"
+                    stroke="none"
+                  >
+                    <path
+                      d="M1266 4949 c-62 -15 -153 -68 -197 -116 -22 -24 -55 -74 -72 -111
+l-32 -67 -3 -806 -3 -807 -167 -3 -168 -4 -76 -37 c-91 -45 -147 -103 -191
+-196 l-32 -67 0 -1136 0 -1135 37 -76 c45 -91 103 -147 196 -191 l67 -32 1695
+0 1695 0 67 32 c37 17 87 50 112 73 55 51 111 158 121 232 4 29 115 539 247
+1133 261 1178 253 1127 203 1225 -36 71 -67 103 -137 141 l-63 34 -362 3 -363
+3 0 617 0 617 -343 342 -342 343 -925 -1 c-518 -1 -942 -5 -964 -10z m1775
+-317 l4 -168 37 -76 c45 -91 103 -147 196 -191 66 -31 71 -32 235 -35 l167 -4
+0 -799 0 -799 -862 0 -862 0 -241 240 -241 240 -177 0 -177 0 0 776 c0 581 3
+787 12 818 15 51 99 137 148 153 24 8 299 11 896 12 l862 1 3 -168z m447 -310
+c-105 -4 -153 12 -213 72 -60 61 -75 102 -75 212 l0 79 180 -180 180 -180 -72
+-3z m-1843 -1682 l241 -240 1033 0 c782 0 1044 -3 1075 -12 55 -16 138 -99
+154 -154 17 -59 17 -1689 0 -1748 -16 -55 -99 -138 -154 -154 -60 -17 -3288
+-17 -3348 0 -55 16 -138 99 -154 154 -17 60 -17 2168 0 2228 15 51 99 137 148
+153 23 7 164 11 400 12 l364 1 241 -240z m2899 226 c39 -16 84 -71 91 -112 3
+-18 -56 -301 -154 -739 l-159 -710 -3 476 -4 475 -37 76 c-70 140 -187 216
+-349 226 l-89 5 0 158 0 159 335 0 c264 0 343 -3 369 -14z"
+                    />
+                    <path
+                      d="M1440 4400 l0 -80 720 0 720 0 0 80 0 80 -720 0 -720 0 0 -80z"
+                    />
+                    <path
+                      d="M1440 4080 l0 -80 720 0 720 0 0 80 0 80 -720 0 -720 0 0 -80z"
+                    />
+                    <path
+                      d="M1440 3760 l0 -80 960 0 960 0 0 80 0 80 -960 0 -960 0 0 -80z"
+                    />
+                    <path
+                      d="M1440 3440 l0 -80 960 0 960 0 0 80 0 80 -960 0 -960 0 0 -80z"
+                    />
+                  </g>
+                </svg>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </span>
+      <!--  triggers="mouseenter:mouseleave" -->
+      <button
+        [ngbPopover]="popContent2"
+        [popoverTitle]="'Archived documents'"
+        popoverClass="archived-popover-container"
+        *ngIf="
+          singleDocument?.file?.existingAnalysedFilesGroupsIDs &&
+          singleDocument?.file.existingAnalysedFilesGroupsIDs.length > 2
+        "
+        class="archived-button hover-button"
+        (click)="onClickArchived($event)"
+      >
+        <span class="typcn typcn-plus" style="font-size: 8px"></span>
+        <span>{{
+          singleDocument?.file.existingAnalysedFilesGroupsIDs.length - 2
+        }}</span>
+      </button>
+      <ng-template #popContent2 class="model-group-file">
+        <div
+          *ngFor="
+            let groupFile of singleDocument?.file
+              ?.existingAnalysedFilesGroupsIDs;
+            let i = index
+          "
+        >
+          <p
+            *ngIf="i > 1"
+            role="button"
+            class="text-small prev-file mb-2"
+            (click)="redirectTo(groupFile._id)"
+          >
+            {{ groupFile.externalData.contractId }}
 
+            |
+            <small
+              ><i class="bi bi-calendar"></i>
+              {{ groupFile.createdAt | date }}</small
+            >
+          </p>
+        </div>
+
+        <!-- <span *ngIf="groupFile !== undefined"> {{ groupFile }}</span> -->
+      </ng-template>
       <!-- end of merged  -->
       <div class="model-info p-0 parent-ellipsis" [ngbTooltip]="orgDocInfo">
         <p
@@ -253,7 +370,13 @@
           </div>
         </div>
       </div>
-      <div class="align-items-center info-container" *ngIf="docModel">
+      <div
+        class="align-items-center info-container"
+        *ngIf="docModel"
+        [ngClass]="{
+          'mt-3': singleDocument?.file?.existingAnalysedFilesGroupsIDs
+        }"
+      >
         <p>
           <span
             [ngClass]="
