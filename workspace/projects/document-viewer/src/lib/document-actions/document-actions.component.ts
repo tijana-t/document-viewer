@@ -53,6 +53,7 @@ export class DocumentActionsComponent
     showOrginal: false,
     viewPercent: 50,
   };
+  scalingApplied: boolean = false;
   constructor(private docViewerService: DocumentViewerService) {}
 
   ngOnInit(): void {
@@ -114,37 +115,54 @@ export class DocumentActionsComponent
   }
 
   fitToPage() {
+    // this.scalingApplied = false;
     setTimeout(() => {
       const textLayer = document.getElementById('textLayer');
       const docImg = document.getElementById('docImgOrginal');
       const viewerContainer = document.getElementById('document-container');
 
       if (textLayer && viewerContainer && docImg) {
-        // calculate margin: top = 34px and bottom = 34px set in css
-        const SCALE_FACTOR_IMAGE =
-          (viewerContainer.offsetHeight - 2 * 50) / docImg.offsetHeight;
-        const SCALE_FACTOR_TEXT =
-          (viewerContainer.offsetHeight - 2 * 50) / textLayer.offsetHeight;
-        console.log({
-          SCALE_FACTOR_IMAGE,
-          SCALE_FACTOR_TEXT,
-        });
-        if (SCALE_FACTOR_TEXT !== 1) {
-          textLayer.style.transform = 'scale(' + SCALE_FACTOR_TEXT + ')';
-          this.documentConfig.containerWidth =
-            docImg.offsetWidth * SCALE_FACTOR_IMAGE;
+        // Check if scaling has already been applied
+        if (!this.scalingApplied) {
+          // Calculate available height for scaling, considering margins
+          const margin = 34 * 2;
+          const availableHeight = viewerContainer.offsetHeight - margin;
+
+          // Calculate scale factors based on available height
+          const SCALE_FACTOR_IMAGE = availableHeight / docImg.offsetHeight;
+          const SCALE_FACTOR_TEXT = availableHeight / textLayer.offsetHeight;
+
+          // Choose the minimum scale factor to ensure both image and text fit within the container
+          const minScaleFactor = Math.min(
+            SCALE_FACTOR_IMAGE,
+            SCALE_FACTOR_TEXT
+          );
+
+          if (minScaleFactor < 1) {
+            // Apply the scale factor to both text and image
+            textLayer.style.transform = 'scale(' + minScaleFactor + ')';
+            this.documentConfig.containerWidth =
+              docImg.offsetWidth * minScaleFactor;
+          } else {
+            // Reset the textLayer to its original state
+            textLayer.style.transform = 'none';
+            this.documentConfig.containerWidth = docImg.offsetWidth;
+          }
+
+          // Set the flag to indicate that scaling has been applied
+          this.scalingApplied = true;
         }
-        console.log({
-          textLayer,
-          docImg,
-          viewerContainer,
-          width: docImg.offsetWidth,
-        });
       } else {
-        console.log('Not detected textLayer');
+        console.log('Not detected textLayer, viewerContainer, or docImg');
       }
+
+      // Notify subscribers about the updated document configuration
       this.docViewerService.docConfSubject.next(this.documentConfig);
+
+      // Additional functions to be called after the scaling logic (e.g., scrollEvent)
       this.scrollEvent();
+
+      // Reset zoom states if needed
       this.zoomInDisabled = false;
       this.zoomOutDisabled = false;
     }, 0);
