@@ -466,3 +466,16 @@ a:hover {
 .w-50px {
   width: 53px;
 }
+.prev-file {
+  background: var(--bg-color2);
+  padding: 0 8px 3px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.prev-file:hover {
+  color: var(--main-yellow);
+}
+:host ::ng-deep .archived-popover-container.popover .popover-body {
+  max-height: 30vh;
+  overflow-y: auto;
+}

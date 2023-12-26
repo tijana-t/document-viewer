@@ -182,7 +182,7 @@
               let item of singleDocument?.file.existingAnalysedFilesGroupsIDs;
               let i = index
             "
-            (click)="redirectTo(item)"
+            (click)="redirectTo(item._id)"
           >
             <a
               role="button"
@@ -258,7 +258,7 @@ c-105 -4 -153 12 -213 72 -60 61 -75 102 -75 212 l0 79 180 -180 180 -180 -72
           singleDocument?.file.existingAnalysedFilesGroupsIDs.length - 2
         }}</span>
       </button>
-      <ng-template #popContent2>
+      <ng-template #popContent2 class="model-group-file">
         <div
           *ngFor="
             let groupFile of singleDocument?.file
@@ -266,15 +266,20 @@ c-105 -4 -153 12 -213 72 -60 61 -75 102 -75 212 l0 79 180 -180 180 -180 -72
             let i = index
           "
         >
-          <a
+          <p
             *ngIf="i > 1"
             role="button"
-            ngbTooltip="Go to previous file"
-            class="text-small"
-            (click)="redirectTo(groupFile)"
+            class="text-small prev-file mb-2"
+            (click)="redirectTo(groupFile._id)"
           >
-            {{ groupFile }}</a
-          >
+            {{ groupFile.externalData.contractId }}
+
+            |
+            <small
+              ><i class="bi bi-calendar"></i>
+              {{ groupFile.createdAt | date }}</small
+            >
+          </p>
         </div>
 
         <!-- <span *ngIf="groupFile !== undefined"> {{ groupFile }}</span> -->
