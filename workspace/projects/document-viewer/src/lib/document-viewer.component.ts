@@ -223,14 +223,27 @@ export class DocumentViewerComponent
     return check > 1;
   }
   filterPattern(checked: boolean, file: any) {
-    this.activeFileId = '';
     let fileId;
     let filterValue;
-    fileId = file.file._id;
-    this.selectedFile = file;
-    file.file['filterValue'] = checked;
-    filterValue = checked;
-
+    // console.log({ file: file.file });
+    if (checked) {
+      this.activeFileId = '';
+      fileId = file.file._id;
+      file.file['filterValue'] = checked;
+      filterValue = checked;
+    } else {
+      let findDoc = this.singleDocument.originalMergedDocs.find(
+        (el: any) => el === file
+      );
+      findDoc.file.filterValue = false;
+      filterValue = false;
+    }
+    let findChecked = this.singleDocument.originalMergedDocs.find(
+      (el: any) => el.file.filterValue === true
+    );
+    if (findChecked !== -1) {
+      this.selectedFile = findChecked;
+    }
     this.filterPatternEvent.emit({ fileId, filterValue });
   }
 

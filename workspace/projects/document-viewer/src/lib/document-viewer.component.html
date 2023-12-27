@@ -43,7 +43,7 @@
         class="model-info p-0 parent-ellipsis d-contents"
         *ngIf="singleDocument.originalMergedDocs"
       >
-        <div ngbDropdown class="d-inline-block">
+        <div ngbDropdown class="d-inline-block" [autoClose]="'outside'">
           <button
             type="button"
             class="btn btn-transparent border-0 btn-classic merged-btn"
@@ -186,9 +186,13 @@
           >
             <a
               role="button"
-              ngbTooltip="Go to previous file"
+              [ngbTooltip]="tooltipFile"
               class="text-small btn archive-btn btn-sm btn-circle bg-light"
-              *ngIf="i < 2"
+              *ngIf="
+                singleDocument.file.existingAnalysedFilesGroupsIDs.length === 3
+                  ? i < 3
+                  : i < 2
+              "
             >
               <span class="archive-icon" [id]="item">
                 <svg
@@ -230,6 +234,18 @@
                   </g>
                 </svg>
               </span>
+              <ng-template #tooltipFile>
+                <div>
+                  <p class="mb-1 pb-1">
+                    {{ item.externalData.contractId }}
+                  </p>
+
+                  <small
+                    ><i class="bi bi-calendar"></i>
+                    {{ item.createdAt | date }}</small
+                  >
+                </div>
+              </ng-template>
             </a>
           </li>
         </ul>
@@ -241,13 +257,13 @@
         popoverClass="archived-popover-container"
         *ngIf="
           singleDocument?.file?.existingAnalysedFilesGroupsIDs &&
-          singleDocument?.file.existingAnalysedFilesGroupsIDs.length > 2
+          singleDocument?.file.existingAnalysedFilesGroupsIDs.length > 3
         "
         class="archived-button hover-button"
         (click)="onClickArchived($event)"
       >
-        <span class="typcn typcn-plus" style="font-size: 8px"></span>
-        <span>{{
+        <span class="typcn typcn-plus" style="font-size: 9px"></span>
+        <span style="font-size: 11px">{{
           singleDocument?.file.existingAnalysedFilesGroupsIDs.length - 2
         }}</span>
       </button>
