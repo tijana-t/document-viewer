@@ -383,7 +383,8 @@
         class="align-items-center info-container"
         *ngIf="docModel"
         [ngClass]="{
-          'mt-3': singleDocument?.file?.existingAnalysedFilesGroupsIDs
+          'mt-3':
+            singleDocument?.file?.existingAnalysedFilesGroupsIDs?.length > 0
         }"
       >
         <p>
