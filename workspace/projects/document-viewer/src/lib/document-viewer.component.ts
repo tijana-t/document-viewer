@@ -225,25 +225,19 @@ export class DocumentViewerComponent
   filterPattern(checked: boolean, file: any) {
     let fileId;
     let filterValue;
-    // console.log({ file: file.file });
-    if (checked) {
-      this.activeFileId = '';
-      fileId = file.file._id;
-      file.file['filterValue'] = checked;
-      filterValue = checked;
-    } else {
-      let findDoc = this.singleDocument.originalMergedDocs.find(
-        (el: any) => el === file
-      );
-      findDoc.file.filterValue = false;
-      filterValue = false;
-    }
+    this.activeFileId = '';
+
+    file.file['filterValue'] = checked;
+    fileId = file.file._id;
+    filterValue = checked;
     let findChecked = this.singleDocument.originalMergedDocs.find(
       (el: any) => el.file.filterValue === true
     );
     if (findChecked !== -1) {
       this.selectedFile = findChecked;
+      // fileId = this.selectedFile.file._id;
     }
+
     this.filterPatternEvent.emit({ fileId, filterValue });
   }
 
