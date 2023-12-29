@@ -6,7 +6,6 @@
   box-shadow: unset !important;
   outline: unset !important;
   ~ .dropdown-menu {
-    height: 30vh;
     overflow-y: auto;
     .dropdown-item:hover,
     .dropdown-item:active,
@@ -399,4 +398,84 @@ a:hover {
 }
 .underlined {
   display: inline-block;
+}
+.archive-icon svg {
+  width: 18px;
+  height: auto;
+}
+.archive-btn {
+  width: 35px !important;
+  height: 35px !important;
+}
+.bi.bi-check-circle.icons-action::before {
+  font-size: 20px;
+  vertical-align: bottom;
+  position: relative;
+  top: 2px;
+  cursor: pointer;
+}
+.bi.bi-check-circle.icons-action.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.list-of-existing-analysed {
+  list-style: none !important;
+  padding-left: 0px !important;
+  display: flex;
+  align-items: center;
+}
+.list-of-existing-analysed li:not(:first-child) {
+  margin-left: -8px;
+}
+.text-small {
+  font-size: small !important;
+}
+.list-of-existing-analysed li {
+  padding-top: 5px;
+}
+.list-of-existing-analysed li a {
+  border: 1px solid #93959c !important;
+}
+.list-of-existing-analysed a {
+  border: 1px solid #93959c !important;
+}
+:host ::ng-deep .archived-popover-container.popover .popover-header {
+  border-radius: unset !important;
+}
+.archived-button {
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font-family: inherit;
+  margin-left: -7px;
+  border-radius: 50%;
+  color: var(--main-white);
+  width: 35px;
+  height: 35px;
+  border: 2px solid var(--main-white);
+  -o-object-fit: cover;
+  object-fit: cover;
+  -o-object-position: 50% 50%;
+  object-position: 50% 50%;
+  position: relative;
+}
+.hover-button {
+  background-color: var(--heavy-gray) !important;
+  color: var(--main-white);
+  font-size: 10px;
+}
+.w-50px {
+  width: 53px;
+}
+.prev-file {
+  padding: 0 8px 3px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.prev-file:hover {
+  color: var(--main-yellow);
+}
+:host ::ng-deep .archived-popover-container.popover .popover-body {
+  max-height: 30vh;
+  overflow-y: auto;
 }

@@ -92,6 +92,7 @@ export class DocumentViewerComponent
   @Input('inProjects') inProjects: any;
   @Output('naturalDimensions') naturalDimensions = new EventEmitter();
   @Output('showDebugger') showDebugger = new EventEmitter();
+  @Output('triggerRoute') triggerRoute = new EventEmitter();
   @Input('triggeredModalIsOpen') triggeredModalIsOpen: any;
   subscriptions = new Subscription();
   destroy$ = new Subject();
@@ -101,7 +102,7 @@ export class DocumentViewerComponent
   openedDocColor: string = '';
   selectedFile: any;
   ngOnInit() {
-    // console.log('valss', this.docModel, this.singleDocument);
+    console.log('singleDocument', this.singleDocument);
     this.subscriptions = this.docViewerService.lineStatus.subscribe(
       (status) => {
         this.linePosition.emit();
@@ -131,7 +132,9 @@ export class DocumentViewerComponent
   constructor(private docViewerService: DocumentViewerService) {}
 
   ngAfterViewInit() {}
-
+  redirectTo(fileId: string) {
+    this.triggerRoute.next(fileId);
+  }
   emitSearchedText(event: any) {
     this.searchDocument.emit(event);
   }
@@ -220,13 +223,20 @@ export class DocumentViewerComponent
     return check > 1;
   }
   filterPattern(checked: boolean, file: any) {
-    this.activeFileId = '';
     let fileId;
     let filterValue;
-    fileId = file.file._id;
-    this.selectedFile = file;
+    this.activeFileId = '';
+
     file.file['filterValue'] = checked;
+    fileId = file.file._id;
     filterValue = checked;
+    let findChecked = this.singleDocument.originalMergedDocs.find(
+      (el: any) => el.file.filterValue === true
+    );
+    if (findChecked !== -1) {
+      this.selectedFile = findChecked;
+      // fileId = this.selectedFile.file._id;
+    }
 
     this.filterPatternEvent.emit({ fileId, filterValue });
   }
@@ -338,5 +348,9 @@ export class DocumentViewerComponent
   }
   exportMonthlyStatEventEmmiter(data: any) {
     this.exportMonthlyStat.emit(data);
+  }
+  onClickArchived(e: any) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 }

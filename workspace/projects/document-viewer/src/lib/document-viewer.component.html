@@ -43,7 +43,7 @@
         class="model-info p-0 parent-ellipsis d-contents"
         *ngIf="singleDocument.originalMergedDocs"
       >
-        <div ngbDropdown class="d-inline-block">
+        <div ngbDropdown class="d-inline-block" [autoClose]="'outside'">
           <button
             type="button"
             class="btn btn-transparent border-0 btn-classic merged-btn"
@@ -104,14 +104,13 @@
                 (ngModelChange)="filterPattern($event, doc)"
               />
               <label
-                class="cbx m-0 d-flex align-items-center"
+                class="w-100 cbx m-0 d-flex align-items-center"
                 [ngClass]="
                   doc.file.filterValue || activeFileId === doc.file._id
                     ? 'active-filter'
                     : 'inactive-filter'
                 "
                 [for]="'defaultCheck' + doc.file._id"
-                style="width: fit-content"
                 ><span class="mx-2">
                   <svg width="12px" height="10px">
                     <use xlink:href="#check"></use></svg
@@ -167,7 +166,133 @@
           </div>
         </div>
       </div>
+      <span
+        class="d-inline-flex mx-2 w-50px"
+        *ngIf="
+          singleDocument?.file?.existingAnalysedFilesGroupsIDs &&
+          singleDocument?.file.existingAnalysedFilesGroupsIDs.length > 0
+        "
+      >
+        <ul
+          *ngIf="singleDocument?.file.existingAnalysedFilesGroupsIDs"
+          class="list-of-existing-analysed"
+        >
+          <li
+            *ngFor="
+              let item of singleDocument?.file.existingAnalysedFilesGroupsIDs;
+              let i = index
+            "
+            (click)="redirectTo(item._id)"
+          >
+            <a
+              role="button"
+              [ngbTooltip]="tooltipFile"
+              class="text-small btn archive-btn btn-sm btn-circle bg-light"
+              *ngIf="
+                singleDocument.file.existingAnalysedFilesGroupsIDs.length === 3
+                  ? i < 3
+                  : i < 2
+              "
+            >
+              <span class="archive-icon" [id]="item">
+                <svg
+                  version="1.0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="512.000000pt"
+                  height="512.000000pt"
+                  viewBox="0 0 512.000000 512.000000"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <g
+                    transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                    fill="#000000"
+                    stroke="none"
+                  >
+                    <path
+                      d="M1116 5039 c-88 -21 -156 -91 -177 -182 -10 -46 -7 -80 25 -287 20
+               -129 39 -245 41 -257 l5 -23 -201 0 c-124 0 -217 -4 -240 -12 -82 -24 -153
+               -112 -165 -200 -4 -35 48 -430 71 -535 5 -23 5 -23 -131 -23 -77 0 -154 -5
+               -176 -12 -63 -19 -134 -89 -154 -152 -17 -53 -15 -68 120 -1487 75 -789 141
+               -1459 147 -1489 21 -121 97 -221 209 -274 l65 -31 2000 0 c1915 0 2002 1 2053
+               18 98 35 183 120 218 219 8 24 71 638 155 1515 141 1462 142 1476 125 1529
+               -20 63 -91 133 -154 152 -22 7 -98 12 -171 12 -72 0 -131 4 -131 9 0 4 16 111
+               36 237 19 126 35 254 36 284 1 91 -45 170 -126 213 -38 20 -57 22 -262 25
+               l-221 3 39 227 c47 285 48 338 8 410 -34 58 -86 96 -152 112 -56 12 -2837 12
+               -2892 -1z m2673 -516 c-15 -93 -31 -183 -34 -200 l-6 -33 -1189 0 c-655 0
+               -1190 3 -1190 8 0 4 -14 90 -30 192 -16 102 -30 188 -30 193 0 4 564 7 1253 7
+               l1254 0 -28 -167z m557 -610 c-2 -10 -17 -102 -32 -205 l-28 -188 -1723 0
+               c-948 0 -1723 2 -1723 4 0 1 -13 88 -30 192 -16 104 -30 195 -30 202 0 9 364
+               12 1786 12 1696 0 1785 -1 1780 -17z m400 -800 c-7 -53 -256 -2653 -256 -2671
+               0 -9 -473 -12 -1930 -12 -1584 0 -1930 2 -1930 13 0 20 -249 2614 -256 2670
+               l-6 47 2192 0 2192 0 -6 -47z"
+                    />
+                    <path
+                      d="M1731 2372 c-19 -9 -48 -34 -65 -55 -27 -34 -31 -47 -31 -101 0 -75
+               27 -122 90 -158 l40 -23 795 0 795 0 40 23 c63 36 90 83 90 158 0 54 -4 67
+               -31 101 -62 78 -3 73 -894 73 -737 0 -797 -1 -829 -18z"
+                    />
+                  </g>
+                </svg>
+              </span>
+              <ng-template #tooltipFile>
+                <div>
+                  <p class="mb-1 pb-1">
+                    {{ item.externalData.contractId }}
+                  </p>
 
+                  <small
+                    ><i class="bi bi-calendar"></i>
+                    {{ item.createdAt | date }}</small
+                  >
+                </div>
+              </ng-template>
+            </a>
+          </li>
+        </ul>
+      </span>
+      <!--  triggers="mouseenter:mouseleave" -->
+      <button
+        [ngbPopover]="popContent2"
+        [popoverTitle]="'Archived documents'"
+        popoverClass="archived-popover-container"
+        *ngIf="
+          singleDocument?.file?.existingAnalysedFilesGroupsIDs &&
+          singleDocument?.file.existingAnalysedFilesGroupsIDs.length > 3
+        "
+        class="archived-button hover-button"
+        (click)="onClickArchived($event)"
+      >
+        <span class="typcn typcn-plus" style="font-size: 9px"></span>
+        <span style="font-size: 11px">{{
+          singleDocument?.file.existingAnalysedFilesGroupsIDs.length - 2
+        }}</span>
+      </button>
+      <ng-template #popContent2 class="model-group-file">
+        <div
+          *ngFor="
+            let groupFile of singleDocument?.file
+              ?.existingAnalysedFilesGroupsIDs;
+            let i = index
+          "
+        >
+          <p
+            *ngIf="i > 1"
+            role="button"
+            class="text-small prev-file mb-2"
+            (click)="redirectTo(groupFile._id)"
+          >
+            {{ groupFile.externalData.contractId }}
+
+            |
+            <small
+              ><i class="bi bi-calendar"></i>
+              {{ groupFile.createdAt | date }}</small
+            >
+          </p>
+        </div>
+
+        <!-- <span *ngIf="groupFile !== undefined"> {{ groupFile }}</span> -->
+      </ng-template>
       <!-- end of merged  -->
       <div class="model-info p-0 parent-ellipsis" [ngbTooltip]="orgDocInfo">
         <p
@@ -254,26 +379,33 @@
           </div>
         </div>
       </div>
-      <div class="align-items-center info-container" *ngIf="docModel">
+      <div
+        class="align-items-center info-container"
+        *ngIf="docModel"
+        [ngClass]="{
+          'mt-3':
+            singleDocument?.file?.existingAnalysedFilesGroupsIDs?.length > 0
+        }"
+      >
         <p>
           <span
             [ngClass]="
-              this.singleDocument.prev.fileName ? '' : 'disable-next-prev'
+              this.singleDocument.prev?.fileName ? '' : 'disable-next-prev'
             "
             class="doc-prev typcn typcn-chevron-left"
             (click)="
-              !this.singleDocument.prev.fileName ? null : changeDoc(false)
+              !this.singleDocument.prev?.fileName ? null : changeDoc(false)
             "
           ></span>
           MODEL: {{ docModel.modelName }} - {{ docModel.modelVersion }} @
           {{ singleDocument.file.createdAt | date : "MMM d, y HH:mm" }}
           <span
             [ngClass]="
-              this.singleDocument.next.fileName ? '' : 'disable-next-prev'
+              this.singleDocument.next?.fileName ? '' : 'disable-next-prev'
             "
             class="doc-next typcn typcn-chevron-right"
             (click)="
-              !this.singleDocument.next.fileName ? null : changeDoc(true)
+              !this.singleDocument.next?.fileName ? null : changeDoc(true)
             "
           ></span>
         </p>
