@@ -85,7 +85,13 @@
               >Multiple selected documents</span
             >
           </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <div
+            ngbDropdownMenu
+            [ngClass]="{
+              'scroll-auto': singleDocument.originalMergedDocs.length > 5
+            }"
+            aria-labelledby="dropdownBasic1"
+          >
             <button
               ngbDropdownItem
               class="px-1"
