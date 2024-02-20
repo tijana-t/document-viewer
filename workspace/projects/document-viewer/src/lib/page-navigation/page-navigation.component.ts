@@ -643,10 +643,22 @@ export class PageNavigationComponent
       'thumb',
       'img'
     );
+
+    if (this.documentsList.length)
+      this.openedDoc = this.documentsList.find(
+        (doc: any) =>
+          doc.file._id === this.thumbnails[this.pageNumber - 1].fileId
+      );
+
+    console.log('opened', this.openedDoc, mainImg, this.documentsList);
     this.docViewerService.mainImgInfo.next({
       mainImg,
-      originalImgExtension: this.originalImgExtension,
-      mainImgExtension: this.mainImgExtension,
+      originalImgExtension: this.documentsList.length
+        ? this.openedDoc['originalImg']
+        : this.originalImgExtension,
+      mainImgExtension: this.documentsList.length
+        ? this.openedDoc['mainImgExtension']
+        : this.mainImgExtension,
       colorValue: this.thumbnails[this.pageNumber - 1].thumbColor,
     });
     this.openedDocColor = this.thumbnails[this.pageNumber - 1].thumbColor;

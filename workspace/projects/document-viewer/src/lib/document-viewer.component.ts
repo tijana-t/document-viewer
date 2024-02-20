@@ -214,13 +214,17 @@ export class DocumentViewerComponent
     this.triggerSplitEvent.emit($event);
   }
   checkSelectedDocs() {
-    let check = this.singleDocument.originalMergedDocs.filter(
-      (el: any) => el.file.filterValue === true
-    ).length;
-    if (check == 0 || check > 1) {
-      this.selectedFile = undefined;
+    if (this.singleDocument.originalMergedDocs) {
+      let check = this.singleDocument.originalMergedDocs.filter(
+        (el: any) => el.file.filterValue === true
+      ).length;
+      if (check == 0 || check > 1) {
+        this.selectedFile = undefined;
+      }
+      return check > 1;
+    } else {
+      return false;
     }
-    return check > 1;
   }
   filterPattern(checked: boolean, file: any) {
     let fileId;
