@@ -9,6 +9,8 @@ export type Thumbnail = {
   thumbId?: number;
   orderingNumber?: number;
   fileName?: string;
+  originalImg?: string;
+  mainImgExtension?: string;
   originalName?: string;
   showReorder?: boolean;
   showDivider?: boolean;
