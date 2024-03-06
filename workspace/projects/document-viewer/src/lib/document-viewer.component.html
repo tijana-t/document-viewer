@@ -38,10 +38,23 @@
         </div>
       </ng-template>
       <!-- merged docs -->
+      <div
+        class="model-info p-0 parent-ellipsis d-contents"
+        *ngIf="
+          checkSelectedDocs() === false &&
+          selectedFile === undefined &&
+          singleDocument.originalMergedDocs &&
+          singleDocument.originalMergedDocs?.length === 1
+        "
+      >
+        {{
+          singleDocument?.originalMergedDocs[0].file?.originalName.split(".")[0]
+        }}
+      </div>
 
       <div
         class="model-info p-0 parent-ellipsis d-contents"
-        *ngIf="singleDocument.originalMergedDocs"
+        *ngIf="singleDocument.originalMergedDocs?.length > 1"
       >
         <div ngbDropdown class="d-inline-block" [autoClose]="'outside'">
           <button
@@ -77,15 +90,25 @@
 
             <span
               *ngIf="
-                checkSelectedDocs() === false && selectedFile === undefined
+                checkSelectedDocs() === false &&
+                selectedFile === undefined &&
+                singleDocument.originalMergedDocs?.length > 1
               "
               >Merged documents</span
             >
+
             <span *ngIf="checkSelectedDocs() === true"
               >Multiple selected documents</span
             >
           </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <div
+            *ngIf="singleDocument.originalMergedDocs.length > 1"
+            ngbDropdownMenu
+            [ngClass]="{
+              'scroll-auto': singleDocument.originalMergedDocs.length > 5
+            }"
+            aria-labelledby="dropdownBasic1"
+          >
             <button
               ngbDropdownItem
               class="px-1"

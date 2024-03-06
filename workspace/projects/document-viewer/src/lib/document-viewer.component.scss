@@ -6,7 +6,6 @@
   box-shadow: unset !important;
   outline: unset !important;
   ~ .dropdown-menu {
-    overflow-y: auto;
     .dropdown-item:hover,
     .dropdown-item:active,
     .dropdown-item:focus {
@@ -118,6 +117,10 @@
         }
       }
     }
+  }
+  ~ .dropdown-menu.scroll-auto {
+    overflow-y: auto;
+    height: 257px;
   }
 }
 .viewer-container {
