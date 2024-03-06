@@ -119,7 +119,7 @@ export class DocumentComponent
           colorValue?: string;
         }) => {
           if (res) {
-            // console.log('res document', res);
+            console.log('res document', res);
             this.docViewerService.docConfSubject.next({
               containerWidth: 0,
             });
@@ -240,7 +240,10 @@ export class DocumentComponent
     });
   }
 
-  imageError(event: Event) {
+  imageError(event: any) {
+    if (event.target) {
+      event.target?.classList.add('d-none');
+    }
     console.log('EROR: ', event);
   }
 
