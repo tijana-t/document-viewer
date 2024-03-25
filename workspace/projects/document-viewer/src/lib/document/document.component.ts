@@ -242,7 +242,7 @@ export class DocumentComponent
 
   imageError(event: any) {
     if (event.target) {
-      event.target?.classList.add('d-none');
+      event.target?.classList.add('invisible');
     }
     console.log('EROR: ', event);
   }
