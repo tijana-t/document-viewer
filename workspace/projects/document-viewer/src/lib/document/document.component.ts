@@ -33,6 +33,7 @@ export class DocumentComponent
   implements OnInit, AfterViewInit, OnDestroy, OnChanges
 {
   @ViewChild('documentCanvas') documentCanvas: any;
+  @ViewChild('documentImage')
   documentImage: any;
   mainImg: string = '';
   mainImgOrginal: string = '';
@@ -180,6 +181,10 @@ export class DocumentComponent
     this.subscriptions = this.docViewerService.changeDocSubject.subscribe(
       (res: boolean) => {
         this.changeDocument = res;
+
+        if (this.changeDocument) {
+          this.documentImage?.classList.remove('.invisible');
+        }
       }
     );
 
@@ -244,7 +249,6 @@ export class DocumentComponent
     if (event.target) {
       event.target?.classList.add('invisible');
     }
-    console.log('EROR: ', event);
   }
 
   onImageLoaded(event: any) {
@@ -259,6 +263,7 @@ export class DocumentComponent
           imgHeight: event.path[0].naturalHeight,
         });
       }
+      event.target.classList.remove('invisible');
     }
   }
 
