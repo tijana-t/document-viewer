@@ -90,6 +90,7 @@
           id="docImg"
           #documentImage
           [src]="mainImg | secureImg | async"
+          (load)="onImageLoaded($event)"
           (error)="imageError($event)"
         />
       </div>
