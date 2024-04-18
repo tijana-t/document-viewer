@@ -7,7 +7,6 @@ import { DocumentActionsLeftComponent } from './document-actions-left/document-a
 import { DocumentComponent } from './document/document.component';
 import { PageNavigationComponent } from './page-navigation/page-navigation.component';
 import { DocumentViewerComponent } from './document-viewer.component';
-import { InfoModalComponent } from './info-modal/info-modal.component';
 import {
   NgbDropdownModule,
   NgbModule,
@@ -21,7 +20,6 @@ import {
     DocumentActionsComponent,
     DocumentActionsLeftComponent,
     PageNavigationComponent,
-    InfoModalComponent,
   ],
   imports: [
     CommonModule,
@@ -37,7 +35,6 @@ import {
     DocumentActionsComponent,
     DocumentActionsLeftComponent,
     PageNavigationComponent,
-    InfoModalComponent,
   ],
 })
 export class DocumentViewerModule {}
