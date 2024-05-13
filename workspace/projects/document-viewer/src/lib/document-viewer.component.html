@@ -454,6 +454,7 @@
           id="viewer"
           [isOpenVar]="isOpenVar"
           (isOpen)="isOpenEmmit($event)"
+          (sendDocConfig)="sendDocConfig($event)"
         ></lib-document-actions>
         <lib-search-modal
           (pageSearch)="emitPageSearch($event)"
