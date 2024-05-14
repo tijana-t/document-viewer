@@ -50,7 +50,7 @@ export class DocumentViewerComponent
   @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
   @Output('isOpen') isOpen = new EventEmitter();
   @Output('downloadExcelEvent') downloadExcelEvent = new EventEmitter();
-
+  @Output('sendDocConfigEvent') sendDocConfigEvent = new EventEmitter();
   @Output('downloadParagraphsEvent') downloadParagraphsEvent =
     new EventEmitter();
 
@@ -350,6 +350,12 @@ export class DocumentViewerComponent
   isOpenEmmit(isOpen: boolean) {
     this.isOpen.emit(isOpen);
   }
+
+  sendDocConfig(docConfig: any) {
+    console.log({ docConfig });
+    this.sendDocConfigEvent.emit(docConfig);
+  }
+
   exportMonthlyStatEventEmmiter(data: any) {
     this.exportMonthlyStat.emit(data);
   }

@@ -48,6 +48,7 @@ export class PageNavigationComponent
   @Output('triggerPagesReorder') triggerPagesReorder = new EventEmitter();
   @Output('triggerSplitDocument') triggerSplitDocument = new EventEmitter();
   @Output('openTriggeredEmittrt') openTriggeredEmittert = new EventEmitter();
+
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     informationHelp: '',
     downloadPdfPlain: '',
