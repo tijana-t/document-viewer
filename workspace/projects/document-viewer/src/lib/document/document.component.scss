@@ -1,5 +1,7 @@
 @use "../_styles/color-variables" as cv;
-
+#document-container::-webkit-scrollbar {
+  width: 9px;
+}
 #document-container {
   overflow: auto;
   z-index: 0;
