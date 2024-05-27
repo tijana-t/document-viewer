@@ -28,6 +28,8 @@ export class DocumentActionsComponent
     containerWidth: 0,
   };
   @Output('isOpen') isOpen = new EventEmitter();
+  @Output('sendDocConfig') sendDocConfig = new EventEmitter();
+
   @Input('isOpenVar') isOpenVar: boolean = false;
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
@@ -83,6 +85,8 @@ export class DocumentActionsComponent
             this.ZOOM_STEP * this.documentConfig.containerWidth
           );
           this.docViewerService.docConfSubject.next(this.documentConfig);
+
+          this.sendDocConfig.emit(this.documentConfig);
           this.scrollEvent();
         }
       }, 0);
@@ -107,6 +111,8 @@ export class DocumentActionsComponent
             this.documentConfig.containerWidth / this.ZOOM_STEP
           );
           this.docViewerService.docConfSubject.next(this.documentConfig);
+
+          this.sendDocConfig.emit(this.documentConfig);
           this.scrollEvent();
         }
       }, 0);
@@ -165,6 +171,8 @@ export class DocumentActionsComponent
       // Reset zoom states if needed
       this.zoomInDisabled = false;
       this.zoomOutDisabled = false;
+
+      this.sendDocConfig.emit(this.documentConfig);
     }, 0);
   }
 

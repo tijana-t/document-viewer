@@ -332,12 +332,8 @@
           <p
             *ngIf="!singleDocument.mergedDocs"
             [ngClass]="{
-              'red-flag':
-                documentConfig?.flag == 'red' ||
-                singleDocument?.file?.toFix?.length > 0,
-              'green-flag':
-                documentConfig?.flag == 'green' ||
-                singleDocument?.file?.toFix?.length === 0
+              'red-flag': singleDocument?.file?.toFix?.length > 0,
+              'green-flag': singleDocument?.file?.toFix?.length === 0
             }"
             class="traning-model-name text-ellipsis"
             (click)="collapsSubDocs()"
@@ -454,6 +450,8 @@
           id="viewer"
           [isOpenVar]="isOpenVar"
           (isOpen)="isOpenEmmit($event)"
+          (switchSelection)="switchSelection($event)"
+          (sendDocConfig)="sendDocConfig($event)"
         ></lib-document-actions>
         <lib-search-modal
           (pageSearch)="emitPageSearch($event)"
