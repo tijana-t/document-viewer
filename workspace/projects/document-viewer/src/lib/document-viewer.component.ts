@@ -103,8 +103,8 @@ export class DocumentViewerComponent
   filterFileIds = [];
   openedDocColor: string = '';
   selectedFile: any;
+  isFlagGreen: boolean | null = null;
   ngOnInit() {
-    console.log('singleDocument', this.singleDocument);
     this.subscriptions = this.docViewerService.lineStatus.subscribe(
       (status) => {
         this.linePosition.emit();
@@ -274,6 +274,11 @@ export class DocumentViewerComponent
     }
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
+      if (this.documentConfig.flag === 'red') {
+        this.isFlagGreen = false;
+      } else if (this.documentConfig.flag === 'green') {
+        this.isFlagGreen = true;
+      }
       this.docViewerService.docConfSubject.next(this.documentConfig);
     }
     if (changes['searchResult'] && changes['searchResult'].currentValue) {
@@ -286,6 +291,14 @@ export class DocumentViewerComponent
     }
     if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
       this.singleDocument = changes['singleDocument'].currentValue;
+      if (this.documentConfig.flag === '' && this.singleDocument?.toFix) {
+        if (this.singleDocument?.toFix?.length === 0) {
+          this.isFlagGreen = true;
+        } else {
+          this.isFlagGreen = false;
+        }
+      }
+      console.log('singleDocument', this.singleDocument);
       if (this.singleDocument.mergedDocs) {
         this.multipleDocs = true;
       } else {

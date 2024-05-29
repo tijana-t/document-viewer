@@ -318,6 +318,7 @@ a:hover {
   color: var(--font-main);
   margin-bottom: 0px;
   margin-top: -9px;
+  user-select: text;
 
   .red-flag {
     color: var(--main-red);
