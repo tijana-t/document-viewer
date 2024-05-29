@@ -1,4 +1,4 @@
-<div class="action-buttons">
+<div class="action-buttons d-flex flex-row">
   <button
     (click)="downloadDocument()"
     class="col circle"
@@ -52,11 +52,12 @@
     />
   </button>
   <button
+    *ngIf="!qAndAModel"
     [ngbTooltip]="
       'Download excel file with a detailed report for this document'
     "
     class="col circle"
-    (click)="downloadExcel()"
+    (click)="downloadExcel('xls')"
   >
     <img
       width="15px"
@@ -65,6 +66,49 @@
       alt=""
     />
   </button>
+
+  <div
+    style="
+      margin-right: 5px;
+      height: var(--circle-icon-height) !important;
+      width: var(--circle-icon-width) !important;
+    "
+    [ngbTooltip]="
+      'Download excel file with a detailed report for this document'
+    "
+    *ngIf="qAndAModel"
+    ngbDropdown
+  >
+    <button id="excel-button" ngbDropdownToggle class="col circle">
+      <img
+        width="15px"
+        height="15px"
+        [src]="documentActionsSrc.downloadExcel"
+        alt=""
+      />
+    </button>
+
+    <span
+      style="z-index: 1000000"
+      ngbDropdownMenu
+      aria-labelledby="excel-button"
+    >
+      <button
+        (click)="downloadExcel('xlsx')"
+        ngbDropdownItem
+        class="dropdown-item"
+      >
+        XLS
+      </button>
+      <button
+        class="dropdown-item"
+        (click)="downloadExcel('csv')"
+        ngbDropdownItem
+      >
+        CSV
+      </button>
+    </span>
+  </div>
 
   <button
     class="col circle"

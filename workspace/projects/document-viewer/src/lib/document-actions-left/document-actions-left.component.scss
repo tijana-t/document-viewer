@@ -40,6 +40,10 @@
   outline: none;
 }
 
+#excel-button.dropdown-toggle::after {
+  display: none !important;
+}
+
 .slider-image::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;

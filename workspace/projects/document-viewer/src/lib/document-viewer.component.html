@@ -332,8 +332,8 @@
           <p
             *ngIf="!singleDocument.mergedDocs"
             [ngClass]="{
-              'red-flag': singleDocument?.file?.toFix?.length > 0,
-              'green-flag': singleDocument?.file?.toFix?.length === 0
+              'red-flag': isFlagGreen !== null && isFlagGreen === false,
+              'green-flag': isFlagGreen !== null && isFlagGreen === true
             }"
             class="traning-model-name text-ellipsis"
             (click)="collapsSubDocs()"
@@ -450,7 +450,6 @@
           id="viewer"
           [isOpenVar]="isOpenVar"
           (isOpen)="isOpenEmmit($event)"
-          (switchSelection)="switchSelection($event)"
           (sendDocConfig)="sendDocConfig($event)"
         ></lib-document-actions>
         <lib-search-modal
@@ -460,6 +459,7 @@
         >
         </lib-search-modal>
         <lib-document-actions-left
+          [qAndAModel]="qAndAModel"
           [inProjects]="inProjects"
           (downloadExcelEvent)="downloadExcel($event)"
           [editable]="documentConfig?.editable"
