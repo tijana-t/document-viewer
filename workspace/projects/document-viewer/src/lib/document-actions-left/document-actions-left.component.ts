@@ -31,6 +31,7 @@ export class DocumentActionsLeftComponent
   };
   @Input('document') document: DocumentComponent | undefined;
   @Input('inProjects') inProjects: boolean = false;
+  @Input('qAndAModel') qAndAModel: boolean = false;
 
   @Input('documentConfig') documentConfig: DocumentConfig = {
     containerWidth: 0,
@@ -72,8 +73,8 @@ export class DocumentActionsLeftComponent
     );
   }
 
-  downloadExcel() {
-    this.downloadExcelEvent.emit(true);
+  downloadExcel(typeOfDownload: string) {
+    this.downloadExcelEvent.emit(typeOfDownload);
   }
 
   openDebugger() {

@@ -460,6 +460,7 @@
         >
         </lib-search-modal>
         <lib-document-actions-left
+          [qAndAModel]="qAndAModel"
           [inProjects]="inProjects"
           (downloadExcelEvent)="downloadExcel($event)"
           [editable]="documentConfig?.editable"

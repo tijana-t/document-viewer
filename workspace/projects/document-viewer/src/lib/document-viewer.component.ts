@@ -51,6 +51,7 @@ export class DocumentViewerComponent
   @Output('isOpen') isOpen = new EventEmitter();
   @Output('downloadExcelEvent') downloadExcelEvent = new EventEmitter();
   @Output('sendDocConfigEvent') sendDocConfigEvent = new EventEmitter();
+  @Output('switchSelectionEmit') switchSelectionEmit = new EventEmitter();
   @Output('downloadParagraphsEvent') downloadParagraphsEvent =
     new EventEmitter();
 
@@ -72,6 +73,7 @@ export class DocumentViewerComponent
     { id: '', src: '', fileId: '', fileName: '', originalName: '' },
   ];
   @Input('totalPages') totalPages: number = 0;
+  @Input('qAndAModel') qAndAModel = false;
   @Input('reorderFinished') reorderFinished: boolean = false;
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
@@ -349,6 +351,10 @@ export class DocumentViewerComponent
   }
   isOpenEmmit(isOpen: boolean) {
     this.isOpen.emit(isOpen);
+  }
+
+  switchSelection(event: any) {
+    this.switchSelectionEmit.emit(true);
   }
 
   sendDocConfig(docConfig: any) {
