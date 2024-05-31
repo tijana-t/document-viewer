@@ -558,6 +558,16 @@ export class PageNavigationComponent
     if (event.stopPropagation) {
       event.stopPropagation();
     }
+
+    //check order of thumbs
+    let counter = 0;
+    for (let i = 0; i < innerImgArray.length; i++) {
+      if (innerImgArray[i] === this.thumbnails[i]) {
+        counter++;
+      }
+    }
+    if (counter === innerImgArray.length) return;
+
     //for undo action
     this.reorderStates.push([[...innerImgArray]]);
     moveItemInArray(innerImgArray, event.previousIndex, event.currentIndex);
