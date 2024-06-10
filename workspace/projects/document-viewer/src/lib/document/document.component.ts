@@ -181,9 +181,8 @@ export class DocumentComponent
     this.subscriptions = this.docViewerService.changeDocSubject.subscribe(
       (res: boolean) => {
         this.changeDocument = res;
-
         if (this.changeDocument) {
-          this.documentImage?.classList.remove('.invisible');
+          this.documentImage?.classList?.remove('.invisible');
         }
       }
     );
