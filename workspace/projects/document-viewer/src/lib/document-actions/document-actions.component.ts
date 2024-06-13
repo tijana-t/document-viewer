@@ -29,7 +29,7 @@ export class DocumentActionsComponent
   };
   @Output('isOpen') isOpen = new EventEmitter();
   @Output('sendDocConfig') sendDocConfig = new EventEmitter();
-
+  @Output('switchSelection') switchSelection = new EventEmitter();
   @Input('isOpenVar') isOpenVar: boolean = false;
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
@@ -38,6 +38,8 @@ export class DocumentActionsComponent
     informationHelp: '',
     downloadPdfPlain: '',
     rotateIcon: '',
+    squareSelection: '',
+    squareSelectionYellow: '',
   };
   opend: boolean = false;
   defaultConfig: DocumentConfig = { containerWidth: 0, containerHeight: 0 };
@@ -56,6 +58,7 @@ export class DocumentActionsComponent
     viewPercent: 50,
   };
   scalingApplied: boolean = false;
+  squareSelectionActive = false;
   constructor(private docViewerService: DocumentViewerService) {}
 
   ngOnInit(): void {
@@ -67,6 +70,11 @@ export class DocumentActionsComponent
     this.defaultConfig = { ...this.documentConfig };
     this.pageWidth = this.defaultConfig.containerWidth;
     this.scrollEvent();
+  }
+
+  squareSelection() {
+    this.squareSelectionActive = !this.squareSelectionActive;
+    this.switchSelection.emit(true);
   }
 
   zoomInImg() {

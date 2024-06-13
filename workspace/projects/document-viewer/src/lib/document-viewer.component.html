@@ -445,6 +445,7 @@
         <lib-document-actions
           [documentConfig]="documentConfig"
           [document]="document"
+          (switchSelection)="switchSelection($event)"
           class="document-actions-container"
           [documentActionsSrc]="documentActionsSrc"
           id="viewer"
