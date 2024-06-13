@@ -421,6 +421,7 @@
               this.singleDocument.prev?.fileName ? '' : 'disable-next-prev'
             "
             class="doc-prev typcn typcn-chevron-left"
+            id="docPrev"
             (click)="
               !this.singleDocument.prev?.fileName ? null : changeDoc(false)
             "
@@ -431,6 +432,7 @@
             [ngClass]="
               this.singleDocument.next?.fileName ? '' : 'disable-next-prev'
             "
+            id="docNext"
             class="doc-next typcn typcn-chevron-right"
             (click)="
               !this.singleDocument.next?.fileName ? null : changeDoc(true)
@@ -445,6 +447,7 @@
         <lib-document-actions
           [documentConfig]="documentConfig"
           [document]="document"
+          (switchSelection)="switchSelection($event)"
           class="document-actions-container"
           [documentActionsSrc]="documentActionsSrc"
           id="viewer"

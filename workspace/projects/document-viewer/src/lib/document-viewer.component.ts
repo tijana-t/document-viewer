@@ -298,10 +298,39 @@ export class DocumentViewerComponent
           this.isFlagGreen = false;
         }
       }
-      console.log('singleDocument', this.singleDocument);
+      // console.log('singleDocument', this.singleDocument);
       if (this.singleDocument.mergedDocs) {
+        this.collapsStatus = false;
         this.multipleDocs = true;
       } else {
+        let disableFirst =
+          this.singleDocument?.file?.fileName ===
+          this.singleDocument?.prev?.fileName;
+        let disableLast =
+          this.singleDocument?.file?.fileName ===
+          this.singleDocument?.next?.fileName;
+        setTimeout(() => {
+          let prevDoc = document.querySelector('#docPrev');
+          let nextDoc = document.querySelector('#docNext');
+
+          // console.log({ disableFirst, disableLast, prevDoc, nextDoc });
+
+          if (prevDoc !== null) {
+            if (disableFirst) {
+              prevDoc.classList.add('disable-next-prev');
+            } else {
+              prevDoc.classList.remove('disable-next-prev');
+            }
+          }
+          if (nextDoc !== null) {
+            if (disableLast) {
+              nextDoc.classList.add('disable-next-prev');
+            } else {
+              nextDoc.classList.remove('disable-next-prev');
+            }
+          }
+        }, 10);
+
         this.multipleDocs = false;
 
         this.getFileTypeForHipotekarna(

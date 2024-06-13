@@ -1,6 +1,8 @@
 export type DocumentActions = {
   zoomInSrc?: string;
   zoomOutSrc?: string;
+  squareSelection?: string;
+  squareSelectionYellow?: string;
   fitToPageSrc?: string;
   informationHelp?: string;
   showOrginalImg?: string;
