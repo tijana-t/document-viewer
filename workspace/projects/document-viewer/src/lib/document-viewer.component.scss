@@ -162,6 +162,12 @@
   font-size: 12px;
 }
 
+.traning-model-name,
+.info-container p {
+  position: relative;
+  z-index: 10000;
+}
+
 #pointer {
   width: 12px;
   height: 8px;
