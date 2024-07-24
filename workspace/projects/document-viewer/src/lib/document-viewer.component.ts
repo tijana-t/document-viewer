@@ -291,6 +291,7 @@ export class DocumentViewerComponent
     }
     if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
       this.singleDocument = changes['singleDocument'].currentValue;
+      console.log({ singleDocument: this.singleDocument });
       if (this.documentConfig.flag === '' && this.singleDocument?.toFix) {
         if (this.singleDocument?.toFix?.length === 0) {
           this.isFlagGreen = true;
@@ -303,34 +304,6 @@ export class DocumentViewerComponent
         this.collapsStatus = false;
         this.multipleDocs = true;
       } else {
-        let disableFirst =
-          this.singleDocument?.file?.fileName ===
-          this.singleDocument?.prev?.fileName;
-        let disableLast =
-          this.singleDocument?.file?.fileName ===
-          this.singleDocument?.next?.fileName;
-        setTimeout(() => {
-          let prevDoc = document.querySelector('#docPrev');
-          let nextDoc = document.querySelector('#docNext');
-
-          // console.log({ disableFirst, disableLast, prevDoc, nextDoc });
-
-          if (prevDoc !== null) {
-            if (disableFirst) {
-              prevDoc.classList.add('disable-next-prev');
-            } else {
-              prevDoc.classList.remove('disable-next-prev');
-            }
-          }
-          if (nextDoc !== null) {
-            if (disableLast) {
-              nextDoc.classList.add('disable-next-prev');
-            } else {
-              nextDoc.classList.remove('disable-next-prev');
-            }
-          }
-        }, 10);
-
         this.multipleDocs = false;
 
         this.getFileTypeForHipotekarna(

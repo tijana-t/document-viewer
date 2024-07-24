@@ -185,14 +185,13 @@ export class DocumentActionsComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changes', changes['isOpenVar']);
     if (changes['documentConfig'] && changes['documentConfig'].currentValue) {
       this.documentConfig = changes['documentConfig'].currentValue;
       this.scrollEvent();
     }
     if (changes['isOpenVar'] && changes['isOpenVar'].currentValue) {
       this.opend = changes['isOpenVar'].currentValue;
-      this.isOpen.emit(changes['isOpenVar'].currentValue);
+      this.isOpen.emit(this.opend);
     }
   }
 

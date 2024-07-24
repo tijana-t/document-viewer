@@ -416,28 +416,32 @@
       </div>
       <div class="align-items-center info-container" *ngIf="docModel">
         <p class="mb-0 pb-0">
-          <span
-            [ngClass]="
-              this.singleDocument.prev?.fileName ? '' : 'disable-next-prev'
-            "
+          <button
+            [ngClass]="{
+              'disable-next-prev':
+                singleDocument.prev === null || !singleDocument?.prev?.fileName
+            }"
             class="doc-prev typcn typcn-chevron-left"
             id="docPrev"
-            (click)="
-              !this.singleDocument.prev?.fileName ? null : changeDoc(false)
+            [disabled]="
+              singleDocument?.prev === null || !singleDocument?.prev?.fileName
             "
-          ></span>
+            (click)="changeDoc(false)"
+          ></button>
           MODEL: {{ docModel.modelName }} - {{ docModel.modelVersion }} @
           {{ singleDocument.file.createdAt | date : "MMM d, y HH:mm" }}
-          <span
-            [ngClass]="
-              this.singleDocument.next?.fileName ? '' : 'disable-next-prev'
-            "
+          <button
+            [ngClass]="{
+              'disable-next-prev':
+                singleDocument?.next === null || !singleDocument?.next?.fileName
+            }"
             id="docNext"
             class="doc-next typcn typcn-chevron-right"
-            (click)="
-              !this.singleDocument.next?.fileName ? null : changeDoc(true)
+            [disabled]="
+              singleDocument?.next === null || !singleDocument?.next?.fileName
             "
-          ></span>
+            (click)="changeDoc(true)"
+          ></button>
         </p>
       </div>
     </div>
