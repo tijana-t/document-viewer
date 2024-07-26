@@ -165,7 +165,7 @@
 .traning-model-name,
 .info-container p {
   position: relative;
-  z-index: 10000;
+  z-index: 2;
 }
 
 #pointer {
@@ -316,6 +316,8 @@ a:hover {
   .doc-next,
   .doc-prev {
     font-size: 17px;
+    border: unset;
+    outline: unset;
   }
 }
 

@@ -216,32 +216,33 @@ export class DocumentViewerComponent
     this.triggerSplitEvent.emit($event);
   }
   checkSelectedDocs() {
-    if (this.singleDocument.originalMergedDocs) {
-      let check = this.singleDocument.originalMergedDocs.filter(
-        (el: any) => el.file.filterValue === true
-      ).length;
-      if (check == 0 || check > 1) {
-        this.selectedFile = undefined;
-      }
-      return check > 1;
-    } else {
+    if (!this.singleDocument.originalMergedDocs) {
       return false;
     }
+
+    const selectedDocsCount = this.singleDocument.originalMergedDocs.filter(
+      (doc: any) => doc.file.filterValue === true
+    ).length;
+
+    if (selectedDocsCount === 0 || selectedDocsCount > 1) {
+      this.selectedFile = undefined;
+    }
+
+    return selectedDocsCount > 1;
   }
   filterPattern(checked: boolean, file: any) {
-    let fileId;
-    let filterValue;
     this.activeFileId = '';
 
     file.file['filterValue'] = checked;
-    fileId = file.file._id;
-    filterValue = checked;
-    let findChecked = this.singleDocument.originalMergedDocs.find(
-      (el: any) => el.file.filterValue === true
+    const fileId = file.file._id;
+    const filterValue = checked;
+
+    const checkedFile = this.singleDocument.originalMergedDocs.find(
+      (doc: any) => doc.file.filterValue === true
     );
-    if (findChecked !== -1) {
-      this.selectedFile = findChecked;
-      // fileId = this.selectedFile.file._id;
+
+    if (checkedFile) {
+      this.selectedFile = checkedFile;
     }
 
     this.filterPatternEvent.emit({ fileId, filterValue });
@@ -291,6 +292,7 @@ export class DocumentViewerComponent
     }
     if (changes['singleDocument'] && changes['singleDocument'].currentValue) {
       this.singleDocument = changes['singleDocument'].currentValue;
+      console.log({ singleDocument: this.singleDocument });
       if (this.documentConfig.flag === '' && this.singleDocument?.toFix) {
         if (this.singleDocument?.toFix?.length === 0) {
           this.isFlagGreen = true;
@@ -303,34 +305,6 @@ export class DocumentViewerComponent
         this.collapsStatus = false;
         this.multipleDocs = true;
       } else {
-        let disableFirst =
-          this.singleDocument?.file?.fileName ===
-          this.singleDocument?.prev?.fileName;
-        let disableLast =
-          this.singleDocument?.file?.fileName ===
-          this.singleDocument?.next?.fileName;
-        setTimeout(() => {
-          let prevDoc = document.querySelector('#docPrev');
-          let nextDoc = document.querySelector('#docNext');
-
-          // console.log({ disableFirst, disableLast, prevDoc, nextDoc });
-
-          if (prevDoc !== null) {
-            if (disableFirst) {
-              prevDoc.classList.add('disable-next-prev');
-            } else {
-              prevDoc.classList.remove('disable-next-prev');
-            }
-          }
-          if (nextDoc !== null) {
-            if (disableLast) {
-              nextDoc.classList.add('disable-next-prev');
-            } else {
-              nextDoc.classList.remove('disable-next-prev');
-            }
-          }
-        }, 10);
-
         this.multipleDocs = false;
 
         this.getFileTypeForHipotekarna(
