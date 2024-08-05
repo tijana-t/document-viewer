@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  ElementRef,
   EventEmitter,
   HostListener,
   Input,
@@ -37,7 +38,7 @@ export class DocumentComponent
   documentImage: any;
   mainImg: string = '';
   mainImgOrginal: string = '';
-  @ViewChild('docContainer') docImage: any;
+  @ViewChild('docContainer') docImage: ElementRef | undefined;
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('triggerTextLayer') triggerTextLayer = new EventEmitter();
   @Input('documentConfig') documentConfig: DocumentConfig = {
@@ -76,39 +77,39 @@ export class DocumentComponent
   ) {
     //initialize sentry
     //sentry for production
-    if (environment.production) {
-      Sentry.init({
-        dsn: 'https://b7b6b615b90b489c9ee665fe7a1841eb@o1092278.ingest.sentry.io/6212951',
-        integrations: [
-          new Integrations.BrowserTracing({
-            tracingOrigins: [
-              'https://demo-v3.uhurasolutions.com/',
-              'https://apidemo-v3.uhurasolutions.com/',
-            ],
-            routingInstrumentation: Sentry.routingInstrumentation,
-          }),
-        ],
-        defaultIntegrations: false,
-        tracesSampleRate: 1.0,
-        environment: 'production',
-        release: '3.0.2',
-      });
-    } else {
-      //sentry for development
-      Sentry.init({
-        dsn: 'https://b7b6b615b90b489c9ee665fe7a1841eb@o1092278.ingest.sentry.io/6212951',
-        integrations: [
-          new Integrations.BrowserTracing({
-            tracingOrigins: ['localhost:4200', 'localhost:3333'],
-            routingInstrumentation: Sentry.routingInstrumentation,
-          }),
-        ],
-        defaultIntegrations: false,
-        tracesSampleRate: 1.0,
-        environment: 'development',
-        release: '3.0.2',
-      });
-    }
+    // if (environment.production) {
+    //   Sentry.init({
+    //     dsn: 'https://b7b6b615b90b489c9ee665fe7a1841eb@o1092278.ingest.sentry.io/6212951',
+    //     integrations: [
+    //       new Integrations.BrowserTracing({
+    //         tracingOrigins: [
+    //           'https://demo-v3.uhurasolutions.com/',
+    //           'https://apidemo-v3.uhurasolutions.com/',
+    //         ],
+    //         routingInstrumentation: Sentry.routingInstrumentation,
+    //       }),
+    //     ],
+    //     defaultIntegrations: false,
+    //     tracesSampleRate: 1.0,
+    //     environment: 'production',
+    //     release: '3.0.2',
+    //   });
+    // } else {
+    //   //sentry for development
+    //   Sentry.init({
+    //     dsn: 'https://b7b6b615b90b489c9ee665fe7a1841eb@o1092278.ingest.sentry.io/6212951',
+    //     integrations: [
+    //       new Integrations.BrowserTracing({
+    //         tracingOrigins: ['localhost:4200', 'localhost:3333'],
+    //         routingInstrumentation: Sentry.routingInstrumentation,
+    //       }),
+    //     ],
+    //     defaultIntegrations: false,
+    //     tracesSampleRate: 1.0,
+    //     environment: 'development',
+    //     release: '3.0.2',
+    //   });
+    // }
 
     this.subscriptions = this.docViewerService.mainImgInfo
       .pipe(skip(1), takeUntil(this.destroy$))
@@ -227,11 +228,6 @@ export class DocumentComponent
         }
         this.searchInit = 1;
       });
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.calculateContainerWidth();
   }
 
   ngOnInit(): void {}
@@ -369,9 +365,31 @@ export class DocumentComponent
     this.destroy$.next(null);
     this.destroy$.complete();
     this.subscriptions.unsubscribe();
+
+    window.removeEventListener(
+      'resize',
+      this.calculateContainerWidth.bind(this)
+    );
+
+    this.docImage?.nativeElement.removeEventListener(
+      'scroll',
+      this.scrollEvent.bind(this)
+    );
   }
 
   ngAfterViewInit() {
+    window.addEventListener('resize', this.calculateContainerWidth.bind(this), {
+      passive: true,
+    });
+
+    if (this.docImage) {
+      this.docImage?.nativeElement.addEventListener(
+        'scroll',
+        this.scrollEvent.bind(this),
+        { passive: true }
+      );
+    }
+
     this.defaultDocConfig = { ...this.documentConfig };
     this.calculateContainerWidth();
   }
@@ -388,38 +406,37 @@ export class DocumentComponent
       if (container) {
         container.style.width = widthSet + 'px';
       }
-      this.scrollToCenter();
       this.setTransImgPosition(true);
     }
   }
 
-  scrollEvent(event: Event, documentImage: any) {
+  scrollEvent() {
     this.setTransImgPosition();
   }
 
   initDrag() {
     const dragStart$ = fromEvent<MouseEvent>(
-      this.docImage.nativeElement,
+      this.docImage?.nativeElement,
       'mousedown'
     );
     const dragEnd$ = fromEvent<MouseEvent>(
-      this.docImage.nativeElement,
+      this.docImage?.nativeElement,
       'mouseup'
     );
     const drag$ = fromEvent<MouseEvent>(
-      this.docImage.nativeElement,
+      this.docImage?.nativeElement,
       'mousemove'
     ).pipe(takeUntil(dragEnd$));
     const dragEnter$ = fromEvent<MouseEvent>(
-      this.docImage.nativeElement,
+      this.docImage?.nativeElement,
       'dragenter'
     ).pipe(takeUntil(dragEnd$));
 
     const dragStartSub = dragStart$.subscribe((event) => {
-      if (this.docImage.nativeElement) {
+      if (this.docImage?.nativeElement) {
         this.positon = {
-          left: this.docImage.nativeElement.scrollLeft,
-          top: this.docImage.nativeElement.scrollTop,
+          left: this.docImage?.nativeElement.scrollLeft,
+          top: this.docImage?.nativeElement.scrollTop,
           x: event.clientX,
           y: event.clientY,
         };
@@ -429,7 +446,7 @@ export class DocumentComponent
 
       const dragSub = drag$.subscribe((event) => {
         event.preventDefault();
-        if (this.docImage.nativeElement) {
+        if (this.docImage?.nativeElement) {
           // How far the mouse has been moved
           const dx = event.clientX - this.positon.x;
           const dy = event.clientY - this.positon.y;
@@ -442,7 +459,7 @@ export class DocumentComponent
     });
 
     const dragEndSub = dragEnd$.subscribe((event) => {
-      if (this.docImage.nativeElement) {
+      if (this.docImage && this.docImage.nativeElement) {
         this.docImage.nativeElement.style.cursor = 'grab';
         this.docImage.nativeElement.style.removeProperty('user-select');
       }
