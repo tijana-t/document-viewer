@@ -1,4 +1,5 @@
 <div
+  #scrollThumb
   *ngIf="thumbnails && thumbnails.length > 1"
   (wheel)="scrollThumbnail($event, inputRange)"
   class="navigation-container"
