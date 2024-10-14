@@ -53,9 +53,7 @@
   </button>
   <button
     *ngIf="!qAndAModel"
-    [ngbTooltip]="
-      'Download excel file with a detailed report for this document'
-    "
+    [ngbTooltip]="'Download excel file.'"
     class="col circle"
     (click)="downloadExcel('xls')"
   >
@@ -73,9 +71,7 @@
       height: var(--circle-icon-height) !important;
       width: var(--circle-icon-width) !important;
     "
-    [ngbTooltip]="
-      'Download excel file with a detailed report for this document'
-    "
+    [ngbTooltip]="'Download excel/csv file.'"
     *ngIf="qAndAModel"
     ngbDropdown
   >
