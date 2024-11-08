@@ -82,13 +82,13 @@ export class DocumentActionsComponent
       this.zoomInDisabled = true;
     } else {
       setTimeout(() => {
-        const textLayer = document.getElementById('textLayer');
-        if (textLayer) {
-          const realTextLayerWidth = (textLayer?.style.width).split('px');
+        const elemToZoom = document.getElementById('textLayer') || document.getElementById('docImgOrginal');
+        if (elemToZoom) {
+          const realelemToZoomWidth = (elemToZoom?.style.width).split('px');
           const zoomLevel =
             (this.documentConfig.containerWidth * this.ZOOM_STEP) /
-            parseInt(realTextLayerWidth[0]);
-          textLayer.style.transform = 'scale(' + zoomLevel + ')';
+            parseInt(realelemToZoomWidth[0]);
+          elemToZoom.style.transform = 'scale(' + zoomLevel + ')';
           this.documentConfig.containerWidth = Math.floor(
             this.ZOOM_STEP * this.documentConfig.containerWidth
           );
@@ -107,14 +107,17 @@ export class DocumentActionsComponent
       this.zoomOutDisabled = true;
     } else {
       setTimeout(() => {
-        const textLayer = document.getElementById('textLayer');
-        if (textLayer) {
-          const realTextLayerWidth = (textLayer?.style.width).split('px');
+        const elemToZoom = document.getElementById('textLayer') || document.getElementById('docImgOrginal');
+        if (elemToZoom) {
+          const realelemToZoomWidth = (elemToZoom?.style.width)?.split('px')[0];
           const zoomLevel =
             this.documentConfig.containerWidth /
             this.ZOOM_STEP /
-            parseInt(realTextLayerWidth[0]);
-          textLayer.style.transform = 'scale(' + zoomLevel + ')';
+            parseInt(realelemToZoomWidth);
+            if(elemToZoom){
+              elemToZoom.style.transform = 'scale(' + zoomLevel + ')';
+            }
+            console.log('container', this.documentConfig);
           this.documentConfig.containerWidth = Math.floor(
             this.documentConfig.containerWidth / this.ZOOM_STEP
           );
@@ -131,7 +134,7 @@ export class DocumentActionsComponent
   fitToPage() {
     // this.scalingApplied = false;
     setTimeout(() => {
-      const textLayer = document.getElementById('textLayer');
+      const textLayer = document.getElementById('textLayer') || document.getElementById('docImgOrginal');
       const docImg = document.getElementById('docImgOrginal');
       const viewerContainer = document.getElementById('document-container');
 
