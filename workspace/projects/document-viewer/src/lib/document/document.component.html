@@ -39,6 +39,7 @@
       </button>
     </div>
   </div>
+
   <img
     *ngIf="
       (mainImgOrginal || mainImgOrginal !== '') && (!mainImg || mainImg == '')
@@ -55,8 +56,9 @@
     id="trans-img"
     alt=""
   />
+
   <img
-    *ngIf="mainImg || mainImg !== ''"
+    *ngIf="!imageReloading && (mainImg || mainImg !== '')"
     [ngStyle]="{
       width: documentConfig.containerWidth + 'px',
       position: 'absolute',
@@ -147,7 +149,7 @@
       </div>
 
       <img
-        *ngIf="!changeDocument && (mainImgOrginal || mainImgOrginal !== '')"
+        *ngIf="!imageReloading && !changeDocument && (mainImgOrginal || mainImgOrginal !== '')"
         [attr.width]="documentConfig.containerWidth + 'px'"
         id="docImgOrginal"
         #documentImage

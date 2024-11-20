@@ -109,6 +109,7 @@ export class PageNavigationComponent
   docIndex: number = 0;
   triggerSeparateMethod = new Subject<boolean>();
   fileId: string | undefined = '';
+  reload = false;
   constructor(
     private docViewerService: DocumentViewerService // config: NgbDropdownConfig
   ) {
@@ -266,12 +267,14 @@ export class PageNavigationComponent
           mainImgExtension?: string;
           colorValue?: string;
           docColorPallete: string[];
+          reload?: boolean
         }) => {
           if (res && (res.currentPage || res.pages)) {
             this.pageNumber = res.currentPage;
             this.previousPageNum = res.currentPage;
             this.oldPageNumber = res.currentPage;
             this.docColorPallete = res.docColorPallete;
+            this.reload = res.reload ?? false;
 
             if (res.originalImgExtension) {
               this.originalImgExtension = res.originalImgExtension;
@@ -671,6 +674,7 @@ export class PageNavigationComponent
         ? this.openedDoc['mainImgExtension']
         : this.mainImgExtension,
       colorValue: this.thumbnails[this.pageNumber - 1].thumbColor,
+      reload: this.reload
     });
     this.openedDocColor = this.thumbnails[this.pageNumber - 1].thumbColor;
     this.setActiveThumb(this.thumbnails[this.pageNumber - 1]);

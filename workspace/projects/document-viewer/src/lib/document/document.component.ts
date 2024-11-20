@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -68,12 +69,14 @@ export class DocumentComponent
   scrollVisibleX: boolean = false;
   changeDocument: boolean = false;
   isChangePage: boolean = true;
+  imageReloading = false;
   showDebugger: boolean = false;
   colorValue?: string;
 
   constructor(
     private docViewerService: DocumentViewerService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private cd: ChangeDetectorRef
   ) {
     //initialize sentry
     //sentry for production
@@ -119,6 +122,7 @@ export class DocumentComponent
           originalImgExtension?: string;
           mainImgExtension?: string;
           colorValue?: string;
+          reload?: boolean
         }) => {
           if (res) {
             console.log('res document', res);
@@ -136,12 +140,19 @@ export class DocumentComponent
             //original img
             if (res.originalImgExtension !== undefined) {
               if (res.mainImg !== undefined) {
-                this.mainImgOrginal =
+                  this.mainImgOrginal =
                   res.mainImg + '&img=' + res.originalImgExtension;
               }
             } else {
               this.mainImgOrginal =
                 this.mainImg !== undefined ? this.mainImg : res.mainImg;
+            }
+            if(res.reload) {
+              this.imageReloading = true;
+              setTimeout(() => {
+                this.imageReloading = false;
+              }, 0);
+              this.cd.detectChanges();
             }
 
             // console.log('mainImgOrginal', this.mainImgOrginal);
