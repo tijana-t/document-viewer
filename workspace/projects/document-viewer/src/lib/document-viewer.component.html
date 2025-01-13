@@ -449,6 +449,8 @@
     <div class="d-flex align-items-center justify-content-center">
       <div id="search-box">
         <lib-document-actions
+        [isClassification]="isClassification"
+        [hideButtons]="hideButtons"
           [documentConfig]="documentConfig"
           [document]="document"
           (switchSelection)="switchSelection($event)"
@@ -467,6 +469,8 @@
         </lib-search-modal>
         <lib-document-actions-left
           [qAndAModel]="qAndAModel"
+          [isClassification]="isClassification"
+          [hideButtons]="hideButtons"
           [inProjects]="inProjects"
           (downloadExcelEvent)="downloadExcel($event)"
           [editable]="documentConfig?.editable"

@@ -1,5 +1,6 @@
 <div class="action-buttons">
   <button
+    *ngIf="!hideButtons"
     class="col circle"
     (click)="squareSelection()"
     ngbTooltip="Square selection"
@@ -19,7 +20,9 @@
       alt=""
     />
   </button>
-  <button class="col circle" (click)="isOpenEmmit()" ngbTooltip="Rotate">
+  <button 
+   *ngIf="(isClassification && hideButtons) || !hideButtons"
+   class="col circle" (click)="isOpenEmmit()" ngbTooltip="Rotate">
     <img
       width="15px"
       height="15px"
