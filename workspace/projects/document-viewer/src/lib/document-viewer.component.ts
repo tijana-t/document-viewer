@@ -90,6 +90,8 @@ export class DocumentViewerComponent
   @Input('activeFileId') activeFileId: string = '';
   @Input('isOpenVar') isOpenVar: boolean = false;
   @Input('params') params: any;
+  @Input('hideButtons') hideButtons: boolean = false;
+  @Input('isClassification') isClassification: boolean = false;
   @Input('singleDocument') singleDocument: any;
   @Input('inProjects') inProjects: any;
   @Output('naturalDimensions') naturalDimensions = new EventEmitter();

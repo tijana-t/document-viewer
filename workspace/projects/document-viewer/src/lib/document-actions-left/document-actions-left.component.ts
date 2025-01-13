@@ -45,6 +45,9 @@ export class DocumentActionsLeftComponent
   };
   @Input('editable') editable: any = null;
   @Input('singleDocument') singleDocument: any;
+  @Input('isClassification') isClassification: boolean = false;
+  @Input('hideButtons') hideButtons: boolean = false;
+
   @Input('docModel') docModel: any;
   @Input('params') params: any;
   @Output('downloadDocument')

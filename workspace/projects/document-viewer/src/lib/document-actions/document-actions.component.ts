@@ -31,6 +31,8 @@ export class DocumentActionsComponent
   @Output('sendDocConfig') sendDocConfig = new EventEmitter();
   @Output('switchSelection') switchSelection = new EventEmitter();
   @Input('isOpenVar') isOpenVar: boolean = false;
+  @Input('isClassification') isClassification: boolean = false;
+  @Input('hideButtons') hideButtons: boolean = false;
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
     zoomInSrc: '',
     zoomOutSrc: '',

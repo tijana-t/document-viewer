@@ -22,6 +22,7 @@
   </button> -->
 
   <button
+    *ngIf="(!isClassification && hideButtons) || !hideButtons"
     [ngbTooltip]="'Export document\'s paragraphs'"
     class="col circle"
     (click)="downloadParagraphs()"
@@ -52,7 +53,7 @@
     />
   </button>
   <button
-    *ngIf="!qAndAModel"
+    *ngIf="((!isClassification && hideButtons) || !hideButtons) && !qAndAModel"
     [ngbTooltip]="'Download excel file.'"
     class="col circle"
     (click)="downloadExcel('xls')"
@@ -108,7 +109,7 @@
 
   <button
     class="col circle"
-    *ngIf="editable == false"
+    *ngIf="((!isClassification && hideButtons) || !hideButtons) && editable == false"
     (click)="showOriginalDocument()"
     [ngbTooltip]="
       !showOrginalConfig.showOrginal ? 'Show original document' : ''
@@ -138,6 +139,7 @@
   </button>
 
   <button
+    *ngIf="(!isClassification && hideButtons) || !hideButtons"
     class="col circle"
     (click)="openDebugger()"
     [ngbTooltip]="!showDebugger ? 'Show debugger' : 'Hide debugger'"
