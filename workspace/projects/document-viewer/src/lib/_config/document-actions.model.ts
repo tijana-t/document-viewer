@@ -1,5 +1,6 @@
 export type DocumentActions = {
   zoomInSrc?: string;
+  mergeDocs?: string;
   zoomOutSrc?: string;
   squareSelection?: string;
   squareSelectionYellow?: string;
