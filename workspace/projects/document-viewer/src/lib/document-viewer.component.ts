@@ -48,6 +48,7 @@ export class DocumentViewerComponent
   @Output('changeDocument') changeDocument = new EventEmitter();
   @Output('pageSearch') pageSearch = new EventEmitter();
   @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
+  @Output('triggerMergeEvent') triggerMergeEvent = new EventEmitter();
   @Output('isOpen') isOpen = new EventEmitter();
   @Output('downloadExcelEvent') downloadExcelEvent = new EventEmitter();
   @Output('sendDocConfigEvent') sendDocConfigEvent = new EventEmitter();
@@ -171,10 +172,10 @@ export class DocumentViewerComponent
     this.reorderDocumentEvent.next(event);
   }
 
-  downloadDocument(event: Event) {
-    this.downloadDocumentEvent.emit(event);
-  }
-
+  triggerMergeMethod($event: Event) {
+    this.triggerMergeEvent.next($event)
+  } 
+  
   downloadExcel(event: Event) {
     this.downloadExcelEvent.emit(event);
   }

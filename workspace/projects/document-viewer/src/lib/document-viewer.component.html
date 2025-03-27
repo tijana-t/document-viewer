@@ -474,7 +474,6 @@
           [inProjects]="inProjects"
           (downloadExcelEvent)="downloadExcel($event)"
           [editable]="documentConfig?.editable"
-          (downloadDocument)="downloadDocument($event)"
           (downloadParagraphs)="downloadParagraphs($event)"
           class="document-actions-left-container"
           id="viewer"
@@ -505,7 +504,7 @@
       [triggeredModalIsOpen]="triggeredModalIsOpen"
       [singleDocument]="singleDocument"
       [reorderFinished]="reorderFinished"
-      (downloadDocumentEvent)="downloadDocument($event)"
+      (triggerMergeMethod)="triggerMergeMethod($event)"
       [documentsList]="
         singleDocument.originalMergedDocs
           ? singleDocument.originalMergedDocs
