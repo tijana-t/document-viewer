@@ -487,13 +487,13 @@ export class PageNavigationComponent
     });
 
     this.mergeFilePairs = [];
-
     this.mergeFilePairsState.pop();
     if(this.mergeFilePairsState?.length) {
       this.mergeFilePairsState.forEach((pair: any) => {
-        this.mergeFilePairs.push(pair)
+        this.mergeFilePairs.push(pair);
       });
     }
+    this.triggerMergeMethod.emit(this.mergeFilePairs);
   }
 
   undoSplit() {
