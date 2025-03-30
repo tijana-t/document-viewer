@@ -47,6 +47,7 @@ export class PageNavigationComponent
   @Output('downloadDocumentEvent') downloadDocumentEvent = new EventEmitter();
   @Output('triggerPagesReorder') triggerPagesReorder = new EventEmitter();
   @Output('triggerSplitDocument') triggerSplitDocument = new EventEmitter();
+  @Output('triggerMergeMethod') triggerMergeMethod =  new EventEmitter();
   @Output('openTriggeredEmittrt') openTriggeredEmittert = new EventEmitter();
 
   @Input('documentActionsSrc') documentActionsSrc: DocumentActions = {
@@ -56,6 +57,7 @@ export class PageNavigationComponent
     reorderPages: '',
     undoArrow: '',
     split: '',
+    mergeDocs: ''
   };
   @Input('documentsList') documentsList: any;
   @Input('singleDocument') singleDocument: any;
@@ -92,6 +94,7 @@ export class PageNavigationComponent
   };
   docColorPallete: string[] = [];
   multipleDocsThumbs: any = [];
+  mergeFilePairsState: any[] = [];
   multipleDocs: boolean = false;
   openedDoc: any;
   docIndexMapping: {
@@ -109,6 +112,7 @@ export class PageNavigationComponent
   docIndex: number = 0;
   triggerSeparateMethod = new Subject<boolean>();
   fileId: string | undefined = '';
+  mergeFilePairs: Object[] = [];
   constructor(
     private docViewerService: DocumentViewerService // config: NgbDropdownConfig
   ) {
@@ -329,6 +333,25 @@ export class PageNavigationComponent
       );
   }
 
+  mergeDocument(index?: number) { 
+    if(index === undefined) {
+      this.triggerMergeMethod.emit(this.mergeFilePairs);
+    }else {
+      let nestedMultiple;
+      console.log(this.multipleDocsThumbs)
+      if(index !== this.multipleDocsThumbs[this.multipleDocsThumbs?.length - 1]) {
+        nestedMultiple = this.docViewerService.nestedCopy(
+          this.multipleDocsThumbs
+        );
+        this.mergeFilePairs.push({ fileId1: this.multipleDocsThumbs[index][0].fileId, fileId2: this.multipleDocsThumbs[index + 1][0].fileId });
+        this.multipleDocsThumbs[index] = [...this.multipleDocsThumbs[index], ...this.multipleDocsThumbs[index + 1]];
+        this.multipleDocsThumbs.splice(index + 1, 1);
+      }
+      this.thumbsStates.push([...nestedMultiple]);
+      this.mergeFilePairsState.push(this.mergeFilePairs)
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentsList'] && changes['documentsList'].currentValue) {
       this.documentsList = changes['documentsList'].currentValue;
@@ -454,9 +477,26 @@ export class PageNavigationComponent
     });
   }
 
-  undoSplit() {
+  undoMerge() {
     this.multipleDocsThumbs = this.thumbsStates[this.thumbsStates.length - 1];
+    this.thumbnails = [];
+    this.thumbsStates.pop();
 
+    this.multipleDocsThumbs.forEach((doc: any) => {
+      this.thumbnails.push(...doc);
+    });
+
+    this.mergeFilePairs = [];
+
+    this.mergeFilePairsState.pop();
+    if(this.mergeFilePairsState?.length) {
+      this.mergeFilePairsState.forEach((pair: any) => {
+        this.mergeFilePairs.push(pair)
+      });
+    }
+  }
+
+  undoSplit() {
     this.thumbnails = [];
     this.multipleDocsThumbs.forEach((doc: any) => {
       this.thumbnails.push(...doc);

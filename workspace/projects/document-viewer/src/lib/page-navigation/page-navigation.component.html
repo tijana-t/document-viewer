@@ -40,7 +40,7 @@
         <!-- undo -->
         <button
           ngbDropdownItem
-          *ngIf="!reorderFinished && thumbsStates.length === 0"
+          *ngIf="!reorderFinished && thumbsStates.length === 0 && multipleDocsThumbs.length <= 1"
           type="button"
           [ngClass]="reorderStates.length === 0 ? 'disabled-btn' : ''"
           class="btn-custom reorder-pages"
@@ -56,7 +56,7 @@
         </button>
         <button
           ngbDropdownItem
-          *ngIf="reorderFinished || thumbsStates.length !== 0"
+          *ngIf="(reorderFinished || thumbsStates.length !== 0) && multipleDocsThumbs.length <= 1"
           type="button"
           [ngClass]="thumbsStates.length === 0 ? 'disabled-btn' : ''"
           class="btn-custom reorder-pages"
@@ -72,6 +72,7 @@
         </button>
 
         <button
+          *ngIf="multipleDocsThumbs.length <= 1"
           ngbDropdownItem
           type="button"
           [ngClass]="
@@ -103,6 +104,7 @@
         </button>
         <button
           ngbDropdownItem
+          *ngIf="multipleDocsThumbs.length <= 1"
           type="button"
           [ngClass]="multipleDocsThumbs.length <= 1 ? 'disabled-btn' : ''"
           #splitButton
@@ -117,6 +119,40 @@
           />
           split
         </button>
+        <button
+        ngbDropdownItem
+        *ngIf="thumbsStates.length !== 0"
+        type="button"
+        [ngClass]="thumbsStates.length === 0 ? 'disabled-btn' : ''"
+        class="btn-custom reorder-pages"
+        (click)="undoMerge()"
+      >
+        <img
+          width="15px"
+          height="15px"
+          [src]="documentActionsSrc.undoArrow"
+          alt=""
+        />
+        undo merge
+      </button>
+
+        <button
+        ngbDropdownItem
+        type="button"
+        [ngClass]="multipleDocsThumbs.length <= 1 ? 'disabled-btn' : ''"
+        #mergeDoc
+        class="btn-custom reorder-pages"
+        (click)="mergeDocument()"
+      >
+        <img
+          width="17px"
+          height="17px"
+          [src]="documentActionsSrc.mergeDocs"
+          alt=""
+        />
+        merge
+      </button>
+   
       </div>
     </span>
     <input
@@ -214,7 +250,7 @@
             class="d-flex flex-column justify-content-center align-items-center"
             *ngIf="image.showDivider && i !== doc.length - 1"
           >
-            <div class="splitter">
+            <div  class="splitter">
               <div
                 class="border-up"
                 [ngStyle]="{
@@ -263,6 +299,29 @@
             *ngIf="image.hasSearchedText"
           ></span>
         </div>
+
+        <ng-template #mergeTooltip>
+          <span>
+            Merge {{doc[0]?.originalName}} and {{ multipleDocsThumbs[docIndex + 1][0]?.originalName }}
+          </span>
+        </ng-template>
+
+        <span
+        container="body"
+        *ngIf="!isLast"
+        [ngbTooltip]="mergeTooltip"
+        placement="left"
+        tooltipClass="tooltip"
+        class="merge-btn"
+        (click)="mergeDocument(docIndex)"
+        >
+          <img
+          width="22px"
+          height="30px"
+          [src]="documentActionsSrc.mergeDocs"
+          alt=""
+        />
+      </span>
         <!-- thumb settings -->
         <div
           *ngIf="documentsList.length > 1"
@@ -270,99 +329,6 @@
           #thumbSettings
           class="thumb-settings"
         >
-          <div class="d-flex flex-column settings-container">
-            <div
-              class="d-flex flex-column align-items-center justify-content-center"
-            >
-              <button
-                class="btn-custom circle d-flex justify-content-center"
-                [ngClass]="
-                  this.documentsList &&
-                  thumbnailInfo.fileId === this.documentsList[0].file._id
-                    ? 'disabled-btn'
-                    : ''
-                "
-                (click)="reorderDocument(thumbnailInfo, -1, docIndex, $event)"
-                ngbTooltip="Up"
-                placement="right"
-              >
-                <span class="d-flex typcn typcn-chevron-right up"> </span>
-              </button>
-              <button
-                class="btn-custom circle d-flex justify-content-center"
-                [ngClass]="
-                  this.documentsList &&
-                  thumbnailInfo.fileId ===
-                    this.documentsList[this.documentsList.length - 1].file._id
-                    ? 'disabled-btn'
-                    : ''
-                "
-                (click)="reorderDocument(thumbnailInfo, 1, docIndex, $event)"
-                ngbTooltip="Down"
-                placement="right"
-              >
-                <span class="d-flex typcn typcn-chevron-right down"> </span>
-              </button>
-            </div>
-            <div
-              class="d-flex flex-column align-items-center justify-content-center"
-            >
-              <button
-                class="circle btn-custom"
-                (click)="separateDocument(thumbnailInfo.fileId, $event)"
-                ngbTooltip="Remove"
-                placement="right"
-              >
-                <img
-                  width="25px"
-                  height="15px"
-                  [src]="documentActionsSrc.separateMergedDoc"
-                  alt=""
-                />
-              </button>
-              <button
-                (click)="
-                  downloadDocument(
-                    thumbnailInfo.fileId,
-                    thumbnailInfo.fileName,
-                    thumbnailInfo.originalName
-                  )
-                "
-                ngbTooltip="Download"
-                placement="right"
-                class="circle btn-custom"
-              >
-                <img
-                  width="15px"
-                  height="15px"
-                  [src]="documentActionsSrc.downloadPdfPlain"
-                  alt=""
-                />
-              </button>
-              <!-- confirm pages reorder -->
-              <button
-                #reorderButton
-                *ngIf="doc[0] && doc[0].showReorder"
-                class="circle btn-custom reorder-pages"
-                (click)="
-                  reorderPages(
-                    doc[0]['fileId'],
-                    true,
-                    pageNumber,
-                    reorderButton
-                  )
-                "
-                ngbTooltip="reorder"
-              >
-                <img
-                  width="15px"
-                  height="15px"
-                  [src]="documentActionsSrc.reorderPages"
-                  alt=""
-                />
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </ng-container>
