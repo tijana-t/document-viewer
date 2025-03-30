@@ -26,6 +26,23 @@
   box-shadow: 0 0px 12px 4px var(--box-shadow);
 }
 
+.merge-btn {
+  bottom: -24px;
+  cursor: pointer;
+  position: absolute;
+  left: -15px;
+  z-index: 1000003;
+  transform: rotate(90deg);
+}
+
+:host ::ng-deep .tooltip {
+  position: absolute; 
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
 #range::-webkit-slider-thumb {
   height: 10px;
   border: none;
