@@ -496,7 +496,6 @@ export class PageNavigationComponent
         this.mergeFilePairs.push(pair);
       });
     }
-    this.triggerMergeMethod.emit(this.mergeFilePairs);
   }
 
   undoSplit() {
