@@ -122,7 +122,6 @@
         <button
         ngbDropdownItem
         type="button"
-        *ngIf="multipleDocsThumbs.length > 1"
         [ngClass]="thumbsStates.length === 0 ? 'disabled-btn' : ''"
         class="btn-custom reorder-pages"
         (click)="undoMerge()"
@@ -135,11 +134,10 @@
         />
         undo merge
       </button>
-
         <button
         ngbDropdownItem
         type="button"
-        [ngClass]="(multipleDocsThumbs.length <= 1) || (multipleDocsThumbs.length > 1 && !mergeFilePairs?.length) ? 'disabled-btn' : ''"
+        [ngClass]="!mergeFilePairs?.length ? 'disabled-btn' : ''"
         #mergeDoc
         class="btn-custom reorder-pages"
         (click)="mergeDocument()"
